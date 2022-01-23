@@ -55,7 +55,7 @@ namespace Krugames.LocalizationSystem.Editor {
             public static string firstExecute = "Krugames/Localization_Editor/firstExecute";
         }
 
-        [MenuItem("Krugames/Localization")]
+        [MenuItem("Tools/Localization")]
         private static void Init() {
             LocalizationEditorWindow window =
                 (LocalizationEditorWindow) EditorWindow.GetWindow(typeof(LocalizationEditorWindow));
