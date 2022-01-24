@@ -48,8 +48,8 @@ namespace Krugames.LocalizationSystem.Translation.LanguageEncoding {
             new SystemLanguageCodePair(SystemLanguage.Turkish, "tr"),
             new SystemLanguageCodePair(SystemLanguage.Ukrainian, "uk"),
             new SystemLanguageCodePair(SystemLanguage.Vietnamese, "vi"),
-            new SystemLanguageCodePair(SystemLanguage.ChineseSimplified, "zh"), //Default Chinese used instead
-            new SystemLanguageCodePair(SystemLanguage.ChineseTraditional, "zh"), //Default Chinese used instead
+            new SystemLanguageCodePair(SystemLanguage.ChineseSimplified, "zh"), //Default Chinese used instead. This language will be ignored in map
+            new SystemLanguageCodePair(SystemLanguage.ChineseTraditional, "zh"), //Default Chinese used instead. This language will be ignored in map
             new SystemLanguageCodePair(SystemLanguage.Hungarian, "hu"),
             new SystemLanguageCodePair(SystemLanguage.Unknown, UnknownLanguageCode), //Make sure this element is always included
         };
@@ -64,6 +64,7 @@ namespace Krugames.LocalizationSystem.Translation.LanguageEncoding {
                         var relationPairs = RelationPairs;
                         codeBySystemLanguage = new Dictionary<SystemLanguage, string>(relationPairs.Length);
                         for (int i = 0; i < relationPairs.Length; i++) {
+                            if (codeBySystemLanguage.ContainsKey(relationPairs[i].SystemLanguage)) continue;
                             codeBySystemLanguage.Add(relationPairs[i].SystemLanguage, relationPairs[i].Code);
                         }
                     }
@@ -77,6 +78,7 @@ namespace Krugames.LocalizationSystem.Translation.LanguageEncoding {
                         var relationPairs = RelationPairs;
                         systemLanguageByCode = new Dictionary<string, SystemLanguage>(relationPairs.Length);
                         for (int i = 0; i < relationPairs.Length; i++) {
+                            if (systemLanguageByCode.ContainsKey(relationPairs[i].Code)) continue;
                             systemLanguageByCode.Add(relationPairs[i].Code, relationPairs[i].SystemLanguage);
                         }
                     }

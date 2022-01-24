@@ -563,7 +563,7 @@ GameObject:
   - component: {fileID: 1363289225}
   - component: {fileID: 1363289224}
   m_Layer: 0
-  m_Name: TestGooleTranslate
+  m_Name: TranslateTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -578,10 +578,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1363289223}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72dd088f11a01e241a1a03a9a3290946, type: 3}
+  m_Script: {fileID: 11500000, guid: b7a5f63b8ccf4ed7a012d4f28ffa477a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: Hello fucking slaves
 --- !u!4 &1363289225
 Transform:
   m_ObjectHideFlags: 0
