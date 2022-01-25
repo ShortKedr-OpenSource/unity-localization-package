@@ -1,7 +1,8 @@
 # TODOs #
 
 ## System ##
-1. Compiler preprocessor defines ``KRUGAMES_UNITY_LOCALIZATION`` 
+1. Compiler preprocessor defines ``KRUGAMES_UNITY_LOCALIZATION``. 
+   This define serve to external solutions 
 
 ## Resource files ##
 1. Automatic resource files creation
