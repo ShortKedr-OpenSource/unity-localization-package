@@ -58,7 +58,7 @@ namespace Krugames.LocalizationSystem.Models {
         public LocaleTerm GetTerm(string term) {
             if (_termsDict == null) RebuildCache();
             
-            if ()
+            //if ()
             throw new NotImplementedException();
         }
 
