@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Krugames.LocalizationSystem.Models;
+using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Linkers {
     /// <summary>

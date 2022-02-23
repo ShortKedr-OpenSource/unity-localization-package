@@ -1,4 +1,5 @@
 ﻿using System;
+using Krugames.LocalizationSystem.Models;
 using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Tools {

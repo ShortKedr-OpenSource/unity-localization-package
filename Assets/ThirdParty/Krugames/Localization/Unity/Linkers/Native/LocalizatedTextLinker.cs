@@ -1,4 +1,5 @@
 ﻿using Krugames.LocalizationSystem.Models;
+using Krugames.LocalizationSystem.Models.Terms;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ namespace Krugames.LocalizationSystem.Linkers.Native {
         [SerializeField] private TextCase textCase = TextCase.NoChanges;
 
         public override void UpdateContent() {
-            string t =  Localization.GetTerm(term);
+            string t =  Localization.GetTermValue<string>(term);
             if (targetText == null) return;
             if (textCase == TextCase.NoChanges) {
                 targetText.text = t;

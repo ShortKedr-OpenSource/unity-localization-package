@@ -9,13 +9,13 @@ namespace Krugames.LocalizationSystem.Translation.RapidApi {
     /// <summary>
     /// TextTranslator based on RapidAPI Google Translate https://rapidapi.com/googlecloud/api/google-translate1/
     /// </summary>
-    public class RapidApiGoogleTranslator : TextTranslator {
+    public class RapidApiGoogleTranslator : StringTranslator {
 
         public override void Translate(string textToTranslate, SystemLanguage from, SystemLanguage to,
             TranslationSuccessDelegate successCallback, TranslationFailDelegate failCallback) {
 
             if (from == to) {
-                successCallback?.Invoke(textToTranslate, to);
+                successCallback?.Invoke(textToTranslate, to, from);
                 return;
             }
             
@@ -51,7 +51,7 @@ namespace Krugames.LocalizationSystem.Translation.RapidApi {
                         if (translations != null && translations.Count > 0) {
                             JToken translation = translations[0];
                             JToken translatedTextToken = translation?["translatedText"];
-                            successCallback?.Invoke(translatedTextToken?.Value<string>(), to);
+                            successCallback?.Invoke(translatedTextToken?.Value<string>(), to, from);
                         } else {
                             failCallback?.Invoke(textToTranslate, from, to);
                         }

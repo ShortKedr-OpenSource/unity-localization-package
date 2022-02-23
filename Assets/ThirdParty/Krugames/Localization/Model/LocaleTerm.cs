@@ -12,11 +12,13 @@ namespace Krugames.LocalizationSystem.Models {
         public string Term => term;
         public object Value => value;
 
-        protected LocaleTerm(string term, object value) {
-            this.term = term;
-            this.value = value;
+        private void OnEnable() {
+            Initialize();
         }
 
+        public virtual void Initialize() {
+        }
+        
         public virtual void SetValue(object value) {
             this.value = value;
         }
@@ -32,8 +34,8 @@ namespace Krugames.LocalizationSystem.Models {
 
         [SerializeField] protected TValueType smartValue;
 
-        protected LocaleTerm(string term, TValueType value) : base(term, value) {
-            smartValue = value;
+        public override void Initialize() {
+            value = smartValue;
         }
 
         public override void SetValue(object value) {

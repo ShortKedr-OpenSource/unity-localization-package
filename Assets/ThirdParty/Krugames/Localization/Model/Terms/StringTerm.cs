@@ -1,6 +1,12 @@
-﻿namespace Krugames.LocalizationSystem.Models.Terms {
-    public class StringTerm : LocaleTerm<string>{
-        public StringTerm(string term, string value) : base(term, value) {
-        }
+﻿using System;
+using Krugames.LocalizationSystem.Models.Attributes;
+using Krugames.LocalizationSystem.Models.Terms;
+using UnityEngine;
+
+[assembly: RegisterLocaleTerm(typeof(StringTerm), "String")]
+
+namespace Krugames.LocalizationSystem.Models.Terms {
+    [CreateAssetMenu(fileName = "StringTerm", menuName = "Localization/Terms/String", order = 0)]
+    public class StringTerm : LocaleTerm<string> {
     }
 }
