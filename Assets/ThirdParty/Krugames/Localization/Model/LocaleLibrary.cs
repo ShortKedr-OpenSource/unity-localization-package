@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Krugames.Core.Unity.Singletons;
 using Krugames.LocalizationSystem.Models.Dynamic;
-using UnityEditor;
 using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Models {
@@ -9,6 +9,7 @@ namespace Krugames.LocalizationSystem.Models {
     /// Presents main Localization static library.
     /// Localization structure presents in this class
     /// </summary>
+    //TODO change approach to LocaleLibraries + LocalizationService, if multiple LocaleLibraries will be required
     public class LocaleLibrary : ScriptableSingleton<LocaleLibrary> {
 
         [SerializeField] private Locale baseLocale;

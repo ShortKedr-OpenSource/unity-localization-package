@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Krugames.LocalizationSystem.Models.Attributes;
 
-namespace Krugames.LocalizationSystem.Models.Utility {
+namespace Krugames.LocalizationSystem.Models.Locators {
     public static class LocaleTermLocator {
 
         private const int DefaultLocatorBuffer = 32;

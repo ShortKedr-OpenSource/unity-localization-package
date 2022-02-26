@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using Krugames.LocalizationSystem.Models.Attributes;
 using Krugames.LocalizationSystem.Models.Interfaces;
-using Krugames.LocalizationSystem.Models.Utility;
-using UnityEditor;
+using Krugames.LocalizationSystem.Models.Locators;
 using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Models {
@@ -67,6 +66,7 @@ namespace Krugames.LocalizationSystem.Models {
                 _termDict.Add(terms[i].Term, terms[i]);
                 termType = terms[i].GetType();
                 //if (_termListByType)
+                //TODO
             }
         }
 

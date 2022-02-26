@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e914763005b8ed74da3d4413e8b5d1b4, type: 3}
-  m_Name: LocalizationLibrary
+  m_Script: {fileID: 11500000, guid: 1a933790615a495d888a460cb0be9b3a, type: 3}
+  m_Name: LocaleLibrary
   m_EditorClassIdentifier: 
-  currentUsedLanguage: 10
-  localeAssets:
-  - localeAsset: {fileID: 4900000, guid: a490fa1f4aabb684ca416e16881bde3d, type: 3}
-    referencedLanguage: 10
+  baseLocale: {fileID: 0}
+  staticLocales: []

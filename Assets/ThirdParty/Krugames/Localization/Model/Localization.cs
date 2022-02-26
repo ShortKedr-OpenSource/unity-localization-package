@@ -2,8 +2,11 @@
 using Krugames.LocalizationSystem.Models.Dynamic;
 using Krugames.LocalizationSystem.Models.Interfaces;
 using Krugames.LocalizationSystem.Models.Structs;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Krugames.LocalizationSystem.Models {
     public static class Localization {
