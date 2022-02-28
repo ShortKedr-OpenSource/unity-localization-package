@@ -4,6 +4,7 @@ using Krugames.LocalizationSystem.Models.Attributes;
 using Krugames.LocalizationSystem.Models.Interfaces;
 using Krugames.LocalizationSystem.Models.Locators;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 namespace Krugames.LocalizationSystem.Models {
     
@@ -41,9 +42,13 @@ namespace Krugames.LocalizationSystem.Models {
             HashSet<Type> supportedTypesHash = new HashSet<Type>();
             List<Type> supportedTypes = new List<Type>(termLocators.Length);
 
-            Type termType;
             for (int i = 0; i < termLocators.Length; i++) {
-                termType = termLocators[i].TermType;
+                if (!termLocators[i].IsValid) {
+                    Debug.Log("Register data is not Valid. Term type can not be null and must be " +
+                              $"inherited from {BaseTermType.Name}");
+                    continue;
+                }
+                Type termType = termLocators[i].TermType;
                 if (supportedTypesHash.Contains(termType)) {
                     Debug.LogWarning($"Type is already added to Locale: {termType.Name}");
                     continue;
@@ -52,22 +57,9 @@ namespace Krugames.LocalizationSystem.Models {
                 supportedTypes.Add(termType);
             }
             _supportedTypes = supportedTypes.ToArray();
+            //TODO test;
 
-
-            _termListByType = new Dictionary<Type, List<LocaleTerm>>(supportedTypes.Count);
-            _termDictByType = new Dictionary<Type, Dictionary<string, LocaleTerm>>(supportedTypes.Count);
-            for (int i = 0; i < supportedTypes.Count; i++) {
-                _termListByType.Add(supportedTypes[i], new List<LocaleTerm>(TermListBuffer));
-                _termDictByType.Add(supportedTypes[i], new Dictionary<string, LocaleTerm>(TermDictBuffer));
-            }
-
-            _termDict = new Dictionary<string, LocaleTerm>(Mathf.Max(terms.Count, TermDictBuffer));
-            for (int i = 0; i < terms.Count; i++) {
-                _termDict.Add(terms[i].Term, terms[i]);
-                termType = terms[i].GetType();
-                //if (_termListByType)
-                //TODO
-            }
+            RebuildCache();
         }
 
         public void RebuildCache() {
@@ -79,6 +71,33 @@ namespace Krugames.LocalizationSystem.Models {
                 }
                 _termDict.Add(terms[i].Term, terms[i]);
             }
+            
+            _termListByType = new Dictionary<Type, List<LocaleTerm>>(_supportedTypes.Length);
+            _termDictByType = new Dictionary<Type, Dictionary<string, LocaleTerm>>(_supportedTypes.Length);
+            for (int i = 0; i < _supportedTypes.Length; i++) {
+                _termListByType.Add(_supportedTypes[i], new List<LocaleTerm>(TermListBuffer));
+                _termDictByType.Add(_supportedTypes[i], new Dictionary<string, LocaleTerm>(TermDictBuffer));
+            }
+
+            _termDict = new Dictionary<string, LocaleTerm>(Mathf.Max(terms.Count, TermDictBuffer));
+            for (int i = 0; i < terms.Count; i++) {
+                Type termType = terms[i].GetType();
+                string term = terms[i].Term;
+
+                if (!SupportsTermType(termType)) {
+                    Debug.LogWarning($"Term type \"{termType.Name}\" is not supported by Localization System. " +
+                                     "Register locale term type to fix this problem. See RegisterLocaleTerm attribute\n");
+                    continue;
+                }
+                if (_termDict.ContainsKey(term)) {
+                    Debug.LogError($"Term with key \"{terms[i].Term}\" is already exists. Remove double terms from Locales to fix this problem");
+                    continue;
+                }
+
+                _termDict.Add(term, terms[i]);
+                _termDictByType[termType].Add(term, terms[i]);
+                _termListByType[termType].Add(terms[i]);
+            }
         }
 
         public LocaleTerm GetTerm(string term) {
@@ -89,20 +108,23 @@ namespace Krugames.LocalizationSystem.Models {
         }
 
         public LocaleTerm GetTerm(string term, Type type) {
-            bool isValidType = type != null && type.IsAssignableFrom(BaseTermType);
-            bool isValidTerm = !string.IsNullOrEmpty(term);
-
-            if (!isValidType) {
-                Debug.LogError("Term type is invalid. Term type must be inherited from " + nameof(LocaleTerm));
+            if (SupportsTermType(type)) {
+                Debug.LogWarning($"Term type \"{type.Name}\" is not supported by Localization System. " +
+                                 "Register locale term type to fix this problem. See RegisterLocaleTerm attribute\n");
                 return null;
             }
 
-            if (isValidTerm) {
+            bool isValidTerm = !string.IsNullOrEmpty(term);
+            if (!isValidTerm) {
                 Debug.LogError("Term can not be null or empty");
                 return null;
             }
 
-            throw new NotImplementedException();
+            if (_termDictByType[type].ContainsKey(term)) {
+                //TODO
+            }
+
+            return null;
         }
 
         public TTermType GetTerm<TTermType>(string term) where TTermType : LocaleTerm {

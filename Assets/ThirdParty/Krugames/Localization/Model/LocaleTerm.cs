@@ -5,7 +5,7 @@ namespace Krugames.LocalizationSystem.Models {
     /// <summary>
     /// Base Class for all Terms
     /// </summary>
-    public abstract class LocaleTerm : ScriptableObject {
+    public abstract class LocaleTerm : ScriptableObject { //TODO add unknown value
         [SerializeField] protected string term;
         protected object value;
 

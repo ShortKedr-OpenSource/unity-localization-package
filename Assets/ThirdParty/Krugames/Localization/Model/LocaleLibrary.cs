@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Krugames.Core.Unity.Singletons;
 using Krugames.LocalizationSystem.Models.Dynamic;
+using Krugames.LocalizationSystem.Models.Interfaces;
 using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Models {
@@ -18,6 +19,8 @@ namespace Krugames.LocalizationSystem.Models {
 
         private HashSet<SystemLanguage> _existsLanguagesCache = new HashSet<SystemLanguage>();
         private List<SystemLanguage> _supportedLanguages = new List<SystemLanguage>();
+
+        private Dictionary<SystemLanguage, ILocale> _localeByLanguageDict = new Dictionary<SystemLanguage, ILocale>();
 
         public Locale BaseLocale => baseLocale;
         public Locale[] StaticLocales => staticLocales;
