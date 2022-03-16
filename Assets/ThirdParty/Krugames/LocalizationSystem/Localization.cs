@@ -1,4 +1,5 @@
 ﻿using System;
+using Krugames.LocalizationSystem.Models;
 using Krugames.LocalizationSystem.Models.Dynamic;
 using Krugames.LocalizationSystem.Models.Interfaces;
 using Krugames.LocalizationSystem.Models.Structs;
@@ -8,7 +9,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Krugames.LocalizationSystem.Models {
+namespace Krugames.LocalizationSystem {
     public static class Localization {
 
         public static SystemLanguage CurrentUsedLanguage => throw new NotImplementedException();

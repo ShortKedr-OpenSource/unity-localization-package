@@ -8,25 +8,25 @@ using UnityEngine;
 namespace Krugames.LocalizationSystem.Models {
     /// <summary>
     /// Presents main Localization static library.
+    /// Library can be extended at runtime with use of DynamicLocale
     /// Localization structure presents in this class
     /// </summary>
-    //TODO change approach to LocaleLibraries + LocalizationService, if multiple LocaleLibraries will be required
     public class LocaleLibrary : ScriptableSingleton<LocaleLibrary> {
 
+        private const int DefaultDynamicBuffer = 4;
+        
         [SerializeField] private Locale baseLocale;
         [SerializeField] private Locale[] staticLocales;
-        private List<DynamicLocale> _dynamicLocales;
 
+        private List<DynamicLocale> _dynamicLocales;
+        private HashSet<DynamicLocale> _dynamicLocaleCache;
+        
         private HashSet<SystemLanguage> _existsLanguagesCache = new HashSet<SystemLanguage>();
         private List<SystemLanguage> _supportedLanguages = new List<SystemLanguage>();
 
         private Dictionary<SystemLanguage, ILocale> _localeByLanguageDict = new Dictionary<SystemLanguage, ILocale>();
-
-        public Locale BaseLocale => baseLocale;
-        public Locale[] StaticLocales => staticLocales;
-        public DynamicLocale[] DynamicLocales => _dynamicLocales.ToArray();
-
-        public SystemLanguage[] SupportedLanguages => _supportedLanguages.ToArray();
+        
+        
 
         public bool IsValid {
             get {
@@ -40,7 +40,17 @@ namespace Krugames.LocalizationSystem.Models {
             }
         }
 
+        private void OnEnable() {
+#if UNITY_EDITOR
+            //TODO reset initialization if in editor
+#endif
+        }
+
         public bool AddDynamicLocale(DynamicLocale dynamicLocale) {
+            throw new NotImplementedException();
+        }
+        
+        public bool RemoveDynamicLocale(DynamicLocale dynamicLocale) {
             throw new NotImplementedException();
         }
     }

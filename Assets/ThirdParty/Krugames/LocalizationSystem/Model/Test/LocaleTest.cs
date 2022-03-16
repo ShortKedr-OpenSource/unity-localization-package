@@ -99,8 +99,14 @@ namespace Krugames.LocalizationSystem.Models {
             var typedTextureValue = locale.GetTermValue<Texture>("test_string");
             Debug.Log("Q12: " + typedTextureValue);
             
-            //TODO full null test
-            
+            // all null
+            Debug.Log("Q13: " + locale.GetTerm("fake_term"));
+            Debug.Log("Q14: " + locale.GetTerm("fake_term", typeof(StringTerm)));
+            Debug.Log("Q15: " + locale.GetTerm<StringTerm>("fake_term"));
+            Debug.Log("Q16: " + locale.GetTermValue("fake_term"));
+            Debug.Log("Q17: " + locale.GetTermValue("fake_term", typeof(string)));
+            Debug.Log("Q18: " + locale.GetTermValue<string>("fake_term"));
+
         }
     }
 }

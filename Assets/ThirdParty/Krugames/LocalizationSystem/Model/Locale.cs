@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using Krugames.LocalizationSystem.Models.Interfaces;
 using Krugames.LocalizationSystem.Models.Locators;
+using Krugames.LocalizationSystem.Models.Structs;
 using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Models {
     
     [CreateAssetMenu(fileName = "Locale", menuName = "Localization/Locale", order = 0)]
-    public class Locale : ScriptableObject, ILocale {
+    public class Locale : ScriptableObject, ILocale, ILocaleGettableLayout, ILocaleSettableLayout {
 
         private const int DefaultBuffer = 64;
 
@@ -33,14 +34,32 @@ namespace Krugames.LocalizationSystem.Models {
         private bool _wasInitialized = false;
 
         public SystemLanguage Language => language;
-        public Type[] SupportedTermTypes => _supportedTermTypes;
-        public Type[] SupportedValueTypes => _supportedValueTypes;
-        
+        public Type[] SupportedTermTypes {
+            get {
+                if (!_wasInitialized) Initialize();
+                return _supportedTermTypes;
+            }
+        }
+
+        public Type[] SupportedValueTypes {
+            get {
+                if (!_wasInitialized) Initialize();
+                return _supportedValueTypes;
+            }
+        }
+
 
         private void OnEnable() {
+#if UNITY_EDITOR
+            _wasInitialized = false;
+#endif
             if (LocalizationSettings.AutoInitialize) Initialize();
         }
 
+        private void DebugWrongTerm(string term) {
+            Debug.LogWarning($"Can not find term \"{term}\" in Localization. Term must be added to locales first!");
+        }
+        
         public void Initialize() {
 
             var buildData = LocaleTermLocator.BuildData;
@@ -131,16 +150,29 @@ namespace Krugames.LocalizationSystem.Models {
 
         public LocaleTerm GetTerm(string term) {
             if (!_wasInitialized) Initialize();
-            if (_termDict.ContainsKey(term)) return _termDict[term];
+            if (_termDict.ContainsKey(term)) {
+#if UNITY_EDITOR
+                DebugWrongTerm(term);
+#endif
+                return _termDict[term];
+            }
             return null;
         }
 
         public LocaleTerm GetTerm(string term, Type type) {
             if (!_wasInitialized) Initialize();
-            if (!_termDictByType.ContainsKey(type)) return null;
+            if (!_termDictByType.ContainsKey(type)) {
+#if UNITY_EDITOR
+                DebugWrongTerm(term);
+#endif
+                return null;
+            }
             
             var typedDict = _termDictByType[type];
             if (typedDict.ContainsKey(term)) return typedDict[term];
+#if UNITY_EDITOR
+            DebugWrongTerm(term);
+#endif      
             return null;
         }
 
@@ -148,10 +180,18 @@ namespace Krugames.LocalizationSystem.Models {
             if (!_wasInitialized) Initialize();
             
             Type type = typeof(TTermType);
-            if (!_termDictByType.ContainsKey(type)) return null;
+            if (!_termDictByType.ContainsKey(type)) {
+#if UNITY_EDITOR
+                DebugWrongTerm(term);
+#endif
+                return null;
+            }
 
             var typedDict = _termDictByType[type];
             if (typedDict.ContainsKey(term)) return (TTermType) typedDict[term];
+#if UNITY_EDITOR
+            DebugWrongTerm(term);
+#endif
             return null;
         }
 
@@ -160,8 +200,13 @@ namespace Krugames.LocalizationSystem.Models {
         }
 
         public object GetTermValue(string term, Type type) {
-            
-            if (!_valueTypeToTermTypeDict.ContainsKey(type)) return null;
+
+            if (!_valueTypeToTermTypeDict.ContainsKey(type)) {
+#if UNITY_EDITOR
+                DebugWrongTerm(term);
+#endif
+                return null;
+            }
             Type termType = _valueTypeToTermTypeDict[type];
 
             return GetTerm(term, termType)?.Value;
@@ -171,13 +216,26 @@ namespace Krugames.LocalizationSystem.Models {
             if (!_wasInitialized) Initialize();
             
             Type valueType = typeof(TTermValueType);
-            if (!_valueTypeToTermTypeDict.ContainsKey(valueType)) return default;
+            if (!_valueTypeToTermTypeDict.ContainsKey(valueType)) {
+#if UNITY_EDITOR
+                DebugWrongTerm(term);
+#endif
+                return default;
+            }
             
             Type termType = _valueTypeToTermTypeDict[valueType];
-            if (!_termDictByType.ContainsKey(termType)) return default;
+            if (!_termDictByType.ContainsKey(termType)) {
+#if UNITY_EDITOR
+                DebugWrongTerm(term);
+#endif
+                return default;
+            }
 
             var typedDict = _termDictByType[termType];
             if (typedDict.ContainsKey(term)) return (TTermValueType)(typedDict[term].Value);
+#if UNITY_EDITOR
+            DebugWrongTerm(term);
+#endif
             return default;
         }
 
@@ -236,6 +294,33 @@ namespace Krugames.LocalizationSystem.Models {
         public bool ContainsValueType(Type valueType) {
             if (!_wasInitialized) Initialize();
             return _containedValueTypesCache.Contains(valueType);
+        }
+
+
+        public TermStructureInfo[] GetLayout() {
+            TermStructureInfo[] layout = new TermStructureInfo[terms.Count];
+            for (int i = 0; i < terms.Count; i++) {
+                layout[i] = new TermStructureInfo() {
+                    termName = terms[i].Term,
+                    termType = terms[i].GetType(),
+                };
+            }
+            return layout;
+        }
+
+        public void SetLayout(TermStructureInfo[] layout) {
+#if UNITY_EDITOR
+            if (!Application.isPlaying) {
+                Debug.LogError("Static Locale Layout can not be changed in runtime!");
+                return;
+            }
+            
+            //TODO use LocaleUtility to change layout
+            
+#else
+            Debug.LogError("Static Locale Layout can not be changed in runtime!");
+            return;
+#endif
         }
     }
 }

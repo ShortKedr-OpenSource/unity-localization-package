@@ -1,7 +1,7 @@
 ﻿using Krugames.LocalizationSystem.Unity.Singletons;
 using UnityEngine;
 
-namespace Krugames.LocalizationSystem.Models {
+namespace Krugames.LocalizationSystem {
     public class LocalizationSettings : ScriptableSingleton<LocalizationSettings> {
 
         [SerializeField] private bool autoInitialize = false;
