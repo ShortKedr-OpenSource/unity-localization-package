@@ -38,7 +38,7 @@ namespace Krugames.LocalizationSystem.Models {
         
 
         private void OnEnable() {
-            Initialize();
+            if (LocalizationSettings.AutoInitialize) Initialize();
         }
 
         public void Initialize() {
@@ -109,7 +109,7 @@ namespace Krugames.LocalizationSystem.Models {
                 
                 Type termType = terms[i].GetType();
 
-                if (!SupportsTermType(termType)) {
+                if (!_supportedTermTypesCache.Contains(termType)) {
                     Debug.LogWarning($"Term type \"{termType.Name}\" is not supported by Localization System. " +
                                      "Register locale term type to fix this problem. See RegisterLocaleTerm attribute\n");
                     continue;
