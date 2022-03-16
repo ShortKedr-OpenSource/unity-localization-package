@@ -11,13 +11,15 @@ namespace Krugames.LocalizationSystem.Models {
     /// Library can be extended at runtime with use of DynamicLocale
     /// Localization structure presents in this class
     /// </summary>
-    public class LocaleLibrary : ScriptableSingleton<LocaleLibrary> {
+    public class LocaleLibrary : ScriptableSingleton<LocaleLibrary>, ICacheCarrier {
 
         private const int DefaultDynamicBuffer = 4;
         
         [SerializeField] private Locale baseLocale;
         [SerializeField] private Locale[] staticLocales;
 
+        private SystemLanguage currentLanguage = SystemLanguage.English;
+        
         private List<DynamicLocale> _dynamicLocales;
         private HashSet<DynamicLocale> _dynamicLocaleCache;
         
@@ -25,7 +27,8 @@ namespace Krugames.LocalizationSystem.Models {
         private List<SystemLanguage> _supportedLanguages = new List<SystemLanguage>();
 
         private Dictionary<SystemLanguage, ILocale> _localeByLanguageDict = new Dictionary<SystemLanguage, ILocale>();
-        
+
+        private bool _wasInitialized = false;
         
 
         public bool IsValid {
@@ -42,8 +45,21 @@ namespace Krugames.LocalizationSystem.Models {
 
         private void OnEnable() {
 #if UNITY_EDITOR
-            //TODO reset initialization if in editor
+            _wasInitialized = false;
 #endif
+            if (LocalizationSettings.AutoInitialize) Initialize();
+        }
+
+        public void Initialize() {
+            
+            //TODO Initialization
+            
+            RebuildCache();
+            
+            _wasInitialized = true;
+        }
+        
+        public void RebuildCache() {
         }
 
         public bool AddDynamicLocale(DynamicLocale dynamicLocale) {
@@ -53,5 +69,17 @@ namespace Krugames.LocalizationSystem.Models {
         public bool RemoveDynamicLocale(DynamicLocale dynamicLocale) {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Change current localization language
+        /// </summary>
+        /// <param name="language">target language</param>
+        /// <returns>true if language was changed. This method will also
+        /// return true if current language and target language are equal</returns>
+        public bool SetLanguage(SystemLanguage language) {
+            return false;
+        }
+
+        
     }
 }

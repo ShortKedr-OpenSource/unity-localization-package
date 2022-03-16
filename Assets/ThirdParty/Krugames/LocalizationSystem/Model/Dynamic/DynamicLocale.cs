@@ -1,6 +1,7 @@
 ﻿using System;
 using Krugames.LocalizationSystem.Models.Interfaces;
 using Krugames.LocalizationSystem.Models.Structs;
+using UnityEditor;
 using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Models.Dynamic {
@@ -14,7 +15,7 @@ namespace Krugames.LocalizationSystem.Models.Dynamic {
     /// Also, dynamic locales can stay in memory after being unreferenced,
     /// so to manage unreferenced Dynamic Localization API stuff, check ReferenceManager class
     /// </summary>
-    public class DynamicLocale : ILocale, ILocaleModifiableLayout {
+    public class DynamicLocale : ILocale, ILocaleGettableLayout, ILocaleSettableLayout {
         //TODO implement
         
         public DynamicLocale() {
@@ -103,7 +104,7 @@ namespace Krugames.LocalizationSystem.Models.Dynamic {
             throw new NotImplementedException();
         }
 
-        public TermStructureInfo[] SetLayout() {
+        public void SetLayout(TermStructureInfo[] layout) {
             throw new NotImplementedException();
         }
     }

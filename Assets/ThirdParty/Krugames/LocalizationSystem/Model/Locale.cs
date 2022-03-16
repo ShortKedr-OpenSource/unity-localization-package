@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Krugames.LocalizationSystem.Models {
     
     [CreateAssetMenu(fileName = "Locale", menuName = "Localization/Locale", order = 0)]
-    public class Locale : ScriptableObject, ILocale, ILocaleGettableLayout, ILocaleSettableLayout {
+    public class Locale : ScriptableObject, ILocale, ICacheCarrier, ILocaleGettableLayout, ILocaleSettableLayout {
 
         private const int DefaultBuffer = 64;
 
