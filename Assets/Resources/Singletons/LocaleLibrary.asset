@@ -15,3 +15,5 @@ MonoBehaviour:
   baseLocale: {fileID: 0}
   staticLocales:
   - {fileID: 11400000, guid: c905de7e3a6fa4343acc456405096b3c, type: 2}
+  - {fileID: 11400000, guid: c905de7e3a6fa4343acc456405096b3c, type: 2}
+  - {fileID: 0}

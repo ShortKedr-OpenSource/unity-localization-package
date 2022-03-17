@@ -36,14 +36,14 @@ namespace Krugames.LocalizationSystem.Models {
         public SystemLanguage Language => language;
         public Type[] SupportedTermTypes {
             get {
-                if (!_wasInitialized) Initialize();
+                if (!_wasInitialized) InitializeInternal();
                 return _supportedTermTypes;
             }
         }
 
         public Type[] SupportedValueTypes {
             get {
-                if (!_wasInitialized) Initialize();
+                if (!_wasInitialized) InitializeInternal();
                 return _supportedValueTypes;
             }
         }
@@ -53,14 +53,17 @@ namespace Krugames.LocalizationSystem.Models {
 #if UNITY_EDITOR
             _wasInitialized = false;
 #endif
-            if (LocalizationSettings.AutoInitialize) Initialize();
         }
 
         private void DebugWrongTerm(string term) {
             Debug.LogWarning($"Can not find term \"{term}\" in Localization. Term must be added to locales first!");
         }
-        
+
         public void Initialize() {
+            if (!_wasInitialized) InitializeInternal();
+        }
+        
+        private void InitializeInternal() {
 
             var buildData = LocaleTermLocator.BuildData;
 
@@ -149,7 +152,7 @@ namespace Krugames.LocalizationSystem.Models {
         }
 
         public LocaleTerm GetTerm(string term) {
-            if (!_wasInitialized) Initialize();
+            if (!_wasInitialized) InitializeInternal();
             if (_termDict.ContainsKey(term)) {
 #if UNITY_EDITOR
                 DebugWrongTerm(term);
@@ -160,7 +163,7 @@ namespace Krugames.LocalizationSystem.Models {
         }
 
         public LocaleTerm GetTerm(string term, Type type) {
-            if (!_wasInitialized) Initialize();
+            if (!_wasInitialized) InitializeInternal();
             if (!_termDictByType.ContainsKey(type)) {
 #if UNITY_EDITOR
                 DebugWrongTerm(term);
@@ -177,7 +180,7 @@ namespace Krugames.LocalizationSystem.Models {
         }
 
         public TTermType GetTerm<TTermType>(string term) where TTermType : LocaleTerm {
-            if (!_wasInitialized) Initialize();
+            if (!_wasInitialized) InitializeInternal();
             
             Type type = typeof(TTermType);
             if (!_termDictByType.ContainsKey(type)) {
@@ -213,7 +216,7 @@ namespace Krugames.LocalizationSystem.Models {
         }
 
         public TTermValueType GetTermValue<TTermValueType>(string term) {
-            if (!_wasInitialized) Initialize();
+            if (!_wasInitialized) InitializeInternal();
             
             Type valueType = typeof(TTermValueType);
             if (!_valueTypeToTermTypeDict.ContainsKey(valueType)) {
@@ -240,12 +243,12 @@ namespace Krugames.LocalizationSystem.Models {
         }
 
         public LocaleTerm[] GetTerms() {
-            if (!_wasInitialized) Initialize();
+            if (!_wasInitialized) InitializeInternal();
             return terms.ToArray();
         }
 
         public TTermType[] GetTerms<TTermType>() where TTermType : LocaleTerm {
-            if (!_wasInitialized) Initialize();
+            if (!_wasInitialized) InitializeInternal();
             
             Type type = typeof(TTermType);
             if (!_termListByType.ContainsKey(type)) return Array.Empty<TTermType>();
@@ -262,7 +265,7 @@ namespace Krugames.LocalizationSystem.Models {
         /// <param name="termType">specific term type to check</param>
         /// <returns>true if locale supports terms of specified type</returns>
         public bool SupportsTermType(Type termType) {
-            if (!_wasInitialized) Initialize();
+            if (!_wasInitialized) InitializeInternal();
             return _supportedTermTypesCache.Contains(termType);
         }
         
@@ -272,7 +275,7 @@ namespace Krugames.LocalizationSystem.Models {
         /// <param name="valueType">specific value type to check</param>
         /// <returns>true if locale supports terms of specified type</returns>
         public bool SupportsValueType(Type valueType) {
-            if (!_wasInitialized) Initialize();
+            if (!_wasInitialized) InitializeInternal();
             return _supportedValueTypesCache.Contains(valueType);
         }
 
@@ -282,7 +285,7 @@ namespace Krugames.LocalizationSystem.Models {
         /// <param name="termType">specific term type to check</param>
         /// <returns>true if locale contains terms of specified type</returns>
         public bool ContainsTermType(Type termType) {
-            if (!_wasInitialized) Initialize();
+            if (!_wasInitialized) InitializeInternal();
             return _containedTermTypesCache.Contains(termType);
         }
 
@@ -292,7 +295,7 @@ namespace Krugames.LocalizationSystem.Models {
         /// <param name="valueType">specific value type to check</param>
         /// <returns>true if locale contains values of specified type</returns>
         public bool ContainsValueType(Type valueType) {
-            if (!_wasInitialized) Initialize();
+            if (!_wasInitialized) InitializeInternal();
             return _containedValueTypesCache.Contains(valueType);
         }
 

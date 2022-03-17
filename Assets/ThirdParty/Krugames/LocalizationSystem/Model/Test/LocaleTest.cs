@@ -106,7 +106,16 @@ namespace Krugames.LocalizationSystem.Models {
             Debug.Log("Q16: " + locale.GetTermValue("fake_term"));
             Debug.Log("Q17: " + locale.GetTermValue("fake_term", typeof(string)));
             Debug.Log("Q18: " + locale.GetTermValue<string>("fake_term"));
+            
+            // have result
+            var audioClipTerm = locale.GetTerm<AudioClipTerm>("test_audio_clip");
+            Debug.Log("Q19: " + audioClipTerm.SmartValue);
+            AudioSource.PlayClipAtPoint(audioClipTerm.SmartValue, Vector3.zero);
 
+            // have result
+            var audioClipValue = locale.GetTermValue<AudioClip>("test_audio_clip");
+            Debug.Log("Q20: " + audioClipValue);
+            AudioSource.PlayClipAtPoint(audioClipValue, Vector3.zero);
         }
     }
 }
