@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ff5d992f36a4406ac063dc10daea0d7, type: 3}
+  m_Name: en-test_texture
+  m_EditorClassIdentifier: 
+  term: test_texture
+  smartValue: {fileID: 2800000, guid: f32ba6474abd1ba4eb9401b17b8cd4e4, type: 3}

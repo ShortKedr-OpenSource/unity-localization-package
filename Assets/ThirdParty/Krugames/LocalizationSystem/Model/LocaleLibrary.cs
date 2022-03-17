@@ -237,6 +237,18 @@ namespace Krugames.LocalizationSystem.Models {
             throw new NotImplementedException();
         }
 
+        public LocaleTerm GetTerm(string term, SystemLanguage language) {
+            throw new NotImplementedException();
+        }
+
+        public LocaleTerm GetTerm(string term, Type type, SystemLanguage language) {
+            throw new NotImplementedException();
+        }
+        
+        public TTermType GetTerm<TTermType>(string term, SystemLanguage language) where TTermType : LocaleTerm {
+            throw new NotImplementedException();
+        }
+
         public object GetTermValue(string term) {
             throw new NotImplementedException();
         }
@@ -246,6 +258,18 @@ namespace Krugames.LocalizationSystem.Models {
         }
 
         public TTermValueType GetTermValue<TTermValueType>(string term) {
+            throw new NotImplementedException();
+        }
+        
+        public object GetTermValue(string term, SystemLanguage language) {
+            throw new NotImplementedException();
+        }
+
+        public object GetTermValue(string term, Type type, SystemLanguage language) {
+            throw new NotImplementedException();
+        }
+
+        public TTermValueType GetTermValue<TTermValueType>(string term, SystemLanguage language) {
             throw new NotImplementedException();
         }
 

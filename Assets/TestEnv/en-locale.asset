@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15734691dc64420a9985820c49ceb7ba, type: 3}
-  m_Name: Locale
+  m_Name: en-locale
   m_EditorClassIdentifier: 
   language: 10
   terms:
-  - {fileID: 11400000, guid: 9486cf458492ccd489705b8a174af46e, type: 2}
-  - {fileID: 11400000, guid: 504e49370c09c5649a2f28ab7d0b8c97, type: 2}
+  - {fileID: 11400000, guid: de22db4d607672e43970d4a20b71c5ad, type: 2}
   - {fileID: 11400000, guid: 3382c94a2f9f2584f89ee504d0a9b8f0, type: 2}
+  - {fileID: 11400000, guid: f6a91e0cb43200a448090bdef7b17b35, type: 2}
   - {fileID: 11400000, guid: 1780fb1c08531754992e7ab3328c0b0d, type: 2}
+  - {fileID: 11400000, guid: 504e49370c09c5649a2f28ab7d0b8c97, type: 2}
+  - {fileID: 11400000, guid: 921468d42354c394f853f08c321b0628, type: 2}
+  - {fileID: 11400000, guid: 9486cf458492ccd489705b8a174af46e, type: 2}

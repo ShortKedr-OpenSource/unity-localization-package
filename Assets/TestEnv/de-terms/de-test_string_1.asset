@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: StringTerm
+  m_Name: de-test_string_1
   m_EditorClassIdentifier: 
-  term: test_string
+  term: test_string_1
   smartValue: Hello!
