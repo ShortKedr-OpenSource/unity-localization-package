@@ -33,6 +33,14 @@ namespace Krugames.LocalizationSystem.Models {
 
         private bool _wasInitialized = false;
 
+        
+        public delegate void CallbackDelegate(LocaleLibrary localeLibrary);
+        public delegate void LanguageChangeDelegate(LocaleLibrary localeLibrary, SystemLanguage oldLanguage, SystemLanguage newLanguage);
+
+        public event CallbackDelegate OnInitialized;
+        public event LanguageChangeDelegate OnLanguageChanged;
+        
+            
         public SystemLanguage CurrentLanguage {
             get {
                 if (!_wasInitialized) InitializeInternal();
@@ -80,9 +88,13 @@ namespace Krugames.LocalizationSystem.Models {
 #if UNITY_EDITOR
             _wasInitialized = false;
 #endif
-            if (LocalizationSettings.AutoInitialize && !_wasInitialized) InitializeInternal();
         }
 
+        private void DebugUnsupportedLanguage(SystemLanguage language) {
+            Debug.LogWarning($"Language \"{language}\" is unsupported. " +
+                             $"Add locale for specified language to make it supportable");
+        }
+        
         public void Initialize() {
             if (!_wasInitialized) InitializeInternal();
         }
@@ -138,6 +150,8 @@ namespace Krugames.LocalizationSystem.Models {
             }
 
             _wasInitialized = true;
+            
+            OnInitialized?.Invoke(this);
         }
         
         public void RebuildCache() {
@@ -212,9 +226,12 @@ namespace Krugames.LocalizationSystem.Models {
         /// return true if current language and target language are equal</returns>
         public bool SetLanguage(SystemLanguage language) {
             if (!_wasInitialized) InitializeInternal();
+            if (_currentLanguage == language) return true;
             if (_supportedLanguagesCache.Contains(language)) {
+                SystemLanguage oldLanguage = _currentLanguage;
                 _currentLanguage = language;
                 _currentLocale = _localeByLanguageDict[language];
+                OnLanguageChanged?.Invoke(this, oldLanguage, language);
                 return true;
             }
             return false;
@@ -226,51 +243,99 @@ namespace Krugames.LocalizationSystem.Models {
         }
 
         public LocaleTerm GetTerm(string term) {
-            throw new NotImplementedException();
+            if (!_wasInitialized) InitializeInternal();
+            return _currentLocale.GetTerm(term);
         }
 
         public LocaleTerm GetTerm(string term, Type type) {
-            throw new NotImplementedException();
+            if (!_wasInitialized) InitializeInternal();
+            return _currentLocale.GetTerm(term, type);
         }
 
         public TTermType GetTerm<TTermType>(string term) where TTermType : LocaleTerm {
-            throw new NotImplementedException();
+            if (!_wasInitialized) InitializeInternal();
+            return _currentLocale.GetTerm<TTermType>(term);
         }
 
         public LocaleTerm GetTerm(string term, SystemLanguage language) {
-            throw new NotImplementedException();
+            if (!_wasInitialized) InitializeInternal();
+            if (_supportedLanguagesCache.Contains(language)) {
+                return _localeByLanguageDict[language].GetTerm(term);
+            }
+#if UNITY_EDITOR
+            DebugUnsupportedLanguage(language);
+#endif
+            return null;
         }
 
         public LocaleTerm GetTerm(string term, Type type, SystemLanguage language) {
-            throw new NotImplementedException();
+            if (!_wasInitialized) InitializeInternal();
+            if (_supportedLanguagesCache.Contains(language)) {
+                return _localeByLanguageDict[language].GetTerm(term, type);
+            }
+#if UNITY_EDITOR
+            DebugUnsupportedLanguage(language);
+#endif
+            return null;
         }
         
         public TTermType GetTerm<TTermType>(string term, SystemLanguage language) where TTermType : LocaleTerm {
-            throw new NotImplementedException();
+            if (!_wasInitialized) InitializeInternal();
+            if (_supportedLanguagesCache.Contains(language)) {
+                return _localeByLanguageDict[language].GetTerm<TTermType>(term);
+            }
+#if UNITY_EDITOR
+            DebugUnsupportedLanguage(language);
+#endif
+            return null;
         }
 
         public object GetTermValue(string term) {
-            throw new NotImplementedException();
+            if (!_wasInitialized) InitializeInternal();
+            return _currentLocale.GetTermValue(term);
         }
 
         public object GetTermValue(string term, Type type) {
-            throw new NotImplementedException();
+            if (!_wasInitialized) InitializeInternal();
+            return _currentLocale.GetTermValue(term, type);
         }
 
         public TTermValueType GetTermValue<TTermValueType>(string term) {
-            throw new NotImplementedException();
+            if (!_wasInitialized) InitializeInternal();
+            return _currentLocale.GetTermValue<TTermValueType>(term);
         }
         
         public object GetTermValue(string term, SystemLanguage language) {
-            throw new NotImplementedException();
+            if (!_wasInitialized) InitializeInternal();
+            if (_supportedLanguagesCache.Contains(language)) {
+                return _localeByLanguageDict[language].GetTermValue(term);
+            }
+#if UNITY_EDITOR
+            DebugUnsupportedLanguage(language);
+#endif
+            return null;
         }
 
         public object GetTermValue(string term, Type type, SystemLanguage language) {
-            throw new NotImplementedException();
+            if (!_wasInitialized) InitializeInternal();
+            if (_supportedLanguagesCache.Contains(language)) {
+                return _localeByLanguageDict[language].GetTermValue(term, type);
+            }
+#if UNITY_EDITOR
+            DebugUnsupportedLanguage(language);
+#endif
+            return null;
         }
 
         public TTermValueType GetTermValue<TTermValueType>(string term, SystemLanguage language) {
-            throw new NotImplementedException();
+            if (!_wasInitialized) InitializeInternal();
+            if (_supportedLanguagesCache.Contains(language)) {
+                return _localeByLanguageDict[language].GetTermValue<TTermValueType>(term);
+            }
+#if UNITY_EDITOR
+            DebugUnsupportedLanguage(language);
+#endif
+            return default;
         }
 
     }

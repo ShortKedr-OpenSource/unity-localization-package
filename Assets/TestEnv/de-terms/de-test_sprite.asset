@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: de-test_sprite
   m_EditorClassIdentifier: 
   term: test_sprite
-  smartValue: {fileID: 21300000, guid: e6c9a7fdb3b13bd4ca9bd3cbb48e8426, type: 3}
+  smartValue: {fileID: 21300000, guid: fe43d52e949d8424f98e86b13a3475ce, type: 3}

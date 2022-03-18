@@ -27,7 +27,7 @@ namespace Krugames.LocalizationSystem.Models {
             testString3 = localeLibrary.GetTermValue<string>("test_string_3");
 
             testTexture = localeLibrary.GetTermValue<Texture>("test_texture");
-            testSprite = localeLibrary.GetTermValue<Sprite>("test_texture");
+            testSprite = localeLibrary.GetTermValue<Sprite>("test_sprite");
 
             testAudioClip1 = localeLibrary.GetTermValue<AudioClip>("test_audio_clip_1");
             testAudioClip2 = localeLibrary.GetTermValue<AudioClip>("test_audio_clip_2");

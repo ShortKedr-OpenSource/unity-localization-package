@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4c89475bb14a4a9d4f35b35827321f, type: 3}
+  m_Name: de-test_audio_clip_3
+  m_EditorClassIdentifier: 
+  term: test_audio_clip_3
+  smartValue: {fileID: 8300000, guid: 8a52629047b120945b49a4633638ce64, type: 3}

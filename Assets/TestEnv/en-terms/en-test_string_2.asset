@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: en-test_string_2
   m_EditorClassIdentifier: 
   term: test_string_2
-  smartValue: Hello!
+  smartValue: How are you?

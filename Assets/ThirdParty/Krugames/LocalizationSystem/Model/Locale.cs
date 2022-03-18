@@ -33,6 +33,12 @@ namespace Krugames.LocalizationSystem.Models {
 
         private bool _wasInitialized = false;
 
+
+        public delegate void CallbackDelegate(Locale locale);
+
+        public event CallbackDelegate OnInitialized;
+        
+        
         public SystemLanguage Language => language;
         public Type[] SupportedTermTypes {
             get {
@@ -56,6 +62,7 @@ namespace Krugames.LocalizationSystem.Models {
         }
 
         private void DebugWrongTerm(string term) {
+            //TODO add debug wrong term of type
             Debug.LogWarning($"Can not find term \"{term}\" in Localization. Term must be added to locales first!");
         }
 
@@ -105,6 +112,8 @@ namespace Krugames.LocalizationSystem.Models {
             RebuildCache();
 
             _wasInitialized = true;
+            
+            OnInitialized?.Invoke(this);
         }
 
         public void RebuildCache() {

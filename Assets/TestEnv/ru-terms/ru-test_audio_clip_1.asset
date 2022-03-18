@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ru-test_audio_clip_1
   m_EditorClassIdentifier: 
   term: test_audio_clip_1
-  smartValue: {fileID: 8300000, guid: 2f08c39d74a68e148b120be18b02e8a4, type: 3}
+  smartValue: {fileID: 8300000, guid: 8d7f30d72e1c6db488e8cf9da5557079, type: 3}

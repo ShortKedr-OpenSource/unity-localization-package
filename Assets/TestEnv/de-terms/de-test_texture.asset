@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: de-test_texture
   m_EditorClassIdentifier: 
   term: test_texture
-  smartValue: {fileID: 2800000, guid: f32ba6474abd1ba4eb9401b17b8cd4e4, type: 3}
+  smartValue: {fileID: 2800000, guid: fdcef7489fb595641b1f6b500c864065, type: 3}

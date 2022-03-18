@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ru-test_string_1
   m_EditorClassIdentifier: 
   term: test_string_1
-  smartValue: Hello!
+  smartValue: "\u041F\u0440\u0438\u0432\u0435\u0442!"
