@@ -33,7 +33,7 @@ namespace Krugames.LocalizationSystem {
         }
 
         private static void OnLanguageChange(LocaleLibrary library, SystemLanguage oldLanguage, SystemLanguage newLanguage) {
-            //TODO save
+            //TODO last language
         }
     }
 }

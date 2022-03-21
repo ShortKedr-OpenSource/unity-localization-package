@@ -1,8 +1,9 @@
 ﻿using System;
 using Krugames.LocalizationSystem.Models.Interfaces;
 using Krugames.LocalizationSystem.Models.Structs;
-using UnityEditor;
 using UnityEngine;
+
+//TODO implement
 
 namespace Krugames.LocalizationSystem.Models.Dynamic {
     /// <summary>

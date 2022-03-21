@@ -1,6 +1,8 @@
 ﻿using Krugames.LocalizationSystem.Unity.Singletons;
 using UnityEngine;
 
+//TODO add Wizard
+
 namespace Krugames.LocalizationSystem {
     public class LocalizationSettings : ScriptableSingleton<LocalizationSettings> {
         

@@ -138,5 +138,14 @@ namespace Krugames.LocalizationSystem {
         public static TTermValueType GetTermValue<TTermValueType>(string term, SystemLanguage language) {
             return LocaleLibrary.GetTermValue<TTermValueType>(term, language);
         }
+
+        /// <summary>
+        /// Unload unreferenced Dynamic API objects.
+        /// This method is alias for Resources.UnloadUnusedAssets() Unity' method
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void UnloadUnusedResources() {
+            Resources.UnloadUnusedAssets();
+        }
     }
 }
