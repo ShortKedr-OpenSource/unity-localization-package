@@ -109,14 +109,16 @@ namespace Krugames.LocalizationSystem.Models {
             _supportedTermTypes = supportedTermTypes.ToArray();
             _supportedValueTypes = supportedValueTypes.ToArray();
 
-            RebuildCache();
-
             _wasInitialized = true;
+            
+            RebuildCache();
             
             OnInitialized?.Invoke(this);
         }
 
         public void RebuildCache() {
+            if (!_wasInitialized) InitializeInternal();
+            
             _termDict = new Dictionary<string, LocaleTerm>(terms.Count);
             _termListByType = new Dictionary<Type, List<LocaleTerm>>(_supportedTermTypes.Length);
             _termDictByType = new Dictionary<Type, Dictionary<string, LocaleTerm>>(_supportedTermTypes.Length);
@@ -163,11 +165,11 @@ namespace Krugames.LocalizationSystem.Models {
         public LocaleTerm GetTerm(string term) {
             if (!_wasInitialized) InitializeInternal();
             if (_termDict.ContainsKey(term)) {
-#if UNITY_EDITOR
-                DebugWrongTerm(term);
-#endif
                 return _termDict[term];
             }
+#if UNITY_EDITOR
+            DebugWrongTerm(term);
+#endif
             return null;
         }
 

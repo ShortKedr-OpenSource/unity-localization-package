@@ -51,15 +51,15 @@ namespace Krugames.LocalizationSystem.Models {
 
             
             // have result
-            LocaleTerm stringTerm = locale.GetTerm("test_string");
+            LocaleTerm stringTerm = locale.GetTerm("test_string_1");
             Debug.Log("Q1: " + stringTerm + " | " + stringTerm.Value);
 
             // have result
-            stringTerm = locale.GetTerm("test_string", typeof(StringTerm));
+            stringTerm = locale.GetTerm("test_string_1", typeof(StringTerm));
             Debug.Log("Q2: " + stringTerm + " | " + stringTerm.Value);
 
             // have result
-            StringTerm typedStringTerm = locale.GetTerm<StringTerm>("test_string");
+            StringTerm typedStringTerm = locale.GetTerm<StringTerm>("test_string_1");
             Debug.Log("Q3: " + typedStringTerm + " | " + typedStringTerm.Value);
 
             // null
@@ -67,24 +67,24 @@ namespace Krugames.LocalizationSystem.Models {
             Debug.Log("Q4: " + stringTerm);
             
             // null
-            stringTerm = locale.GetTerm("test_string", typeof(Vector2));
+            stringTerm = locale.GetTerm("test_string_1", typeof(Vector2));
             Debug.Log("Q5: " + stringTerm);
 
             // null
-            var typedTextureTerm = locale.GetTerm<TextureTerm>("test_string");
+            var typedTextureTerm = locale.GetTerm<TextureTerm>("test_string_1");
             Debug.Log("Q6: " + typedStringTerm);
 
             
             // have result
-            object stringValue = locale.GetTermValue("test_string");
+            object stringValue = locale.GetTermValue("test_string_1");
             Debug.Log("Q7: " + stringValue);
 
             // have result
-            stringValue = locale.GetTermValue("test_string", typeof(string));
+            stringValue = locale.GetTermValue("test_string_1", typeof(string));
             Debug.Log("Q8: " + stringValue);
 
             // have result
-            string typedStringValue = locale.GetTermValue<string>("test_string");
+            string typedStringValue = locale.GetTermValue<string>("test_string_1");
             Debug.Log("Q9: " + typedStringValue);
 
             // null
@@ -92,11 +92,11 @@ namespace Krugames.LocalizationSystem.Models {
             Debug.Log("Q10: " + stringValue);
             
             // null
-            stringValue = locale.GetTermValue("test_string", typeof(Vector2));
+            stringValue = locale.GetTermValue("test_string_1", typeof(Vector2));
             Debug.Log("Q11: " + stringValue);
             
             // null
-            var typedTextureValue = locale.GetTermValue<Texture>("test_string");
+            var typedTextureValue = locale.GetTermValue<Texture>("test_string_1");
             Debug.Log("Q12: " + typedTextureValue);
             
             // all null
@@ -108,12 +108,12 @@ namespace Krugames.LocalizationSystem.Models {
             Debug.Log("Q18: " + locale.GetTermValue<string>("fake_term"));
             
             // have result
-            var audioClipTerm = locale.GetTerm<AudioClipTerm>("test_audio_clip");
+            var audioClipTerm = locale.GetTerm<AudioClipTerm>("test_audio_clip_1");
             Debug.Log("Q19: " + audioClipTerm.SmartValue);
             AudioSource.PlayClipAtPoint(audioClipTerm.SmartValue, Vector3.zero);
 
             // have result
-            var audioClipValue = locale.GetTermValue<AudioClip>("test_audio_clip");
+            var audioClipValue = locale.GetTermValue<AudioClip>("test_audio_clip_1");
             Debug.Log("Q20: " + audioClipValue);
             AudioSource.PlayClipAtPoint(audioClipValue, Vector3.zero);
         }

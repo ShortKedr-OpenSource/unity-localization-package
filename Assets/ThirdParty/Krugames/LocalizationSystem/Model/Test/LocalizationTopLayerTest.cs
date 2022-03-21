@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Models {
     public class LocalizationTopLayerTest : MonoBehaviour {
@@ -14,6 +15,7 @@ namespace Krugames.LocalizationSystem.Models {
         
         [SerializeField] private AudioClip testAudioClip1;
         [SerializeField] private AudioClip testAudioClip2;
+        [SerializeField] private AudioClip testAudioClip3;
         
         private void Start() {
             UpdateValues();
@@ -22,17 +24,26 @@ namespace Krugames.LocalizationSystem.Models {
 
         private void UpdateValues() {
 
-            testString1 = localeLibrary.GetTermValue<string>("test_string_1");
-            testString2 = localeLibrary.GetTermValue<string>("test_string_2");
-            testString3 = localeLibrary.GetTermValue<string>("test_string_3");
+            testString1 = Localization.GetTermValue<string>("test_string_1");
+            testString2 = Localization.GetTermValue<string>("test_string_2");
+            testString3 = Localization.GetTermValue<string>("test_string_3");
 
-            testTexture = localeLibrary.GetTermValue<Texture>("test_texture");
-            testSprite = localeLibrary.GetTermValue<Sprite>("test_sprite");
+            testTexture = Localization.GetTermValue<Texture>("test_texture");
+            testSprite = Localization.GetTermValue<Sprite>("test_sprite");
 
-            testAudioClip1 = localeLibrary.GetTermValue<AudioClip>("test_audio_clip_1");
-            testAudioClip2 = localeLibrary.GetTermValue<AudioClip>("test_audio_clip_2");
+            testAudioClip1 = Localization.GetTermValue<AudioClip>("test_audio_clip_1");
+            testAudioClip2 = Localization.GetTermValue<AudioClip>("test_audio_clip_2");
+            testAudioClip3 = Localization.GetTermValue<AudioClip>("test_audio_clip_3");
 
-            //TODO update localeLibrary to Localization request
+            StartCoroutine(PlayVoices());
+        }
+
+        IEnumerator PlayVoices() {
+            AudioSource.PlayClipAtPoint(testAudioClip1, Vector3.zero);
+            yield return new WaitForSecondsRealtime(testAudioClip1.length);
+            AudioSource.PlayClipAtPoint(testAudioClip2, Vector3.zero);
+            yield return new WaitForSecondsRealtime(testAudioClip2.length);
+            AudioSource.PlayClipAtPoint(testAudioClip3, Vector3.zero);
         }
     }
 }

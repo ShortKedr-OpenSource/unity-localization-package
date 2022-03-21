@@ -21,19 +21,19 @@ namespace Krugames.LocalizationSystem {
 
             if (isFirstSession) {
                 if (LocalizationSettings.UseSystemLanguageAsDefault) {
-                    Localization.SetLanguage(Application.systemLanguage);
+                    Localization.SetLanguage(Application.systemLanguage); // TODO silent
                 }
             } else {
                 if (LocalizationSettings.LoadLastUsedLanguageAsCurrent) {
-                    Localization.SetLanguage((SystemLanguage)PlayerPrefs.GetInt(LanguageSaveKey));
+                    Localization.SetLanguage((SystemLanguage)PlayerPrefs.GetInt(LanguageSaveKey)); // TODO silent
                 } else if (LocalizationSettings.UseSystemLanguageAsDefault) {
-                    Localization.SetLanguage(Application.systemLanguage);
+                    Localization.SetLanguage(Application.systemLanguage); // TODO silent
                 }
             }
         }
 
         private static void OnLanguageChange(LocaleLibrary library, SystemLanguage oldLanguage, SystemLanguage newLanguage) {
-            Debug.Log("Language was changed");
+            //TODO save
         }
     }
 }
