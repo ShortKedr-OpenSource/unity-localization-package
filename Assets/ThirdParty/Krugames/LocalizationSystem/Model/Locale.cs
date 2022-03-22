@@ -321,21 +321,51 @@ namespace Krugames.LocalizationSystem.Models {
             return layout;
         }
 
-        public void SetLayout(TermStructureInfo[] layout) {
 #if UNITY_EDITOR
+        public void SetLayout(TermStructureInfo[] layout) {
+
             if (Application.isPlaying) {
                 Debug.LogError("Static Locale can not be changed in runtime!");
                 return;
             }
-            
             //TODO use LocaleUtility to change layout
             
-#else
-            Debug.LogError("Static Locale Layout can not be changed in runtime!");
-            return;
-#endif
         }
 
+        public bool AddTerm(LocaleTerm term) {
+            
+            if (Application.isPlaying) {
+                Debug.LogError("Static Locale can not be changed in runtime!");
+                return false;
+            }
+            
+            if (term == null) return false;
+            if (!_wasInitialized) InitializeInternal();
+            terms.Add(term);
+            RebuildCache(); //TODO replace with cache partial update
+            return true;
+        }
+
+        public bool RemoveTerm(LocaleTerm term) {
+            if (Application.isPlaying) {
+                Debug.LogError("Static Locale can not be changed in runtime!");
+                return false;
+            }
+            
+            if (term == null) return false;
+            if (!_wasInitialized) InitializeInternal();
+            bool result = terms.Remove(term);
+            RebuildCache(); //TODO replace with cache partial update
+            return result;
+        }
+
+        public bool ContainsTerm(LocaleTerm term) {
+            if (term == null) return false;
+            return terms.Contains(term);
+            //TODO rework to cache
+        }
+#endif
+        
         //TODO EditorOnly AddTerm method
         //TODO EditorOnly RemoveTerm method
         //TODO EditorOnly ContainsTerm(LocaleTerm) method

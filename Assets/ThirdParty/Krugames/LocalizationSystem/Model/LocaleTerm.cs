@@ -22,6 +22,7 @@ namespace Krugames.LocalizationSystem.Models {
         public virtual void SetValue(object value) {
             this.value = value;
         }
+        
     }
 
     /// <summary>

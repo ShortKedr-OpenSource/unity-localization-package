@@ -8,7 +8,7 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
     [CustomEditor(typeof(Locale))]
     public class LocaleInspector : UnityEditor.Editor {
         public override void OnInspectorGUI() {
-            base.OnInspectorGUI();
+            base.OnInspectorGUI(); //TODO remove
 
             Locale locale = (Locale)target;
             
