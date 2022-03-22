@@ -12,7 +12,7 @@ namespace Krugames.LocalizationSystem {
         private static void Initialize() {
             LocaleLibrary.Instance.OnInitialized += OnInitialized;
             LocaleLibrary.Instance.OnLanguageChanged += OnLanguageChange;
-            if (LocalizationSettings.AutoInitialize) LocaleLibrary.Instance.Initialize();
+            if (LocalizationSettings.AutoInitialize) Localization.Initialize();
         }
 
         private static void OnInitialized(LocaleLibrary localeLibrary) {
@@ -33,7 +33,7 @@ namespace Krugames.LocalizationSystem {
         }
 
         private static void OnLanguageChange(LocaleLibrary library, SystemLanguage oldLanguage, SystemLanguage newLanguage) {
-            //TODO last language
+            PlayerPrefs.SetInt(LanguageSaveKey, (int)Localization.CurrentLanguage);
         }
     }
 }

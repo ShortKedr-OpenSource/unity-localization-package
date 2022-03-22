@@ -1,8 +1,6 @@
 ﻿using Krugames.LocalizationSystem.Unity.Singletons;
 using UnityEngine;
 
-//TODO add Wizard
-
 namespace Krugames.LocalizationSystem {
     public class LocalizationSettings : ScriptableSingleton<LocalizationSettings> {
         
@@ -10,7 +8,7 @@ namespace Krugames.LocalizationSystem {
         [SerializeField] private bool useSystemLanguageAsDefault = true;
         [SerializeField] private bool loadLastUsedLanguageAsCurrent = true;
         
-        //TODO DebugMode
+        //TODO add DebugMode
 
         /// <summary>
         /// Automatically initialize whole localization static library on startup.

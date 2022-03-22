@@ -54,7 +54,6 @@ namespace Krugames.LocalizationSystem.Models {
             }
         }
 
-
         private void OnEnable() {
 #if UNITY_EDITOR
             _wasInitialized = false;
@@ -324,8 +323,8 @@ namespace Krugames.LocalizationSystem.Models {
 
         public void SetLayout(TermStructureInfo[] layout) {
 #if UNITY_EDITOR
-            if (!Application.isPlaying) {
-                Debug.LogError("Static Locale Layout can not be changed in runtime!");
+            if (Application.isPlaying) {
+                Debug.LogError("Static Locale can not be changed in runtime!");
                 return;
             }
             
@@ -336,5 +335,12 @@ namespace Krugames.LocalizationSystem.Models {
             return;
 #endif
         }
+
+        //TODO EditorOnly AddTerm method
+        //TODO EditorOnly RemoveTerm method
+        //TODO EditorOnly ContainsTerm(LocaleTerm) method
+        //TODO EditorOnly TermContainmentCache
+        
+        //TODO ContainsTerm(string) method
     }
 }
