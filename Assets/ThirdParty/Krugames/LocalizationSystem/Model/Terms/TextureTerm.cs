@@ -1,5 +1,4 @@
-﻿using System;
-using Krugames.LocalizationSystem.Models.Attributes;
+﻿using Krugames.LocalizationSystem.Models.Attributes;
 using Krugames.LocalizationSystem.Models.Terms;
 using UnityEngine;
 
