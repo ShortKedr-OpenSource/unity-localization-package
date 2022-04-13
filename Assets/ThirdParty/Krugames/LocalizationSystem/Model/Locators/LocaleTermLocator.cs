@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 using Krugames.LocalizationSystem.Models.Attributes;
 using Krugames.LocalizationSystem.Models.Utility.Editor;
-using Krugames.LocalizationSystem.Translation.Attributes;
-using Debug = UnityEngine.Debug;
 
 namespace Krugames.LocalizationSystem.Models.Locators {
     public static class LocaleTermLocator {
@@ -24,13 +21,12 @@ namespace Krugames.LocalizationSystem.Models.Locators {
             get {
                 if (!_isInitialized) Initialize();
                 return _locators;
-                //TODO Gather info once, return many of the same
             }
         }
 
         /// <summary>
-        /// Returns LocaleTerm full build data, that made from register data.
-        /// Build data is preferred to use compare to Locators
+        /// Returns LocaleTerm full build data, that was made from register data.
+        /// BuildData is preferred to use, compare to Locators
         /// </summary>if (_isInitialized) Initialize();
         public static LocaleTermBuildData[] BuildData {
             get {

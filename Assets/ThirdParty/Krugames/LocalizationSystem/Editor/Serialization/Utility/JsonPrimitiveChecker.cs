@@ -2,6 +2,11 @@
 using System.ComponentModel;
 
 namespace Krugames.LocalizationSystem.Editor.Serialization.Utility {
+    /// <summary>
+    /// Json Primitive Checker for Newtonsoft Json
+    /// Based on primitive types, described on this page:
+    /// https://www.newtonsoft.com/json/help/html/serializationguide.htm
+    /// </summary>
     public static class JsonPrimitiveChecker {
         public static bool IsPrimitive(object value) {
             Type type = value.GetType();

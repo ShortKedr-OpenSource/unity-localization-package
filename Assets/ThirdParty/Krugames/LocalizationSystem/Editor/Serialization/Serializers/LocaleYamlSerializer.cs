@@ -1,9 +1,17 @@
-﻿using Krugames.LocalizationSystem.Editor.Serialization.DataTransferObjects;
+﻿using Krugames.LocalizationSystem.Editor.Serialization.Attributes;
+using Krugames.LocalizationSystem.Editor.Serialization.DataTransferObjects;
+using Krugames.LocalizationSystem.Editor.Serialization.Serializers;
 using Krugames.LocalizationSystem.Models.Interfaces;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
+[assembly: RegisterLocaleSerializer(typeof(LocaleYamlSerializer), "YAML")]
+
 namespace Krugames.LocalizationSystem.Editor.Serialization.Serializers {
+    
+    /// <summary>
+    /// ILocale to YAML Serializer
+    /// </summary>
     public class LocaleYamlSerializer : LocaleSerializer<string>{
         public override string SerializeSmart(ILocale locale) {
             LocaleData localeData = new LocaleData(locale);

@@ -1,9 +1,17 @@
 ﻿using System.Collections.Generic;
+using Krugames.LocalizationSystem.Editor.Serialization.Attributes;
 using Krugames.LocalizationSystem.Editor.Serialization.DataTransferObjects;
+using Krugames.LocalizationSystem.Editor.Serialization.Serializers;
 using Krugames.LocalizationSystem.Models.Interfaces;
 using Newtonsoft.Json;
 
+[assembly: RegisterLocaleSerializer(typeof(LocaleJsonSerializer), "JSON")]
+
 namespace Krugames.LocalizationSystem.Editor.Serialization.Serializers {
+    
+    /// <summary>
+    /// ILocale to JSON Serializer
+    /// </summary>
     public class LocaleJsonSerializer : LocaleSerializer<string> {
 
         private JsonSerializerSettings _settings;
