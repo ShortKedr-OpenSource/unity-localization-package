@@ -1,21 +1,46 @@
-HeaderTitleElement {
-    border-color: aqua;
+PopupWindowRoot{
+    flex-grow: 1;
+    width: auto;
+    height: auto;
+    border-color: var(--unity-colors-toolbar-border);
+    margin: 0;
 }
 
-ListElement {
+SearchToolbar {
+    height: auto;
+}
+
+TittleToolbar {
+    border-color: var(--unity-colors-toolbar-border);
+    font-size: 12px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    height: 28px;
+}
+
+ListGroup{
+    margin: 0;
+    padding: 0;
+    border-color: var(--unity-colors-toolbar-border);
+    flex-grow: 1;
+    -unity-overflow-clip-box: content-box;
+    overflow: scroll;
+}
+
+ListSelectableElement {
     border-width: 0;
     border-radius: 0;
-    height: 24;
+    height: 24px;
     margin: 0;
 
     -unity-text-align: middle-left;
     background-color: rgba(255, 255, 255, 0.0);
 }
 
-ListElement:hover {
+ListSelectableElement:hover {
     background-color: rgba(72, 130, 255, 0.4);
 }
 
-ListElement:active{
+ListSelectableElement:active {
     background-color: rgba(72, 130, 255, 0.25);
 }

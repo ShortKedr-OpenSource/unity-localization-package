@@ -2,7 +2,7 @@
 using Krugames.LocalizationSystem.Models.Terms;
 using UnityEngine;
 
-[assembly: RegisterLocaleTerm(typeof(TextureTerm), "Texture")]
+[assembly: RegisterLocaleTerm(typeof(TextureTerm))]
 
 namespace Krugames.LocalizationSystem.Models.Terms {
     [CreateAssetMenu(fileName = "TextureTerm", menuName = "Localization/Terms/Texture", order = 0)]

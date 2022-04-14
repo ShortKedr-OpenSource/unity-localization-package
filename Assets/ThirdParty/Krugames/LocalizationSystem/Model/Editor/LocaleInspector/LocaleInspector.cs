@@ -19,7 +19,7 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
             GUILayout.Space(4);
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Add term", GUILayout.MinWidth(200), GUILayout.MinHeight(26))) {
+            if (GUILayout.Button("Add term", GUILayout.MinWidth(225), GUILayout.MinHeight(26))) {
                 PopupWindow.Show(_addTermRect, new LocaleTermSelector());
             }
             if (Event.current.type == EventType.Repaint) _addTermRect = GUILayoutUtility.GetLastRect();

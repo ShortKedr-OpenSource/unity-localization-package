@@ -2,7 +2,7 @@
 using Krugames.LocalizationSystem.Models.Terms;
 using UnityEngine;
 
-[assembly: RegisterLocaleTerm(typeof(Vector3Term), "Vector3")]
+[assembly: RegisterLocaleTerm(typeof(Vector3Term))]
 
 namespace Krugames.LocalizationSystem.Models.Terms {
     [CreateAssetMenu(fileName = "Vector3Term", menuName = "Localization/Terms/Vector3", order = 0)]

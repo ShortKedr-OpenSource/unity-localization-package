@@ -18,7 +18,9 @@ namespace Krugames.LocalizationSystem.Models.Attributes {
 
         public RegisterLocaleTermAttribute(Type termType, string name = "") {
             TermType = termType;
-            Name = (name == "") ? TermType.Name : name;
+            Name = (name == "") 
+                ? ((IsValid) ? LocaleTermUtility.GetValueTypeOfGenericTermType(TermType).Name : TermType.Name) 
+                : name;
         }
 
         public bool IsValid {
