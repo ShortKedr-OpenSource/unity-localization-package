@@ -1,4 +1,5 @@
 ﻿using Krugames.LocalizationSystem.Editor.Serialization.Serializers;
+using Krugames.LocalizationSystem.Editor.UIElements;
 using Krugames.LocalizationSystem.Models;
 using Krugames.LocalizationSystem.Models.Utility.Editor;
 using Newtonsoft.Json;
@@ -20,7 +21,8 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Add term", GUILayout.MinWidth(225), GUILayout.MinHeight(26))) {
-                PopupWindow.Show(_addTermRect, new LocaleTermSelector());
+                PopupWindow.Show(_addTermRect, new SelectorListPopup("Locale terms", 
+                    new ListSelectableElement[0]));
             }
             if (Event.current.type == EventType.Repaint) _addTermRect = GUILayoutUtility.GetLastRect();
             GUILayout.FlexibleSpace();

@@ -9,8 +9,17 @@ namespace Krugames.LocalizationSystem.Editor.UIElements {
     /// </summary>
     public class SearchToolbar : Toolbar {
 
+        public delegate void SearchChangeDelegate(string newValue);
+        
         private readonly ToolbarSearchField _searchField;
 
+        public event SearchChangeDelegate OnSearchChanged;
+        
+        public string SearchText {
+            get => _searchField.value;
+            set => _searchField.value = value;
+        }
+        
         public SearchToolbar() {
             styleSheets.Add(LocalizationEditorStyles.GlobalStyle);
             Add(_searchField = new ToolbarSearchField() {
@@ -21,6 +30,12 @@ namespace Krugames.LocalizationSystem.Editor.UIElements {
                     flexGrow = 1,
                 }
             });
+            
+            _searchField.RegisterCallback<ChangeEvent<string>>(SearchChange_Handler);
+        }
+
+        private void SearchChange_Handler(ChangeEvent<string> evt) {
+            OnSearchChanged?.Invoke(evt.newValue);
         }
     }
 }
