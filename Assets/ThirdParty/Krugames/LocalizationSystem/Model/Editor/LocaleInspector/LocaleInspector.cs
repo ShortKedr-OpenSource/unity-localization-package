@@ -1,62 +1,104 @@
-﻿using Krugames.LocalizationSystem.Editor.Serialization.Serializers;
-using Krugames.LocalizationSystem.Editor.UIElements;
+﻿using System;
+using Krugames.LocalizationSystem.Editor.Serialization.Editors;
 using Krugames.LocalizationSystem.Models;
-using Krugames.LocalizationSystem.Models.Utility.Editor;
-using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
+using PopupWindow = UnityEditor.PopupWindow;
 
 namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
     [CustomEditor(typeof(Locale))]
     public class LocaleInspector : UnityEditor.Editor {
 
-        private Rect _addTermRect;
+        private VisualElement _rootElement;
         
-        public override void OnInspectorGUI() {
-            base.OnInspectorGUI(); //TODO remove
+        private Rect _addTermBtnRect;
+        private Rect _exportBtnRect;
+        private Rect _importBtnRect;
+        
+        private LocaleTermSelector _termSelector;
+        private LocaleSerializerSelector _serializerSelector;
 
-            Locale locale = (Locale)target;
+        private Locale _locale;
+        private SerializedProperty _languageProp;
+        private SerializedProperty _termsProp;
+
+        public override VisualElement CreateInspectorGUI() {
+            _locale = (Locale) target;
+            _languageProp = serializedObject.FindProperty("language");
+            _termsProp = serializedObject.FindProperty("terms");
+
+            _rootElement = new VisualElement();
+
+            _rootElement.Add(new Button(){text="adata"});
+            
+            //return _rootElement;
+            return null;
+        }
+        
+        
+
+        public override void OnInspectorGUI() {
+           //base.OnInspectorGUI(); //TODO remove
+
+            EditorGUILayout.PropertyField(_languageProp);
+            EditorGUILayout.Separator();
+            for (int i = 0; i < _termsProp.arraySize; i++) {
+                var element = _termsProp.GetArrayElementAtIndex(i);
+                LocaleTerm localeTerm = (LocaleTerm)element.objectReferenceValue;
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button($"{localeTerm.Term}", GUILayout.MinWidth(200))) {
+                    AssetDatabase.OpenAsset(localeTerm);
+                };
+                GUILayout.Label(localeTerm.GetType().Name);
+                GUILayout.Button("R", GUILayout.MaxWidth(18), GUILayout.MaxHeight(18));
+                EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.Separator();
+            serializedObject.ApplyModifiedProperties();
             
             GUILayout.Space(4);
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Add term", GUILayout.MinWidth(225), GUILayout.MinHeight(26))) {
-                PopupWindow.Show(_addTermRect, new SelectorListPopup("Locale terms", 
-                    new ListSelectableElement[0]));
+                if (_termSelector == null) _termSelector = LocaleTermSelector.Create(AddTerm);
+                PopupWindow.Show(_addTermBtnRect, _termSelector);
             }
-            if (Event.current.type == EventType.Repaint) _addTermRect = GUILayoutUtility.GetLastRect();
+            if (Event.current.type == EventType.Repaint) _addTermBtnRect = GUILayoutUtility.GetLastRect();
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             
-            GUILayout.Space(16);
+            //GUILayout.Space(16);
 
-            if (GUILayout.Button("Remove Term")) {
+            /*if (GUILayout.Button("Remove Term")) {
                 LocaleUtility.RemoveLocaleTerm(locale, "new_term");
-            }
+            }*/
 
-            if (GUILayout.Button("Export JSON")) {
-                LocaleJsonSerializer serializer = new LocaleJsonSerializer(Formatting.Indented);
-                string json = serializer.SerializeSmart(locale);
-                Debug.Log(json);
+            GUILayout.Space(4);
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Export", GUILayout.MinWidth(112.5f), GUILayout.MinHeight(26))) {
+                if (_serializerSelector == null) _serializerSelector = LocaleSerializerSelector.Create(Export);
+                PopupWindow.Show(_exportBtnRect, _serializerSelector);
             }
+            if (Event.current.type == EventType.Repaint) _exportBtnRect = GUILayoutUtility.GetLastRect();
+            if (GUILayout.Button("Import", GUILayout.MinWidth(112.5f), GUILayout.MinHeight(26))) {
+                if (_serializerSelector == null) _serializerSelector = LocaleSerializerSelector.Create(Export);
+                PopupWindow.Show(_importBtnRect, _serializerSelector);
+            }
+            if (Event.current.type == EventType.Repaint) _importBtnRect = GUILayoutUtility.GetLastRect();
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
 
-            if (GUILayout.Button("Export XML")) {
-                LocaleXmlSerializer serializer = new LocaleXmlSerializer();
-                string xml = serializer.SerializeSmart(locale);
-                Debug.Log(xml);
-            }
             
-            if (GUILayout.Button("Export YAML")) {
-                LocaleYamlSerializer serializer = new LocaleYamlSerializer();
-                string yaml = serializer.SerializeSmart(locale);
-                Debug.Log(yaml);
-            }
-            
-            if (GUILayout.Button("Export CSV")) {
-                LocaleCsvSerializer serializer = new LocaleCsvSerializer();
-                string csv = serializer.SerializeSmart(locale);
-                Debug.Log(csv);
-            }
+        }
+
+        private void AddTerm(Type termType, Type valueType) {
+            Debug.Log($"TermType: {termType}; ValueType: {valueType}");
+        }
+        
+        private void Export(Type serializerType) {
+            Debug.Log($"SerializerType: {serializerType}");
         }
 
     }

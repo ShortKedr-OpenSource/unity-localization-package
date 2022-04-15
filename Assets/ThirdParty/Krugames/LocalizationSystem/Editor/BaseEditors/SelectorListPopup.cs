@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Krugames.LocalizationSystem.Editor.Styles;
 using Krugames.LocalizationSystem.Editor.UIElements;
-using Krugames.LocalizationSystem.Models.Locators;
 using RenwordDigital.StringSearchEngine;
 using UnityEditor;
 using UnityEngine;
@@ -10,61 +10,74 @@ using UnityEngine.UIElements;
 namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
     public class SelectorListPopup : PopupWindowContent {
         
-        private static LocaleTermLocator.LocaleTermBuildData[] _buildData = LocaleTermLocator.BuildData;
+        private string _title;
+        private ListSelectableElement[] _listElements;
 
-        private PopupWindowRoot _popupRoot;
+        private EditorWindow _editorWindow;
         
+        private PopupWindowRoot _popupRoot;
         private SearchToolbar _searchToolbar;
         private TittleToolbar _tittleToolbar;
         private ListGroup _listGroup;
 
-        private ListSelectableElement[] _listElements;
-        
         private SearchIndex _searchIndex = new SearchIndex();
         private Dictionary<Resource, ListSelectableElement> _resourceToListElement;
         private List<Resource> _lastSearchResult = null;
 
-        private string _title;
+        private bool _inited = false;
         
-        public SelectorListPopup(string title, ListSelectableElement[] elements) {
+        public string Title => _title;
+
+        public SelectorListPopup(string title, Element[] elements) {
             _title = title;
-            //TODO use elements
+            if (elements == null) _listElements = Array.Empty<ListSelectableElement>();
+            else {
+                _listElements = new ListSelectableElement[elements.Length];
+                for (int i = 0; i < _listElements.Length; i++) {
+                    _listElements[i] = new ListSelectableElement(elements[i].ClickAction) {
+                        text = elements[i].Name,
+                    };
+                }
+            }
         }
         
         public override void OnOpen() {
 
+            if (!_inited) {
+                _popupRoot = new PopupWindowRoot();
+                
+                _popupRoot.Add(_searchToolbar = new SearchToolbar());
+                _popupRoot.Add(_tittleToolbar = new TittleToolbar(_title));
+                _popupRoot.Add(_listGroup = new ListGroup());
+
+                for (int i = 0; i < _listElements.Length; i++) {
+                    _listElements[i].clicked += Close;
+                }
+
+                _resourceToListElement = new Dictionary<Resource, ListSelectableElement>(_listElements.Length);
+                List<Resource> elementResources = new List<Resource>(_listElements.Length);
+                for (int i = 0; i < _listElements.Length; i++) {
+                    Resource resource = new Resource(_listElements[i].text);
+                    elementResources.Add(resource);
+                    _resourceToListElement.Add(resource, _listElements[i]);
+                }
+
+                _searchIndex.SetResources(elementResources.ToArray());
+                _searchToolbar.OnSearchChanged += SearchListElements;
+
+                _inited = true;
+            }
+
+            _editorWindow = editorWindow;
             VisualElement root = editorWindow.rootVisualElement;
             root.styleSheets.Add(LocalizationEditorStyles.GlobalStyle);
             root.style.marginTop = 0;
             root.style.marginBottom = 0;
             root.style.marginLeft = 0;
             root.style.marginRight = 0;
-            
-            root.Add(_popupRoot = new PopupWindowRoot());
+            root.Add(_popupRoot);
 
-            _popupRoot.Add(_searchToolbar = new SearchToolbar());
-            _popupRoot.Add(_tittleToolbar = new TittleToolbar(_title));
-            _popupRoot.Add(_listGroup = new ListGroup());
-
-            _listElements = new ListSelectableElement[_buildData.Length];
-            for (int i = 0; i < _buildData.Length; i++) {
-               _listElements[i] = new ListSelectableElement() {
-                   text = _buildData[i].Name
-               };
-            }
-
-            _resourceToListElement = new Dictionary<Resource, ListSelectableElement>(_listElements.Length);
-            List<Resource> elementResources = new List<Resource>(_listElements.Length);
-            for (int i = 0; i < _listElements.Length; i++) {
-                Resource resource = new Resource(_listElements[i].text);
-                elementResources.Add(resource);
-                _resourceToListElement.Add(resource, _listElements[i]);
-            }
-            _searchIndex.SetResources(elementResources.ToArray());
-
-            _searchToolbar.OnSearchChanged += SearchListElements;
-            
-            UpdateList();
+            CancelSearchResult();
         }
 
         public override Vector2 GetWindowSize() {
@@ -76,7 +89,6 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
         }
 
         public void SearchListElements(string searchString) {
-            
             if (_searchToolbar.SearchText != searchString) {
                 _searchToolbar.SearchText = searchString;
                 return;
@@ -96,6 +108,7 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
         }
 
         public void CancelSearchResult() {
+            _searchToolbar.SearchText = "";
             _lastSearchResult = null;
             UpdateList();
         }
@@ -114,5 +127,19 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
                 }
             }
         }
+
+        private void Close() {
+            _editorWindow.Close();
+        }
+
+        public struct Element {
+            public string Name;
+            public Action ClickAction;
+
+            public Element(string name, Action clickAction) {
+                Name = name;
+                ClickAction = clickAction;
+            }
+        }  
     }
 }
