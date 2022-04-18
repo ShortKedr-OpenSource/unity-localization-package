@@ -2,6 +2,7 @@
 using Krugames.LocalizationSystem.Editor.Serialization.Editors;
 using Krugames.LocalizationSystem.Models;
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
 using PopupWindow = UnityEditor.PopupWindow;
@@ -22,42 +23,44 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
         private Locale _locale;
         private SerializedProperty _languageProp;
         private SerializedProperty _termsProp;
-
+        
+        private LocaleTermEditorElement _localeTermEditor;
+        private LocaleTermListView _localeTermList;
+        private IMGUIContainer _headerContainer;
+        private IMGUIContainer _footerContainer;
+        
         public override VisualElement CreateInspectorGUI() {
             _locale = (Locale) target;
             _languageProp = serializedObject.FindProperty("language");
             _termsProp = serializedObject.FindProperty("terms");
 
-            _rootElement = new VisualElement();
-
-            _rootElement.Add(new Button(){text="adata"});
+            _rootElement = new VisualElement() {
+                style = {
+                    flexGrow = 1f,
+                }
+            };
             
-            //return _rootElement;
-            return null;
+            _rootElement.Add(_headerContainer = new IMGUIContainer(OnIMGUIHeaderGUI));
+            _rootElement.Add(_localeTermEditor = new LocaleTermEditorElement());
+            _rootElement.Add(_localeTermList = new LocaleTermListView());
+            _rootElement.Add(_footerContainer = new IMGUIContainer(OnIMGUIFooterGUI));
+            
+            _localeTermEditor.SetTerm(_locale.GetTerms()[0]);
+            _localeTermList.SetTerms(_locale.GetTerms());
+            
+            return _rootElement;
+            
         }
-        
-        
 
-        public override void OnInspectorGUI() {
-           //base.OnInspectorGUI(); //TODO remove
-
+        private void OnIMGUIHeaderGUI() {
+            GUILayout.Space(4f);
             EditorGUILayout.PropertyField(_languageProp);
-            EditorGUILayout.Separator();
-            for (int i = 0; i < _termsProp.arraySize; i++) {
-                var element = _termsProp.GetArrayElementAtIndex(i);
-                LocaleTerm localeTerm = (LocaleTerm)element.objectReferenceValue;
-                EditorGUILayout.BeginHorizontal();
-                if (GUILayout.Button($"{localeTerm.Term}", GUILayout.MinWidth(200))) {
-                    AssetDatabase.OpenAsset(localeTerm);
-                };
-                GUILayout.Label(localeTerm.GetType().Name);
-                GUILayout.Button("R", GUILayout.MaxWidth(18), GUILayout.MaxHeight(18));
-                EditorGUILayout.EndHorizontal();
-            }
-            EditorGUILayout.Separator();
+            GUILayout.Space(4f);
             serializedObject.ApplyModifiedProperties();
-            
-            GUILayout.Space(4);
+        }
+
+        private void OnIMGUIFooterGUI() {
+            GUILayout.Space(4f);
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Add term", GUILayout.MinWidth(225), GUILayout.MinHeight(26))) {
@@ -68,21 +71,15 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             
-            //GUILayout.Space(16);
-
-            /*if (GUILayout.Button("Remove Term")) {
-                LocaleUtility.RemoveLocaleTerm(locale, "new_term");
-            }*/
-
-            GUILayout.Space(4);
+            GUILayout.Space(2);
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Export", GUILayout.MinWidth(112.5f), GUILayout.MinHeight(26))) {
+            if (GUILayout.Button("Export", GUILayout.MinWidth(110.5f), GUILayout.MinHeight(26))) {
                 if (_serializerSelector == null) _serializerSelector = LocaleSerializerSelector.Create(Export);
                 PopupWindow.Show(_exportBtnRect, _serializerSelector);
             }
             if (Event.current.type == EventType.Repaint) _exportBtnRect = GUILayoutUtility.GetLastRect();
-            if (GUILayout.Button("Import", GUILayout.MinWidth(112.5f), GUILayout.MinHeight(26))) {
+            if (GUILayout.Button("Import", GUILayout.MinWidth(110.5f), GUILayout.MinHeight(26))) {
                 if (_serializerSelector == null) _serializerSelector = LocaleSerializerSelector.Create(Export);
                 PopupWindow.Show(_importBtnRect, _serializerSelector);
             }
@@ -90,7 +87,7 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
-            
+            serializedObject.ApplyModifiedProperties();
         }
 
         private void AddTerm(Type termType, Type valueType) {
@@ -99,6 +96,10 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
         
         private void Export(Type serializerType) {
             Debug.Log($"SerializerType: {serializerType}");
+        }
+        
+        private void OpenLocalizationEditor() {
+            Debug.Log("Open Localization Editor");
         }
 
     }

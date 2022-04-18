@@ -372,5 +372,7 @@ namespace Krugames.LocalizationSystem.Models {
         //TODO EditorOnly TermContainmentCache
         
         //TODO ContainsTerm(string) method
+        //TODO OnOpenAsset attribute method
+        
     }
 }
