@@ -2,7 +2,6 @@
 using Krugames.LocalizationSystem.Editor.Serialization.Editors;
 using Krugames.LocalizationSystem.Models;
 using UnityEditor;
-using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
 using PopupWindow = UnityEditor.PopupWindow;
@@ -34,11 +33,7 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
             _languageProp = serializedObject.FindProperty("language");
             _termsProp = serializedObject.FindProperty("terms");
 
-            _rootElement = new VisualElement() {
-                style = {
-                    flexGrow = 1f,
-                }
-            };
+            _rootElement = new VisualElement();
             
             _rootElement.Add(_headerContainer = new IMGUIContainer(OnIMGUIHeaderGUI));
             _rootElement.Add(_localeTermEditor = new LocaleTermEditorElement());

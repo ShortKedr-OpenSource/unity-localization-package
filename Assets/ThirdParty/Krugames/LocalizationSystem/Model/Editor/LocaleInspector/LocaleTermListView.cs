@@ -1,5 +1,6 @@
 ﻿using Krugames.LocalizationSystem.Editor.UIElements;
 using Krugames.LocalizationSystem.Models;
+using ThirdParty.Krugames.LocalizationSystem.Model.Editor.UIElements;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -52,23 +53,27 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
 
         public void SetTerms(LocaleTerm[] terms) {
             _terms = terms;
+            Clear();
+            var toolbar = new Toolbar() {
+                style = {
+                    borderTopLeftRadius = 5f,
+                    borderTopRightRadius = 5f,
+                    alignContent = new StyleEnum<Align>(Align.Center),
+                    justifyContent = new StyleEnum<Justify>(Justify.Center),
+                }
+            };
+            toolbar.Add(new Label("Terms"));
+            toolbar.Add(new ToolbarSearchField() {
+                style= {
+                    maxWidth = 100f,
+                }
+            });
+            Add(toolbar);
             for (int i = 0; i < _terms.Length; i++) {
-                Add(new Label(_terms[i].Term + " | " + terms[i].Value.ToString()));
+                Add(new LocaleTermTableElement(terms[i]));
             }
         }
-        
-        public class ListElement : Box{
-            private LocaleTerm _target;
 
-            private Label _termName;
-            private Label _termType;
-            private PropertyField _termValue;
-
-            public ListElement(LocaleTerm target) {
-                _target = target;
-            }
-        }
-        
         //TODO add pages
     }
 }

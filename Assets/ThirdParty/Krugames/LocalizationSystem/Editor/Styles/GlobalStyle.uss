@@ -44,3 +44,11 @@ ListSelectableElement:hover {
 ListSelectableElement:active {
     background-color: rgba(72, 130, 255, 0.25);
 }
+
+
+LocaleTermTableElement{
+    flex-direction: row;
+    flex-grow: 1;
+    overflow: hidden;
+    -unity-text-align: middle-left;
+}
