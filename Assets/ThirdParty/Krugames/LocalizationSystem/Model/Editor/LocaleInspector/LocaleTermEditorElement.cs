@@ -44,6 +44,8 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
                     borderTopRightRadius = 5f,
                     alignContent = new StyleEnum<Align>(Align.Center),
                     justifyContent = new StyleEnum<Justify>(Justify.Center),
+                    unityTextAlign = new StyleEnum<TextAnchor>(TextAnchor.MiddleCenter),
+                    unityFontStyleAndWeight = new StyleEnum<FontStyle>(FontStyle.Bold),
                 }
             };
             toolbar.Add(new Label("Selected term"));

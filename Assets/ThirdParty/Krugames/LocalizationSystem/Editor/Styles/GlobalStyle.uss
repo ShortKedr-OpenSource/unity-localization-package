@@ -50,5 +50,7 @@ LocaleTermTableElement{
     flex-direction: row;
     flex-grow: 1;
     overflow: hidden;
+    margin: 0;
+    border: 0;
     -unity-text-align: middle-left;
 }

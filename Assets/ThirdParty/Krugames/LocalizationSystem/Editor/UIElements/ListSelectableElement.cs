@@ -7,7 +7,7 @@ namespace Krugames.LocalizationSystem.Editor.UIElements {
     /// Selectable text element of  ListGroup.
     /// Editor VisualElement for fast interface prototyping.
     /// </summary>
-    public class ListSelectableElement : Button{
+    public class ListSelectableElement : Button {
         public ListSelectableElement() : this(null){
         }
 
