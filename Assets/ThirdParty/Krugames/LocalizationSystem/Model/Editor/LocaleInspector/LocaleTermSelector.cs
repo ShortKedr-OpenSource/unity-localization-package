@@ -1,6 +1,7 @@
 ﻿using System;
 using Krugames.LocalizationSystem.Models.Locators;
 
+//TODO move to SpecialElements folder
 namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
     public class LocaleTermSelector : SelectorListPopup {
 
