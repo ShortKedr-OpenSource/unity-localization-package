@@ -2,7 +2,7 @@
 using Krugames.LocalizationSystem.Editor.Styles;
 using UnityEngine.UIElements;
 
-namespace Krugames.LocalizationSystem.Editor.UIElements {
+namespace Krugames.LocalizationSystem.Editor.UIElements  {
     /// <summary>
     /// Selectable text element of  ListGroup.
     /// Editor VisualElement for fast interface prototyping.

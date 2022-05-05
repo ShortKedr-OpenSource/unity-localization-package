@@ -1,6 +1,5 @@
 ﻿using Krugames.LocalizationSystem.Editor.Styles;
 using UnityEditor.UIElements;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UIElements {

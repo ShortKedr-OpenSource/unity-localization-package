@@ -3,8 +3,8 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
-    public class LocaleTermEditorElement : Box {
+namespace Krugames.LocalizationSystem.Editor.UIElements {
+    public class LocaleTermEditor : Box {
 
         private LocaleTerm _term;
         private IMGUIContainer _editorContainer;
@@ -13,7 +13,7 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
 
         public LocaleTerm Term => _term;
 
-        public LocaleTermEditorElement() {
+        public LocaleTermEditor() {
 
             style.width = new StyleLength(StyleKeyword.Auto);
 

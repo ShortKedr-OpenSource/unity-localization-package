@@ -1,3 +1,9 @@
+. {
+    --list-element-active-background: rgba(72, 130, 255, 0.25);
+    --list-element-hover-background: rgba(72, 130, 255, 0.4);
+}
+
+/* Popup Selectors [Start] */
 PopupWindowRoot{
     flex-grow: 1;
     width: auto;
@@ -38,19 +44,113 @@ ListSelectableElement {
 }
 
 ListSelectableElement:hover {
-    background-color: rgba(72, 130, 255, 0.4);
+    background-color: var(--list-element-hover-background);
 }
 
 ListSelectableElement:active {
-    background-color: rgba(72, 130, 255, 0.25);
+    background-color: var(--list-element-active-background);
+}
+/* Popup Selectors [End] */
+
+/* Locale Inspector [Start] */
+LocaleTermEditor {
+    
 }
 
+LocaleTermListView {
+    
+}
 
-LocaleTermTableElement{
+LocaleTermListViewRoot {
+    
+}
+
+LocaleTermListViewElement {
     flex-direction: row;
     flex-grow: 1;
     overflow: hidden;
-    margin: 0;
-    border: 0;
+    border-width: 0;
+    height: 25px;
+    min-height: 25px;
+    max-height: 25px;
+    align-items: stretch;
     -unity-text-align: middle-left;
 }
+
+.LocaleTermListViewElement_TermLabel {
+    flex-grow: 0.0;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    overflow: hidden;
+    width:30%;
+    border-right-color: rgba(0, 0, 0, 0.3);
+    border-right-width: 1px;
+}
+
+.LocaleTermListViewElement_ValueLabel {
+    flex-grow: 1.0;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    overflow: hidden;
+}
+
+LocaleTermListViewElement:hover, LocaleTermListViewElement.Odd:hover, LocaleTermListViewElement.Even:hover {
+    background-color: var(--list-element-hover-background);
+}
+
+LocaleTermListViewElement:active, LocaleTermListViewElement.Odd:active, LocaleTermListViewElement.Even:active {
+    background-color: var(--list-element-active-background);
+}
+
+LocaleTermListViewElement.Even {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+LocaleTermListViewElement.Odd {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+TittleSearchToolbar {
+    flex-grow: 0;
+    justify-content: center;
+    min-height: 24px;
+    max-height: 24px;
+    -unity-font-style: bold;
+}
+
+.TittleSearchToolbar_Tittle {
+    flex-grow: 1.0;
+    flex-direction: row;
+    justify-content: flex-end;
+    -unity-text-align: middle-center;
+}
+
+.TittleSearchToolbar_Search {
+    width: 20%;
+    max-width: 150px;
+    min-width: 50px;
+}
+
+LocaleTermListViewTableHeader {
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    height: 24px;
+    min-height: 24px;
+    max-height: 24px;
+}
+
+.LocaleTermListViewTableHeader_TermLabel {
+    flex-grow: 0.0;
+    width: 30%;
+    border-right-color: rgba(0, 0, 0, 0.3);
+    border-right-width: 1px;
+    overflow: hidden;
+}
+
+.LocaleTermListViewTableHeader_ValueLabel {
+    flex-grow: 1.0;
+    overflow: hidden;
+}
+/* Locale Inspector [End] */

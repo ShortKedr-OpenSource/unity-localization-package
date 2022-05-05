@@ -1,7 +1,5 @@
 ﻿using Krugames.LocalizationSystem.Models;
-using ThirdParty.Krugames.LocalizationSystem.Model.Editor.UIElements;
 using UnityEditor;
-using UnityEditor.Lumin.Packaging.Manifest;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,25 +7,24 @@ using UnityEngine.UIElements;
 //TODO move to new LocaleTermListView folder
 //TODO separate elements to different files
 //TODO move LocaleTermTableElement to new folder for this class
-namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
+namespace Krugames.LocalizationSystem.Editor.UIElements {
     public class LocaleTermListView : Box {
         
         private LocaleTerm[] _terms;
 
         private VisualElement _content;
-        private Toolbar _toolbar; //TODO description: header border round by default,
-        private Toolbar _tableHeader; //TODO description: normal border round by default,
+        private TittleSearchToolbar _toolbar;
+        private LocaleTermListViewTableHeader _tableHeader;
         private VisualElement _termView;
-        private Toolbar _pagerToolbar;  //TODO description: footer border round by default,
+        private Toolbar _pagerToolbar;
 
         private int _maxCount = 12;
         
+        //TODO element getters,
+
         public LocaleTermListView() {
             style.flexGrow = 0f;
             style.width = new StyleLength(StyleKeyword.Auto);
-            /*style.height = 350f;
-            style.minHeight = 350f;
-            style.maxHeight = 350f;*/
 
             style.marginTop = 4f;
             style.marginBottom = 4f;
@@ -55,63 +52,16 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
                     overflow = new StyleEnum<Overflow>(Overflow.Hidden),
                 }
             });
-            
-            _toolbar = new Toolbar() {
-                style = {
-                    flexGrow = 0f,
-                    justifyContent = new StyleEnum<Justify>(Justify.Center),
-                    minHeight = 24f,
-                    maxHeight = 24f,
-                }
-            };
 
-            var termsLabel = new Label("Terms") {
-                style = {
-                    flexGrow = 1f,
-                    unityTextAlign = new StyleEnum<TextAnchor>(TextAnchor.MiddleCenter),
-                    flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row),
-                    justifyContent = new StyleEnum<Justify>(Justify.FlexEnd),
-                    unityFontStyleAndWeight = new StyleEnum<FontStyle>(FontStyle.Bold),
-                }
-            };
+            _toolbar = new TittleSearchToolbar("Terms");
 
-            var search = new ToolbarSearchField() {
-                style = {
-                    maxWidth = 100f,
-                    width = 100f,
-                    minWidth = 10f,
-                }
-            };
-
-            termsLabel.Add(search);
-            _toolbar.Add(termsLabel);
-            
             _content.Add(_toolbar);
 
 
-            _tableHeader = new Toolbar() {
-                style = {
-                    unityTextAlign = new StyleEnum<TextAnchor>(TextAnchor.MiddleCenter),
-                    unityFontStyleAndWeight = new StyleEnum<FontStyle>(FontStyle.Bold),
-                    maxHeight = 24f,
-                    minHeight = 24f,
-                }
-            };
-            _tableHeader.Add(new Label("term") {
-                style = {
-                    minWidth = EditorGUIUtility.labelWidth,
-                    maxWidth = EditorGUIUtility.labelWidth,
-                    borderRightWidth = 1f,
-                    borderRightColor = new Color(0.0f, 0.0f, 0.0f, 0.3f)
-                }
-            });
-            _tableHeader.Add(new Label("value") {
-                style = {
-                    flexGrow = 1f,
-                }
-            });
-            _content.Add(_tableHeader);
+            _tableHeader = new LocaleTermListViewTableHeader();
+ 
             
+            _content.Add(_tableHeader);
             _content.Add(_termView = new VisualElement() {
                 style = {
                     flexGrow = 1,
@@ -121,7 +71,7 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
                 }
             });
             
-            _pagerToolbar = _toolbar = new Toolbar() {
+            _pagerToolbar = new Toolbar() {
                 style = {
                     flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row),
                     justifyContent = new StyleEnum<Justify>(Justify.FlexEnd),
@@ -161,9 +111,9 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
             _terms = terms;
             _termView.Clear();
             int count = 0;
-            for (int i = 0; i < _terms.Length*5; i++) {
-                _termView.Add(new LocaleTermTableElement(terms[i%_terms.Length], 
-                    (i%2 == 0) ? LocaleTermTableElement.FillRule.Even : LocaleTermTableElement.FillRule.Odd));
+            for (int i = 0; i < _terms.Length*2; i++) {
+                _termView.Add(new LocaleTermListViewElement(terms[i%_terms.Length], 
+                    (i%2 == 0) ? FillRule.Even : FillRule.Odd));
                 count++;
                 if (count >= _maxCount) break;
             }

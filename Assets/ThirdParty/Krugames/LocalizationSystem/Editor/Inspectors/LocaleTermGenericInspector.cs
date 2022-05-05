@@ -1,7 +1,7 @@
 ﻿using Krugames.LocalizationSystem.Models;
 using UnityEditor;
 
-namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
+namespace Krugames.LocalizationSystem.Editor {
     [CustomEditor(typeof(LocaleTerm<>), true)]
     public class LocaleTermGenericInspector : UnityEditor.Editor {
 

@@ -1,10 +1,9 @@
 ﻿using System;
 using Krugames.LocalizationSystem.Editor.Serialization.Locators;
-using ThirdParty.Krugames.LocalizationSystem.Model.Editor;
 using UnityEngine;
 
-namespace Krugames.LocalizationSystem.Editor.Serialization.Editors {
-    public class LocaleSerializerSelector : SelectorListPopup{
+namespace Krugames.LocalizationSystem.Editor {
+    public class LocaleSerializerSelector : SelectorListPopup {
         public delegate void SelectDelegate(Type selectedSerializerType);
 
         private static LocaleSerializerLocator.LocaleSerializerBuildData[] _buildData = LocaleSerializerLocator.BuildData;

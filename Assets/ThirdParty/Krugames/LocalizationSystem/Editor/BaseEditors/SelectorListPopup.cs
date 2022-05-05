@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
+namespace Krugames.LocalizationSystem.Editor {
     public class SelectorListPopup : PopupWindowContent {
         
         private string _title;

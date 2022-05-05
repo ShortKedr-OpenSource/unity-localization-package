@@ -1,12 +1,12 @@
 ﻿using System;
-using Krugames.LocalizationSystem.Editor.Serialization.Editors;
+using Krugames.LocalizationSystem.Editor.UIElements;
 using Krugames.LocalizationSystem.Models;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using PopupWindow = UnityEditor.PopupWindow;
 
-namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
+namespace Krugames.LocalizationSystem.Editor {
     [CustomEditor(typeof(Locale))]
     public class LocaleInspector : UnityEditor.Editor {
 
@@ -23,7 +23,7 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
         private SerializedProperty _languageProp;
         private SerializedProperty _termsProp;
         
-        private LocaleTermEditorElement _localeTermEditor;
+        private LocaleTermEditor _localeTermEditor;
         private LocaleTermListView _localeTermList;
         private IMGUIContainer _headerContainer;
         private IMGUIContainer _footerContainer;
@@ -36,7 +36,7 @@ namespace ThirdParty.Krugames.LocalizationSystem.Model.Editor {
             _rootElement = new VisualElement();
             
             _rootElement.Add(_headerContainer = new IMGUIContainer(OnIMGUIHeaderGUI));
-            _rootElement.Add(_localeTermEditor = new LocaleTermEditorElement());
+            _rootElement.Add(_localeTermEditor = new LocaleTermEditor());
             _rootElement.Add(_localeTermList = new LocaleTermListView());
             _rootElement.Add(_footerContainer = new IMGUIContainer(OnIMGUIFooterGUI));
             
