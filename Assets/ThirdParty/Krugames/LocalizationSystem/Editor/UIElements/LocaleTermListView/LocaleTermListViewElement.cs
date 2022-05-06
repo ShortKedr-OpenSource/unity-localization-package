@@ -2,6 +2,7 @@
 using Krugames.LocalizationSystem.Editor.Styles;
 using Krugames.LocalizationSystem.Models;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UIElements {
@@ -16,8 +17,14 @@ namespace Krugames.LocalizationSystem.Editor.UIElements {
         private FillRule _fillRule;
 
         private readonly Label _termLabel;
-        private readonly Label _valueLabel; 
+        private readonly Label _valueLabel;
 
+        private readonly Clickable _clickable;
+
+        public delegate void ClickDelegate(LocaleTermListViewElement element);
+        public event ClickDelegate OnClick;
+        
+        
         public LocaleTerm LocaleTerm => _localeTerm;
 
         public Label TermLabel => _termLabel;
@@ -39,18 +46,24 @@ namespace Krugames.LocalizationSystem.Editor.UIElements {
             AddFillRuleClass();
 
             _termLabel = new Label() {
+                pickingMode = PickingMode.Ignore,
                 style = {
                     minWidth = EditorGUIUtility.labelWidth,
                 }
             };
 
-            _valueLabel = new Label();
+            _valueLabel = new Label() {
+                pickingMode = PickingMode.Ignore,
+            };
 
             _termLabel.AddToClassList(TermLabelClassName);
             _valueLabel.AddToClassList(ValueLabelClassName);
 
             Add(_termLabel);
             Add(_valueLabel);
+
+            _clickable = new Clickable(OnClickEvent);
+            this.AddManipulator(_clickable);
             
             SetTerm(localeTerm);
         }
@@ -76,7 +89,10 @@ namespace Krugames.LocalizationSystem.Editor.UIElements {
             if (_fillRule == FillRule.Even) RemoveFromClassList(EvenClassName);
             else if (_fillRule == FillRule.Odd) RemoveFromClassList(OddClassName);
         }
-        
-        
+
+        private void OnClickEvent() {
+            OnClick?.Invoke(this);
+        }
+
     }
 }

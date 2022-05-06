@@ -10,7 +10,7 @@ namespace Krugames.LocalizationSystem.Models {
         protected object value;
 
         public string Term => term;
-        public object Value => value;
+        public virtual object Value => value;
 
         private void OnEnable() {
             Initialize();
@@ -35,6 +35,8 @@ namespace Krugames.LocalizationSystem.Models {
 
         [SerializeField] protected TValueType smartValue;
 
+        public override object Value => smartValue;
+        
         public override void Initialize() {
             value = smartValue;
         }

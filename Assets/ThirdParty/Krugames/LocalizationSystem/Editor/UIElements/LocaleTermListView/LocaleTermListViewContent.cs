@@ -2,8 +2,8 @@
 using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UIElements {
-    public class LocaleTermListViewRoot : VisualElement {
-        public LocaleTermListViewRoot() {
+    public class LocaleTermListViewContent : VisualElement {
+        public LocaleTermListViewContent() {
             styleSheets.Add(LocalizationEditorStyles.GlobalStyle);
         }
     }

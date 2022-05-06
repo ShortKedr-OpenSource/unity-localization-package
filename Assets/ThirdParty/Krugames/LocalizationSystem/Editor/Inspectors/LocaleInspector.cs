@@ -37,14 +37,16 @@ namespace Krugames.LocalizationSystem.Editor {
             
             _rootElement.Add(_headerContainer = new IMGUIContainer(OnIMGUIHeaderGUI));
             _rootElement.Add(_localeTermEditor = new LocaleTermEditor());
-            _rootElement.Add(_localeTermList = new LocaleTermListView());
+            _rootElement.Add(_localeTermList = new LocaleTermListView(_locale.GetTerms()));
             _rootElement.Add(_footerContainer = new IMGUIContainer(OnIMGUIFooterGUI));
             
-            _localeTermEditor.SetTerm(_locale.GetTerms()[0]);
-            _localeTermList.SetTerms(_locale.GetTerms());
-            
+            _localeTermList.OnTermSelect += TermSelectEvent;
+
             return _rootElement;
-            
+        }
+
+        private void TermSelectEvent(LocaleTerm selectedTerm) {
+            _localeTermEditor.SetTerm(selectedTerm);
         }
 
         private void OnIMGUIHeaderGUI() {

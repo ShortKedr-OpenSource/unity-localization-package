@@ -6,6 +6,9 @@ using UnityEngine.UIElements;
 namespace Krugames.LocalizationSystem.Editor.UIElements {
     public class LocaleTermEditor : Box {
 
+        //TODO add vert scrollview
+        //TODO add properties button
+        
         private LocaleTerm _term;
         private IMGUIContainer _editorContainer;
 
@@ -26,7 +29,7 @@ namespace Krugames.LocalizationSystem.Editor.UIElements {
             style.marginBottom = 4f;
             style.marginRight = 4f;
             
-            style.minHeight = 100f;
+            style.minHeight = 125f;
 
             style.borderTopColor = new Color(0.0f,0.0f,0.0f, 0.25f);
             style.borderBottomColor = new Color(0.0f,0.0f,0.0f, 0.25f);

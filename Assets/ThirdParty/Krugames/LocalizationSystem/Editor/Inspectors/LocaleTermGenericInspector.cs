@@ -4,19 +4,18 @@ using UnityEditor;
 namespace Krugames.LocalizationSystem.Editor {
     [CustomEditor(typeof(LocaleTerm<>), true)]
     public class LocaleTermGenericInspector : UnityEditor.Editor {
-
-        private SerializedProperty _termProp;
-        private SerializedProperty _smartValueProp;
         
-        private void OnEnable() {
-            _termProp = serializedObject.FindProperty("term");
-            _smartValueProp = serializedObject.FindProperty("smartValue");
-        }
-
         public override void OnInspectorGUI() {
-            EditorGUILayout.PropertyField(_termProp);
-            EditorGUILayout.PropertyField(_smartValueProp);
+            serializedObject.Update();
+            SerializedProperty prop = serializedObject.GetIterator();
+            if (prop.NextVisible(true)) {
+                do {
+                    if (prop.name == "m_Script") continue;
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(prop.name), true);
+                }  while (prop.NextVisible(false));
+            }
             serializedObject.ApplyModifiedProperties();
         }
+
     }
 }

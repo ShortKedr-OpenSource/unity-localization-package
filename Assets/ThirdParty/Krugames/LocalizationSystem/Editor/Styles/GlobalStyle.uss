@@ -1,6 +1,7 @@
 . {
     --list-element-active-background: rgba(72, 130, 255, 0.25);
     --list-element-hover-background: rgba(72, 130, 255, 0.4);
+    --list-element-selected-background: rgba(112, 255, 72, 0.25);
 }
 
 /* Popup Selectors [Start] */
@@ -58,11 +59,28 @@ LocaleTermEditor {
 }
 
 LocaleTermListView {
-    
+    flex-grow: 0;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    margin-right: 4px;
+    border-width: 0;
+    background-color: rgba(0, 0, 0, 0.0);
+    width: auto;
 }
 
-LocaleTermListViewRoot {
-    
+.LocaleTermListView_List {
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+LocaleTermListViewContent {
+    flex-grow: 1;
+    border-width: 1;
+    border-color: var(--unity-colors-toolbar-border);
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 0;
 }
 
 LocaleTermListViewElement {
@@ -102,6 +120,10 @@ LocaleTermListViewElement:hover, LocaleTermListViewElement.Odd:hover, LocaleTerm
 
 LocaleTermListViewElement:active, LocaleTermListViewElement.Odd:active, LocaleTermListViewElement.Even:active {
     background-color: var(--list-element-active-background);
+}
+
+LocaleTermListViewElement.Selected, LocaleTermListViewElement.Odd.Selected, LocaleTermListViewElement.Even.Selected {
+    background-color: var(--list-element-selected-background);
 }
 
 LocaleTermListViewElement.Even {
@@ -152,5 +174,36 @@ LocaleTermListViewTableHeader {
 .LocaleTermListViewTableHeader_ValueLabel {
     flex-grow: 1.0;
     overflow: hidden;
+}
+
+PagerToolbar {
+    height: 24px;
+    min-height: 24px;
+    max-height: 24px;
+    border-bottom-width: 0;
+    border-top-width: 1px;
+    justify-content: flex-end;
+    align-items: stretch;
+}
+
+.PagerToolbar_Previous{
+    width: 24px;
+    background-image: var(--unity-icons-arrow_left);
+}
+
+.PagerToolbar_Next{
+    width: 24px;
+    background-image: var(--unity-icons-arrow_right)
+}
+
+.PagerToolbar_CurrentField{
+    background-color: rgba(0, 0, 0, 0.0);
+    border-width: 0;
+    min-width: 24px;
+    -unity-text-align: middle-right;
+}
+
+.PagerToolbar_InfoLabel{
+    -unity-text-align: middle-center;
 }
 /* Locale Inspector [End] */
