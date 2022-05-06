@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Krugames.LocalizationSystem.Editor.Styles;
 using Krugames.LocalizationSystem.Models;
+using RenwordDigital.StringSearchEngine;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -26,9 +28,15 @@ namespace Krugames.LocalizationSystem.Editor.UIElements {
         private PagerToolbar _pagerToolbar;
 
         private LocaleTermListViewElement[] _pageElements;
-        private int _itemPerPage;
+        private int _itemsPerPage;
+        
+        private SearchIndex _termSearchIndex;
+        private Dictionary<Resource, LocaleTerm> _resourceTermDict;
+        private bool _searchMode = false;
+        
+        private LocaleTerm _selectedLocaleTerm = null;
 
-
+        
         public delegate void TermSelectDelegate(LocaleTerm selectedTerm);
         public event TermSelectDelegate OnTermSelect;
         
@@ -38,11 +46,11 @@ namespace Krugames.LocalizationSystem.Editor.UIElements {
         public LocaleTermListView(int itemPerPage = DefaultItemPerPage) : this(Array.Empty<LocaleTerm>(), itemPerPage) {
         }
         
-        public LocaleTermListView(LocaleTerm[] terms, int itemPerPage = DefaultItemPerPage) {
+        public LocaleTermListView(LocaleTerm[] terms, int itemsPerPage = DefaultItemPerPage) {
             styleSheets.Add(LocalizationEditorStyles.GlobalStyle);
             
             _terms = terms;
-            _itemPerPage = itemPerPage;
+            _itemsPerPage = itemsPerPage;
 
             _contentContent = new LocaleTermListViewContent();
             Add(_contentContent);
@@ -50,15 +58,18 @@ namespace Krugames.LocalizationSystem.Editor.UIElements {
             _toolbar = new TittleSearchToolbar("Terms");
             _tableHeader = new LocaleTermListViewTableHeader();
             _termView = new VisualElement();
-            _pagerToolbar = new PagerToolbar(0);
+            _pagerToolbar = new PagerToolbar(GetPageCount());
             
-            _pageElements = new LocaleTermListViewElement[_itemPerPage];
+            _pageElements = new LocaleTermListViewElement[_itemsPerPage];
             for (int i = 0; i < _pageElements.Length; i++) {
                 _pageElements[i] = new LocaleTermListViewElement(null, (i % 2 == 0) ? FillRule.Even : FillRule.Odd);
                 _pageElements[i].OnClick += TermElementClickEvent;
                 _pageElements[i].AddManipulator(new ClickSelector());
                 _termView.Add(_pageElements[i]);
             }
+            
+            _toolbar.SearchField.RegisterCallback<ChangeEvent<string>>(SearchChangeEvent);
+            _pagerToolbar.OnPageChange += PageChangeEvent;
             
             _termView.AddToClassList(TermViewClassName);
 
@@ -70,28 +81,132 @@ namespace Krugames.LocalizationSystem.Editor.UIElements {
             SetTerms(terms);
         }
 
-        private void TermElementClickEvent(LocaleTermListViewElement element) {
-            if (element.LocaleTerm == null) return;
-            for (int i = 0; i < _pageElements.Length; i++) {
-                _pageElements[i].RemoveFromClassList(SelectedClassName);
-            }
-            element.AddToClassList(SelectedClassName);
-            //TODO cacheSelectedTermElement;
-            OnTermSelect?.Invoke(element.LocaleTerm);
-        }
-
         public void SetTerms(LocaleTerm[] terms) {
             _terms = terms;
-            UpdateListView();
+            RebuildSearchIndex();
+            _pagerToolbar.SetPageCount(GetPageCount());
+            RebuildPage();
         }
-
-        private void UpdateListView() {
-            int length = Math.Min(_pageElements.Length, _terms.Length);
-            for (int i = 0; i < length; i++) {
-                _pageElements[i].SetTerm(_terms[i]);
+        
+        public void UpdateListValues() {
+            for (int i = 0; i < _pageElements.Length; i++) {
+                _pageElements[i].Update();
             }
         }
 
-        //TODO add pages
+        private void PageChangeEvent(PagerToolbar self, int newPage) {
+            if (_searchMode) CancelTermsSearchResult();
+            else RebuildPage();
+        }
+
+        private void TermElementClickEvent(LocaleTermListViewElement element) {
+            SelectLocaleTerm(element.LocaleTerm);
+        }
+        
+        private void SearchChangeEvent(ChangeEvent<string> evt) {
+            Debug.Log("Omaewa");
+            string searchString = evt.newValue;
+            if (searchString.Length < SearchIndex.SearchLength) {
+                if (_searchMode) {
+                    RebuildPage();
+                    _searchMode = false;
+                }
+            } else {
+                var searchResult = _termSearchIndex.GetSearchResult(searchString);
+                LocaleTerm[] foundTerms = new LocaleTerm[searchResult.Count];
+                for (int i = 0; i < searchResult.Count; i++) {
+                    foundTerms[i] = _resourceTermDict[searchResult[i]];
+                }
+                RebuildPage(foundTerms);
+                _searchMode = true;
+            }
+        }
+
+        private void SearchTerms(string searchString) {
+
+            if (searchString == _toolbar.SearchField.value) {
+                return;
+            }
+            
+            if (searchString.Length < SearchIndex.SearchLength) {
+                CancelTermsSearchResult();
+            } else {
+                var searchResult = _termSearchIndex.GetSearchResult(searchString);
+                LocaleTerm[] foundTerms = new LocaleTerm[searchResult.Count];
+                for (int i = 0; i < searchResult.Count; i++) {
+                    foundTerms[i] = _resourceTermDict[searchResult[i]];
+                }
+                RebuildPage(foundTerms);
+                _searchMode = true;
+            }
+        }
+        
+        private void CancelTermsSearchResult() {
+            if (_searchMode) {
+                RebuildPage();
+                _toolbar.SearchField.SetValueWithoutNotify(string.Empty);
+                _searchMode = false;
+            }
+        }
+
+        private void SelectLocaleTerm(LocaleTerm localeTerm) {
+            _selectedLocaleTerm = localeTerm;
+            
+            for (int i = 0; i < _pageElements.Length; i++) _pageElements[i].RemoveFromClassList(SelectedClassName);
+            
+            if (_selectedLocaleTerm != null) {
+                for (int i = 0; i < _pageElements.Length; i++) {
+                    if (_pageElements[i].LocaleTerm == _selectedLocaleTerm) _pageElements[i].AddToClassList(SelectedClassName);
+                }
+            }
+            
+            OnTermSelect?.Invoke(localeTerm);
+        }
+        
+        private void RebuildPage() {
+            var pageTerms = GetPageTerms(_pagerToolbar.CurrentPage);
+            RebuildPage(pageTerms);
+        }
+
+        private void RebuildPage(LocaleTerm[] pageTerms) {
+            for (int i = 0; i < _pageElements.Length; i++) {
+                if (i < pageTerms.Length) _pageElements[i].SetTerm(pageTerms[i]);
+                else _pageElements[i].SetTerm(null);
+            }
+            SelectLocaleTerm(_selectedLocaleTerm);
+        }
+
+        private void RebuildSearchIndex() {
+            _resourceTermDict = new Dictionary<Resource, LocaleTerm>(_terms.Length);
+            Resource[] resources = new Resource[_terms.Length];
+            for (int i = 0; i < _terms.Length; i++) {
+                resources[i] = new Resource(_terms[i].Term + _terms[i].Value);
+                _resourceTermDict.Add(resources[i], _terms[i]);
+            }
+            _termSearchIndex = new SearchIndex(resources, _terms.Length);
+        }
+
+        private int GetPageCount() {
+            return Mathf.CeilToInt((float)_terms.Length / _itemsPerPage);
+        }
+
+        private LocaleTerm[] GetPageTerms(int pageNumber) {
+            int pageCount = GetPageCount();
+            if (pageNumber < 1 || pageNumber > pageCount) return Array.Empty<LocaleTerm>();
+
+            int startIndex = ((pageNumber-1) * _itemsPerPage);
+            int endIndex = (pageNumber == pageCount)
+                ? (startIndex - 1 + _terms.Length % _itemsPerPage)
+                : (pageNumber) * _itemsPerPage - 1;
+
+            int count = endIndex - startIndex + 1;
+            LocaleTerm[] pageTerms = new LocaleTerm[count];
+
+            for (int i = 0; i < pageTerms.Length; i++) {
+                pageTerms[i] = _terms[startIndex + i];
+            }
+
+            return pageTerms;
+        }
     }
 }

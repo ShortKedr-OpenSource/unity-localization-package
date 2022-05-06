@@ -71,6 +71,10 @@ namespace Krugames.LocalizationSystem.Editor.UIElements {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetTerm(LocaleTerm localeTerm) {
             _localeTerm = localeTerm;
+            Update();
+        }
+
+        public void Update() {
             if (_localeTerm == null) {
                 visible = false;
                 return;
