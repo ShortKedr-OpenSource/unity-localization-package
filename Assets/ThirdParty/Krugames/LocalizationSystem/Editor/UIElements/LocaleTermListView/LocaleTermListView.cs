@@ -5,12 +5,9 @@ using Krugames.LocalizationSystem.Models;
 using RenwordDigital.StringSearchEngine;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UIElements;
 
-//TODO move to new LocaleTermListView folder
-//TODO separate elements to different files
-//TODO move LocaleTermTableElement to new folder for this class
+//TODO stay rebuildpage same way, but add searchModeLogic. Add MultiPage search
 namespace Krugames.LocalizationSystem.Editor.UIElements {
     public class LocaleTermListView : Box {
 
