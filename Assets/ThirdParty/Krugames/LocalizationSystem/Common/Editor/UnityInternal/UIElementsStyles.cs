@@ -4,9 +4,10 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Krugames.LocalizationSystem.Editor.UnityInternal {
+namespace Krugames.LocalizationSystem.Common.Editor.UnityInternal {
 
     /// <summary>
+    /// UnityInternal API is not safe, use it on your own risk
     /// Provides access to UIElements internal style sheets
     /// </summary>
     public static class UIElementsStyles {

@@ -4,6 +4,8 @@
     /// </summary>
     internal static class PackageVariables {
 
+        public const string DefineSymbol = "KRUGAMES_UNITY_LOCALIZATION";
+        
         public static readonly string PackagePath;
 
         static PackageVariables() {

@@ -2,6 +2,7 @@
 using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Unity.Tools {
+    //TODO add AddComponentMenu attribute if this class will survive
     public class LocalizationSwitcher : MonoBehaviour {
 #if UNITY_EDITOR
         public SystemLanguage language;

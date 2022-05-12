@@ -127,11 +127,11 @@ LocaleTermListViewElement.Selected, LocaleTermListViewElement.Odd.Selected, Loca
 }
 
 LocaleTermListViewElement.Even {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(1, 1, 1, 0.05);
 }
 
 LocaleTermListViewElement.Odd {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(1, 1, 1, 0.1);
 }
 
 TittleSearchToolbar {

@@ -8,6 +8,7 @@ namespace Krugames.LocalizationSystem.Models.Terms {
     [CreateAssetMenu(fileName = "Vector3Term", menuName = "Localization/Terms/Vector3", order = 0)]
     public class Vector3Term : LocaleTerm<Vector3> {
         //TODO remove this bullshit
+        [SerializeField] private float value;
         [SerializeField] private Vector3 someField1;
         [SerializeField] private Vector3 someField2;
         [SerializeField] private Vector3 someField3;

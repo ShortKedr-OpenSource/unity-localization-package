@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using UnityEditor;
 using UnityEngine;
+using Vector2 = System.Numerics.Vector2;
 
 namespace Krugames.LocalizationSystem.Editor.Package {
     /// <summary>
@@ -18,4 +19,5 @@ namespace Krugames.LocalizationSystem.Editor.Package {
             return packagePathBuilder.ToString();
         }
     }
+    
 }

@@ -14,3 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   term: test_vector3
   smartValue: {x: 5, y: 6, z: 1}
+  value: 0
+  someField1: {x: 0, y: 0, z: 0}
+  someField2: {x: 0, y: 0, z: 0}
+  someField3: {x: 0, y: 0, z: 0}
+  someField4: {x: 0, y: 0, z: 0}
+  someField5: {x: 0, y: 0, z: 0}
+  someField6: {x: 0, y: 0, z: 0}
+  someField7: {x: 0, y: 0, z: 0}
+  someField8: {x: 0, y: 0, z: 0}
+  someField9: {x: 0, y: 0, z: 0}
+  someField10: {x: 0, y: 0, z: 0}
+  someField11: {x: 0, y: 0, z: 0}
+  someField12: {x: 0, y: 0, z: 0}
+  someField13: {x: 0, y: 0, z: 0}

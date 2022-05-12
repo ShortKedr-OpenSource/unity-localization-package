@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using PopupWindow = UnityEditor.PopupWindow;
 
+
+//TODO Make fixed height and sizes in pecentage + fixed + flex-grow
 namespace Krugames.LocalizationSystem.Editor {
     [CustomEditor(typeof(Locale))]
     public class LocaleInspector : UnityEditor.Editor {
@@ -41,12 +43,17 @@ namespace Krugames.LocalizationSystem.Editor {
             _rootElement.Add(_footerContainer = new IMGUIContainer(OnIMGUIFooterGUI));
             
             _localeTermList.OnTermSelect += TermSelectEvent;
+            _localeTermEditor.OnChange += TermChangeEvent;
 
             return _rootElement;
         }
 
-        private void TermSelectEvent(LocaleTerm selectedTerm) {
-            _localeTermEditor.SetTerm(selectedTerm);
+        private void TermChangeEvent(LocaleTermEditor self) {
+            _localeTermList.UpdateListValues();
+        }
+
+        private void TermSelectEvent(LocaleTermListView termList, LocaleTerm localeTerm) {
+            _localeTermEditor.SetTerm(termList.SelectedTerm);
         }
 
         private void OnIMGUIHeaderGUI() {
