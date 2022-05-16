@@ -6,11 +6,11 @@ using UnityEngine;
 //TODO add old way where string[] defines was not available
 namespace Krugames.LocalizationSystem.Editor.Package {
     public static class PackageSymbolDefiner {
-
-        //TODO 
+        
         [UnityEditor.Callbacks.DidReloadScripts]
         private static void DefineSymbolIfNotPresented() {
             DefineSymbolModern();
+            //TODO implement for multiple Unity versions
         }
 
         private static void DefineSymbolModern() {
@@ -22,10 +22,9 @@ namespace Krugames.LocalizationSystem.Editor.Package {
             }
             PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, symbolsList.ToArray());
         }
-        [UnityEditor.Callbacks.DidReloadScripts]
+
         private static void DefineSymbolDeprecated() {
-            //TODO impl
-            Debug.Log(EditorGUIUtility.labelWidth);
+            throw new NotImplementedException();
         }
 
     }
