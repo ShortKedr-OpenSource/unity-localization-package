@@ -49,8 +49,10 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         private OptionPopup _managedElementOptions; 
         private LocaleTermListViewElement _managedElement = null;
 
-        public delegate void ElementSelectDelegate(LocaleTermListView self, LocaleTerm localeTerm);
-        public event ElementSelectDelegate OnTermSelect;
+        
+        public delegate void ElementDelegate(LocaleTermListView self, LocaleTerm localeTerm);
+        public event ElementDelegate OnTermSelect;
+        public event ElementDelegate OnTermDeleteSelect;
         
         //TODO add props
         
@@ -118,7 +120,7 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         }
         
         private void ManagedElement_Delete() {
-            Debug.Log("Delete");
+            OnTermDeleteSelect?.Invoke(this, _managedElement.LocaleTerm);
         }
 
         private void ElementPropertiesClickEvent(LocaleTermListViewElement element) {
