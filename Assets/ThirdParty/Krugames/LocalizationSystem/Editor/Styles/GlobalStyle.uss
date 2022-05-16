@@ -76,7 +76,7 @@ LocaleTermListView {
 
 LocaleTermListViewContent {
     flex-grow: 1;
-    border-width: 1;
+    border-width: 1px;
     border-color: var(--unity-colors-toolbar-border);
     border-radius: 5px;
     overflow: hidden;
@@ -91,8 +91,8 @@ LocaleTermListViewElement {
     height: 25px;
     min-height: 25px;
     max-height: 25px;
-    align-items: stretch;
     -unity-text-align: middle-left;
+    align-items: stretch;
 }
 
 .LocaleTermListViewElement_TermLabel {
@@ -108,10 +108,31 @@ LocaleTermListViewElement {
 
 .LocaleTermListViewElement_ValueLabel {
     flex-grow: 1.0;
+    flex-shrink: 1.0;
     padding-top: 3px;
     padding-bottom: 3px;
     padding-left: 5px;
     overflow: hidden;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.LocaleTermListViewElement_DeleteButton {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 18px;
+    border-width: 0;
+    background-color: rgba(0,0,0,0);
+    background-image: var(--unity-icons-pane_options);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.LocaleTermListViewElement_DeleteButton:hover {
+    background-color: var(--unity-colors-button-background-hover);
+}
+
+.LocaleTermListViewElement_DeleteButton:active {
+    background-color: var(--unity-colors-button-background-pressed);
 }
 
 LocaleTermListViewElement:hover, LocaleTermListViewElement.Odd:hover, LocaleTermListViewElement.Even:hover {

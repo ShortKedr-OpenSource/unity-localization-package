@@ -1,4 +1,5 @@
-﻿using Krugames.LocalizationSystem.Models;
+﻿using Krugames.LocalizationSystem.Common.Editor.UnityInternal;
+using Krugames.LocalizationSystem.Models;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -81,7 +82,7 @@ namespace Krugames.LocalizationSystem.Editor.UI {
                     alignItems = new StyleEnum<Align>(Align.Stretch),
                 }
             };
-            tittle.Add(new ToolbarButton(() => UnityObjectPropertiesEditor.Create(_term)) {
+            tittle.Add(new ToolbarButton(() => EditorInternalUtility.OpenPropertyEditor(_term)) {
                 text = "Properties",
                 style = {
                     flexGrow = 0,

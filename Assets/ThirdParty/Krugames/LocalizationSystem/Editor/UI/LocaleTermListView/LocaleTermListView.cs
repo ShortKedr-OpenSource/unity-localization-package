@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using Krugames.LocalizationSystem.Common.Editor.UnityInternal;
 using Krugames.LocalizationSystem.Editor.Styles;
+using Krugames.LocalizationSystem.Implementation;
 using Krugames.LocalizationSystem.Models;
 using RenwordDigital.StringSearchEngine;
-using UnityEditor.Experimental.GraphView;
+using ThirdParty.Krugames.LocalizationSystem.Editor.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -45,6 +46,8 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         private ViewMode _viewMode;
         private int _itemsPerPage;
 
+        private OptionPopup _managedElementOptions; 
+        private LocaleTermListViewElement _managedElement = null;
 
         public delegate void ElementSelectDelegate(LocaleTermListView self, LocaleTerm localeTerm);
         public event ElementSelectDelegate OnTermSelect;
@@ -70,16 +73,27 @@ namespace Krugames.LocalizationSystem.Editor.UI {
 
             _defaultContent = new LocaleTermListViewContent(_itemsPerPage);
             _searchContent = new LocaleTermListViewContent(_itemsPerPage);
-            
-            
+
             focusable = true;
             pickingMode = PickingMode.Position;
-            
-            
-            /*_searchToolbar.SearchField.RegisterCallback<ChangeEvent<string>>(SearchChangeEvent);
-            _pagerToolbar.OnPageChange += PageChangeEvent;
 
-            _termView.AddToClassList(TermViewClassName);*/
+            var defaultPageElements = _defaultContent.PageElements;
+            for (int i = 0; i < defaultPageElements.Length; i++) {
+                defaultPageElements[i].OnPropertiesClick += ElementPropertiesClickEvent;
+            }
+
+            var searchPageElements = _searchContent.PageElements;
+            for (int i = 0; i < searchPageElements.Length; i++) {
+                searchPageElements[i].OnPropertiesClick += ElementPropertiesClickEvent;
+            }
+
+            _managedElementOptions = new OptionPopup(new SelectorListPopup.Element[] {
+                new SelectorListPopup.Element("Properties", ManagedElement_OpenProperties),
+                new SelectorListPopup.Element("Delete", ManagedElement_Delete),
+            });
+            
+            _searchToolbar.SearchField.RegisterCallback<ChangeEvent<string>>(SearchChangeEvent);
+            _pagerToolbar.OnPageChange += ToolbarPageChangeEvent;
 
             _root.Add(_searchToolbar);
             _root.Add(_tableHeader);
@@ -90,6 +104,36 @@ namespace Krugames.LocalizationSystem.Editor.UI {
 
             _defaultContent.SetTerms(_terms);
             //SetTerms(terms);
+            
+            /*var popup = new OptionPopup(null, new SelectorListPopup.Element[] {
+                new SelectorListPopup.Element("Properties", () => Debug.Log("Props")),
+                new SelectorListPopup.Element("Delete", () => Debug.Log("Delete")),
+            });
+            Rect rect = new Rect(new Vector2(Event.current.mousePosition.x, Event.current.mousePosition.y), Vector2.one);
+            PopupWindow.Show(rect, popup);*/
+        }
+
+        private void ManagedElement_OpenProperties() {
+            EditorInternalUtility.OpenPropertyEditor(_managedElement.LocaleTerm);
+        }
+        
+        private void ManagedElement_Delete() {
+            Debug.Log("Delete");
+        }
+
+        private void ElementPropertiesClickEvent(LocaleTermListViewElement element) {
+            _managedElement = element;
+            if (_managedElement == null || _managedElement.LocaleTerm == null) return;
+            Rect mouseRect = new Rect(Event.current.mousePosition, Vector2.one); 
+            UnityEditor.PopupWindow.Show(mouseRect, _managedElementOptions);
+        }
+
+        private void ToolbarPageChangeEvent(PagerToolbar self, int newPage) {
+            throw new NotImplementedException();
+        }
+
+        private void SearchChangeEvent(ChangeEvent<string> evt) {
+            throw new NotImplementedException();
         }
 
         public void SetTerms(LocaleTerm[] terms) {

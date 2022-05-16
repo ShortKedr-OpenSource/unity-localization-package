@@ -24,12 +24,17 @@ namespace Krugames.LocalizationSystem.Implementation {
         private Dictionary<Resource, ListSelectableElement> _resourceToListElement;
         private List<Resource> _lastSearchResult = null;
 
+
+        private bool _enableSearch;
+        private bool _enableTittle;
         private bool _inited = false;
-        
+
         public string Title => _title;
 
-        public SelectorListPopup(string title, Element[] elements) {
+        public SelectorListPopup(string title, Element[] elements, bool enableSearch = true, bool enableTittle = true) {
             _title = title;
+            _enableSearch = enableSearch;
+            _enableTittle = enableTittle;
             if (elements == null) _listElements = Array.Empty<ListSelectableElement>();
             else {
                 _listElements = new ListSelectableElement[elements.Length];
@@ -45,9 +50,13 @@ namespace Krugames.LocalizationSystem.Implementation {
 
             if (!_inited) {
                 _popupRoot = new PopupWindowRoot();
+
+                _searchToolbar = new SearchToolbar();
+                _tittleToolbar = new TittleToolbar(_title);
+                    
+                if (_enableSearch) _popupRoot.Add(_searchToolbar);
+                if (_enableTittle) _popupRoot.Add(_tittleToolbar);
                 
-                _popupRoot.Add(_searchToolbar = new SearchToolbar());
-                _popupRoot.Add(_tittleToolbar = new TittleToolbar(_title));
                 _popupRoot.Add(_listGroup = new ListGroup());
 
                 for (int i = 0; i < _listElements.Length; i++) {

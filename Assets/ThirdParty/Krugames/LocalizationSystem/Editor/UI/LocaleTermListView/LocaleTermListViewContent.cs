@@ -70,7 +70,6 @@ namespace Krugames.LocalizationSystem.Editor.UI {
 
         private Dictionary<LocaleTerm, int> _indexByTerm = new Dictionary<LocaleTerm, int>(16);
 
-
         public delegate void SelectDelegate(LocaleTermListViewContent self, SelectionInfo selectionInfo);
         public delegate void PageChangeDelegate(LocaleTermListViewContent self, int newPageNumber);
         public delegate void LayoutChangeDelegate(LocaleTermListViewContent self, LocaleTerm[] newLayout);

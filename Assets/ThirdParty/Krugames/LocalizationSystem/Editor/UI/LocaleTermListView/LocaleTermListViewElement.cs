@@ -1,9 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
 using Krugames.LocalizationSystem.Editor.Styles;
+using Krugames.LocalizationSystem.Implementation;
 using Krugames.LocalizationSystem.Models;
+using ThirdParty.Krugames.LocalizationSystem.Editor.UI;
 using UnityEditor;
-using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
+using PopupWindow = UnityEditor.PopupWindow;
 
 namespace Krugames.LocalizationSystem.Editor.UI {
     public class LocaleTermListViewElement : Box {
@@ -12,19 +15,22 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         private const string OddClassName = "Odd";
         private const string TermLabelClassName = nameof(LocaleTermListViewElement)+"_TermLabel";
         private const string ValueLabelClassName = nameof(LocaleTermListViewElement)+"_ValueLabel";
+        private const string DeleteButtonClassName = nameof(LocaleTermListViewElement)+"_DeleteButton";
         
         private LocaleTerm _localeTerm;
         private FillRule _fillRule;
 
         private readonly Label _termLabel;
         private readonly Label _valueLabel;
-        private readonly ToolbarButton _deleteButton;
+        private readonly VisualElement _deleteButton;
 
         private readonly Clickable _clickable;
 
+        
         public delegate void ClickDelegate(LocaleTermListViewElement element);
         public event ClickDelegate OnClick;
-        
+        public event ClickDelegate OnPropertiesClick;
+
         
         public LocaleTerm LocaleTerm => _localeTerm;
 
@@ -41,6 +47,7 @@ namespace Krugames.LocalizationSystem.Editor.UI {
             }
         }
 
+        
         public LocaleTermListViewElement(LocaleTerm localeTerm, FillRule fillRule) {
             styleSheets.Add(LocalizationEditorStyles.GlobalStyle);
             _fillRule = fillRule;
@@ -57,24 +64,44 @@ namespace Krugames.LocalizationSystem.Editor.UI {
                 pickingMode = PickingMode.Ignore,
             };
 
+            _deleteButton = new Button(PropertiesButtonClickEvent); 
+
             _termLabel.AddToClassList(TermLabelClassName);
             _valueLabel.AddToClassList(ValueLabelClassName);
+            _deleteButton.AddToClassList(DeleteButtonClassName);
             
-            _valueLabel.Add(new Button() {
-                text = "X",
-                style = {
-                    flexGrow = 0,
-                    width = 32,
-                }
-            });
-
             Add(_termLabel);
             Add(_valueLabel);
+            Add(_deleteButton);
 
-            _clickable = new Clickable(OnClickEvent);
+            _clickable = new Clickable(ElementClickEvent);
             this.AddManipulator(_clickable);
+
+            RegisterCallback<MouseUpEvent>(ElementMouseUpEvent);
             
             SetTerm(localeTerm);
+        }
+
+        private void AddFillRuleClass() {
+            if (_fillRule == FillRule.Even) AddToClassList(EvenClassName);
+            else if (_fillRule == FillRule.Odd) AddToClassList(OddClassName);
+        }
+
+        private void RemoveFillRuleClass() {
+            if (_fillRule == FillRule.Even) RemoveFromClassList(EvenClassName);
+            else if (_fillRule == FillRule.Odd) RemoveFromClassList(OddClassName);
+        }
+
+        private void ElementClickEvent() {
+            OnClick?.Invoke(this);
+        }
+
+        private void PropertiesButtonClickEvent() {
+            OnPropertiesClick?.Invoke(this);
+        }
+        
+        private void ElementMouseUpEvent(MouseUpEvent evt) {
+            if (evt.button == 1) OnPropertiesClick?.Invoke(this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -91,20 +118,6 @@ namespace Krugames.LocalizationSystem.Editor.UI {
             visible = true;
             _termLabel.text = _localeTerm.Term;
             _valueLabel.text = _localeTerm.Value.ToString();
-        }
-
-        private void AddFillRuleClass() {
-            if (_fillRule == FillRule.Even) AddToClassList(EvenClassName);
-            else if (_fillRule == FillRule.Odd) AddToClassList(OddClassName);
-        }
-
-        private void RemoveFillRuleClass() {
-            if (_fillRule == FillRule.Even) RemoveFromClassList(EvenClassName);
-            else if (_fillRule == FillRule.Odd) RemoveFromClassList(OddClassName);
-        }
-
-        private void OnClickEvent() {
-            OnClick?.Invoke(this);
         }
 
     }
