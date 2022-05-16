@@ -55,7 +55,34 @@ ListSelectableElement:active {
 
 /* Locale Inspector [Start] */
 LocaleTermEditor {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    margin-right: 4px;
+    background-color: rgba(0, 0, 0, 0.0);
+    width: auto;
+    height: auto;
+    min-height: 125px;
+    max-height: 125px;
+    border-width: 0;
     
+}
+
+.LocaleTermEditor_Root {
+    flex-grow: 1;
+    border-width: 1px;
+    border-color: var(--unity-colors-toolbar-border);
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 0;
+}
+
+LocaleTermEditorToolbar {
+    align-content: center;
+    justify-content: center;
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    min-height: 24px;
+    max-height: 24px;
 }
 
 LocaleTermListView {
@@ -68,19 +95,19 @@ LocaleTermListView {
     width: auto;
 }
 
-.LocaleTermListView_List {
-    padding: 0;
-    margin: 0;
-    flex-grow: 1;
-}
-
-LocaleTermListViewContent {
+.LocaleTermListView_Root {
     flex-grow: 1;
     border-width: 1px;
     border-color: var(--unity-colors-toolbar-border);
     border-radius: 5px;
     overflow: hidden;
     padding: 0;
+}
+
+LocaleTermListViewContent {
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
 }
 
 LocaleTermListViewElement {
@@ -117,7 +144,7 @@ LocaleTermListViewElement {
     justify-content: flex-end;
 }
 
-.LocaleTermListViewElement_DeleteButton {
+.LocaleTermListViewElement_PropsButton {
     flex-grow: 0;
     flex-shrink: 0;
     width: 18px;
@@ -127,11 +154,11 @@ LocaleTermListViewElement {
     -unity-background-scale-mode: scale-to-fit;
 }
 
-.LocaleTermListViewElement_DeleteButton:hover {
+.LocaleTermListViewElement_PropsButton:hover {
     background-color: var(--unity-colors-button-background-hover);
 }
 
-.LocaleTermListViewElement_DeleteButton:active {
+.LocaleTermListViewElement_PropsButton:active {
     background-color: var(--unity-colors-button-background-pressed);
 }
 

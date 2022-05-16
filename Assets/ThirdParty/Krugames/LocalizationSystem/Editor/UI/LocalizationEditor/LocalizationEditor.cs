@@ -14,7 +14,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             editorWindow.position = new Rect(editorWindow.position.position, DefaultSize);
             editorWindow.Show();
         }
-        
-        //TODO implement
+
+        public LocalizationEditor() {
+        }
     }
 }

@@ -15,14 +15,14 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         private const string OddClassName = "Odd";
         private const string TermLabelClassName = nameof(LocaleTermListViewElement)+"_TermLabel";
         private const string ValueLabelClassName = nameof(LocaleTermListViewElement)+"_ValueLabel";
-        private const string DeleteButtonClassName = nameof(LocaleTermListViewElement)+"_DeleteButton";
+        private const string PropsButtonClassName = nameof(LocaleTermListViewElement)+"_PropsButton";
         
         private LocaleTerm _localeTerm;
         private FillRule _fillRule;
 
         private readonly Label _termLabel;
         private readonly Label _valueLabel;
-        private readonly VisualElement _deleteButton;
+        private readonly Button _propsButton;
 
         private readonly Clickable _clickable;
 
@@ -64,15 +64,15 @@ namespace Krugames.LocalizationSystem.Editor.UI {
                 pickingMode = PickingMode.Ignore,
             };
 
-            _deleteButton = new Button(PropertiesButtonClickEvent); 
+            _propsButton = new Button(PropertiesButtonClickEvent); 
 
             _termLabel.AddToClassList(TermLabelClassName);
             _valueLabel.AddToClassList(ValueLabelClassName);
-            _deleteButton.AddToClassList(DeleteButtonClassName);
+            _propsButton.AddToClassList(PropsButtonClassName);
             
             Add(_termLabel);
             Add(_valueLabel);
-            Add(_deleteButton);
+            Add(_propsButton);
 
             _clickable = new Clickable(ElementClickEvent);
             this.AddManipulator(_clickable);

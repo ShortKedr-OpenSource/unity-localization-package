@@ -17,7 +17,7 @@ namespace Krugames.LocalizationSystem.Editor.UI {
 
         public static UnityObjectPropertiesEditor Create(Object unityObject) {
             if (unityObject == null) return null;
-            UnityObjectPropertiesEditor editor = EditorWindow.GetWindow<UnityObjectPropertiesEditor>();
+            UnityObjectPropertiesEditor editor = EditorWindow.CreateInstance<UnityObjectPropertiesEditor>();
             editor._unityObject = unityObject;
             editor.titleContent = new GUIContent(unityObject.name, AssetDatabase.GetCachedIcon(AssetDatabase.GetAssetPath(unityObject)));
             editor.minSize = new Vector2(300, 200);

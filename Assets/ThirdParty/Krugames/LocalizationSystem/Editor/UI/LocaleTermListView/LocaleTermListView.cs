@@ -64,7 +64,6 @@ namespace Krugames.LocalizationSystem.Editor.UI {
             styleSheets.Add(LocalizationEditorStyles.GlobalStyle);
             
             _root = new VisualElement();
-            _root.styleSheets.Add(LocalizationEditorStyles.GlobalStyle);
             _root.AddToClassList(RootClassName);
             Add(_root);
             

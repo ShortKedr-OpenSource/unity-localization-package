@@ -27,23 +27,29 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         private LocaleTermListView _localeTermList;
         private IMGUIContainer _headerContainer;
         private IMGUIContainer _footerContainer;
-        
+
         public override VisualElement CreateInspectorGUI() {
+            _rootElement.Add(_headerContainer);
+            _rootElement.Add(_localeTermEditor);
+            _rootElement.Add(_localeTermList);
+            _rootElement.Add(_footerContainer);
+            return _rootElement;
+        }
+
+        private void OnEnable() {
             _locale = (Locale) target;
             _languageProp = serializedObject.FindProperty("language");
             _termsProp = serializedObject.FindProperty("terms");
 
             _rootElement = new VisualElement();
             
-            _rootElement.Add(_headerContainer = new IMGUIContainer(OnIMGUIHeaderGUI));
-            _rootElement.Add(_localeTermEditor = new LocaleTermEditor());
-            _rootElement.Add(_localeTermList = new LocaleTermListView(_locale.GetTerms()));
-            _rootElement.Add(_footerContainer = new IMGUIContainer(OnIMGUIFooterGUI));
+            _headerContainer = new IMGUIContainer(OnIMGUIHeaderGUI);
+            _localeTermEditor = new LocaleTermEditor();
+            _localeTermList = new LocaleTermListView(_locale.GetTerms());
+            _footerContainer = new IMGUIContainer(OnIMGUIFooterGUI);
             
             _localeTermList.OnTermSelect += TermSelectEvent;
             ObjectChangeEvents.changesPublished += ObjectChangeEvent;
-            
-            return _rootElement;
         }
 
         private void ObjectChangeEvent(ref ObjectChangeEventStream stream) {
