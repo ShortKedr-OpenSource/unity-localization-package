@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: de-fake_string_12
   m_EditorClassIdentifier: 
   term: fake_string_12
-  smartValue: Was machst du?
+  smartValue: "Die \xC4rzte in voluptate velit esse cillum genau eu fugiat nulla
+    pariatur"

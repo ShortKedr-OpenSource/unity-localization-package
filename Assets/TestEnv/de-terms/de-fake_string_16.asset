@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: de-fake_string_16
   m_EditorClassIdentifier: 
   term: fake_string_16
-  smartValue: Was machst du?
+  smartValue: "Lebensabschnittsgef\xE4hrte et"

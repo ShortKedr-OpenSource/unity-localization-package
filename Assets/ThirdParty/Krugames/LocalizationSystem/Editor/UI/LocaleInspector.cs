@@ -41,17 +41,17 @@ namespace Krugames.LocalizationSystem.Editor.UI {
             _rootElement.Add(_footerContainer = new IMGUIContainer(OnIMGUIFooterGUI));
             
             _localeTermList.OnTermSelect += TermSelectEvent;
-            _localeTermEditor.OnChange += TermChangeEvent;
-
+            ObjectChangeEvents.changesPublished += ObjectChangeEvent;
+            
             return _rootElement;
         }
 
-        private void TermChangeEvent(LocaleTermEditor self) {
+        private void ObjectChangeEvent(ref ObjectChangeEventStream stream) {
             _localeTermList.UpdateView();
         }
 
         private void TermSelectEvent(LocaleTermListView termList, LocaleTerm localeTerm) {
-            //_localeTermEditor.SetTerm(termList.SelectedTerm);
+            _localeTermEditor.SetTerm(localeTerm);
         }
 
         private void OnIMGUIHeaderGUI() {
@@ -104,5 +104,8 @@ namespace Krugames.LocalizationSystem.Editor.UI {
             Debug.Log("Open Localization Editor");
         }
 
+        private void OnDestroy() {
+            ObjectChangeEvents.changesPublished -= ObjectChangeEvent;
+        }
     }
 }
