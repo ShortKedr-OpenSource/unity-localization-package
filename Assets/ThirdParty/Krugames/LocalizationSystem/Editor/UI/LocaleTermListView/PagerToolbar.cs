@@ -26,6 +26,7 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         public delegate void PageChangeDelegate(PagerToolbar self, int newPage);
         public event PageChangeDelegate OnPageChange;
         
+        public int PageCount => _pageCount;
 
         public int CurrentPage {
             get => _currentPage;
@@ -79,8 +80,7 @@ namespace Krugames.LocalizationSystem.Editor.UI {
 
         public void SetPageCountWithoutNotify(int pageCount) {
             _pageCount = pageCount;
-            _currentPage = RulePageValue(_currentPage);
-            _currentPageField.SetValueWithoutNotify(_currentPage);
+            ChangePageWithoutNotify(_currentPage);
             UpdateInfoLabel();
         }
 

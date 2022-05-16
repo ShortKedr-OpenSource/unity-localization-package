@@ -205,7 +205,8 @@ namespace Krugames.LocalizationSystem.Editor.UI {
 
         private void SetPage(int pageNumber, bool updateSelection = true, bool notify = true) {
             _currentPage = pageNumber;
-            if (_currentPage > _pageCount) _currentPage = _pageCount;
+            if (_pageCount == 0) _currentPage = 0; 
+            else if (_currentPage > _pageCount) _currentPage = _pageCount;
             else if (_currentPage < 1) _currentPage = 1;
             if (notify) OnPageChange?.Invoke(this, _currentPage);
             Rebuild(updateSelection);
@@ -252,6 +253,7 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         }
 
         public void Select(LocaleTerm term) {
+            if (term == null) return;
             if (_indexByTerm.ContainsKey(term)) Select(_indexByTerm[term]);
         }
 

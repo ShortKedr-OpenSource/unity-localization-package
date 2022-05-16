@@ -9,24 +9,20 @@ using ThirdParty.Krugames.LocalizationSystem.Editor.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-//TODO can be generalised (universal type)
-//TODO stay rebuildpage same way, but add searchModeLogic. Add MultiPage search
-//TODO remake select to term_index;
+//TODO can be templated to generic ListView<TItemType>, ListViewElement<TItemType>
+//TODO fix issue with PagerToolbar when it shows 1/0 with PageCount=0
+//TODO test callback overcall, fix if necessary
 namespace Krugames.LocalizationSystem.Editor.UI {
     public class LocaleTermListView : Box {
-
-        //TODO 2 list_views (normal | search)
-        //TODO selected_item (item from another list_view) can_not be selected
-
+        
         private enum ViewMode {
             Default = 0,
             Search = 1
         }
-
-        private const int DefaultItemPerPage = 12;
         
-        //private const string TermViewClassName = nameof(LocaleTermListView) + "_List"; //TODO remove from uss
-        private const string RootClassName = nameof(LocaleTermListView) + "_Root"; 
+        private const string RootClassName = nameof(LocaleTermListView) + "_Root";
+        private const int DefaultItemPerPage = 12;
+
         
         private LocaleTerm[] _terms;
 
@@ -42,8 +38,11 @@ namespace Krugames.LocalizationSystem.Editor.UI {
 
         private SearchIndex _termSearchIndex;
         private Dictionary<Resource, LocaleTerm> _resourceTermDict;
+        private string _lastSearchString = string.Empty;
+        private int _lastDefaultPage;
 
         private ViewMode _viewMode;
+        private LocaleTermListViewContent.SelectionInfo _selection = LocaleTermListViewContent.SelectionInfo.Nothing;
         private int _itemsPerPage;
 
         private OptionPopup _managedElementOptions; 
@@ -60,13 +59,13 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         }
         
         public LocaleTermListView(LocaleTerm[] terms, int itemsPerPage = DefaultItemPerPage) {
-            _terms = terms;
             _itemsPerPage = itemsPerPage;
             
             styleSheets.Add(LocalizationEditorStyles.GlobalStyle);
             
             _root = new VisualElement();
             _root.styleSheets.Add(LocalizationEditorStyles.GlobalStyle);
+            _root.AddToClassList(RootClassName);
             Add(_root);
             
             _searchToolbar = new TittleSearchToolbar("Terms");
@@ -96,23 +95,34 @@ namespace Krugames.LocalizationSystem.Editor.UI {
             
             _searchToolbar.SearchField.RegisterCallback<ChangeEvent<string>>(SearchChangeEvent);
             _pagerToolbar.OnPageChange += ToolbarPageChangeEvent;
+            
+            _defaultContent.OnPageChange += ContentPageChange;
+            _searchContent.OnPageChange += ContentPageChange;
+            
+            _defaultContent.OnSelect += ElementSelectEvent;
+            _searchContent.OnSelect += ElementSelectEvent;
 
             _root.Add(_searchToolbar);
             _root.Add(_tableHeader);
             _root.Add(_pagerToolbar);
-            
-            _viewMode = ViewMode.Default;
-            UpdateViewMode();
 
-            _defaultContent.SetTerms(_terms);
-            //SetTerms(terms);
+            SetTerms(terms);
+            SetViewMode(ViewMode.Default);
+        }
+
+        private void ElementSelectEvent(LocaleTermListViewContent self, LocaleTermListViewContent.SelectionInfo selectionInfo) {
+            _selection = selectionInfo;
+            OnTermSelect?.Invoke(this, _selection.Term);
+        }
+
+        private void ContentPageChange(LocaleTermListViewContent self, int newPageNumber) {
+            if (_viewMode == ViewMode.Default && self == _defaultContent) {
+                _pagerToolbar.ChangePageWithoutNotify(_defaultContent.CurrentPage);
+            }
             
-            /*var popup = new OptionPopup(null, new SelectorListPopup.Element[] {
-                new SelectorListPopup.Element("Properties", () => Debug.Log("Props")),
-                new SelectorListPopup.Element("Delete", () => Debug.Log("Delete")),
-            });
-            Rect rect = new Rect(new Vector2(Event.current.mousePosition.x, Event.current.mousePosition.y), Vector2.one);
-            PopupWindow.Show(rect, popup);*/
+            if (_viewMode == ViewMode.Search && self == _searchContent) {
+                _pagerToolbar.ChangePageWithoutNotify(_searchContent.CurrentPage);
+            }
         }
 
         private void ManagedElement_OpenProperties() {
@@ -131,21 +141,31 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         }
 
         private void ToolbarPageChangeEvent(PagerToolbar self, int newPage) {
-            throw new NotImplementedException();
+            switch (_viewMode) {
+                case ViewMode.Default:
+                    _defaultContent.SetPageWithoutNotify(newPage);
+                    break;
+                
+                case ViewMode.Search:
+                    _searchContent.SetPageWithoutNotify(newPage);
+                    break;
+            }
         }
 
         private void SearchChangeEvent(ChangeEvent<string> evt) {
-            throw new NotImplementedException();
+            Search(evt.newValue);
         }
 
         public void SetTerms(LocaleTerm[] terms) {
-            throw new NotImplementedException();
-            /*
-            _terms = terms;
+            CancelSearch();
+            
+            if (terms == null) _terms = Array.Empty<LocaleTerm>();
+            else _terms = terms;
+            
             RebuildSearchIndex();
-            _pagerToolbar.SetPageCount(GetPageCount());
-            RebuildPage();
-            */
+            
+            _defaultContent.SetTerms(_terms);
+            SetViewMode(ViewMode.Default, true);
         }
         
         /// <summary>
@@ -161,31 +181,6 @@ namespace Krugames.LocalizationSystem.Editor.UI {
                     _searchContent.UpdateView();
                     break;
             }
-        }
-
-        public void Search(string searchString) {
-            throw new NotImplementedException();
-            /*if (searchString == _searchToolbar.SearchField.value) return;
-
-            if (searchString.Length < SearchIndex.SearchLength) {
-                CancelSearch();
-            } else {
-                var searchResult = _termSearchIndex.GetSearchResult(searchString);
-                LocaleTerm[] foundTerms = new LocaleTerm[searchResult.Count];
-                for (int i = 0; i < searchResult.Count; i++) {
-                    foundTerms[i] = _resourceTermDict[searchResult[i]];
-                }
-                RebuildPage(foundTerms);
-                _viewMode = ViewMode.Search;
-            }*/
-        }
-        
-        public void CancelSearch() {
-            throw new NotImplementedException();
-            /*if (_viewMode == ViewMode.Search) {
-                _searchToolbar.SearchField.SetValueWithoutNotify(string.Empty);
-                _viewMode = ViewMode.Default;
-            }*/
         }
 
         private void RebuildSearchIndex() {
@@ -205,18 +200,64 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         private void UpdateViewMode() {
             _defaultContent.RemoveFromHierarchy();
             _searchContent.RemoveFromHierarchy();
+            
+            _defaultContent.RemoveSelection();
+            _searchContent.RemoveSelection();
             switch (_viewMode) {
                 case ViewMode.Default:
                     _root.Add(_defaultContent);
                     _defaultContent.PlaceInFront(_tableHeader);
+                    _defaultContent.Select(_selection.Term);
                     break;
                 
                 case ViewMode.Search:
                     _root.Add(_searchContent);
                     _searchContent.PlaceInFront(_tableHeader);
+                    _searchContent.Select(_selection.Term);
                     break;
             }
         }
+
+        private void SetViewMode(ViewMode viewMode, bool force = false) {
+            if (!force && _viewMode == viewMode) return;
+            _viewMode = viewMode;
+
+            int pageCount = (viewMode == ViewMode.Default) ? _defaultContent.PageCount : _searchContent.PageCount;
+            int currentPage = (viewMode == ViewMode.Default) ? _defaultContent.CurrentPage : _searchContent.CurrentPage;
+
+            _pagerToolbar.SetPageCount(pageCount);
+            _pagerToolbar.ChangePageWithoutNotify(currentPage);
+            
+            UpdateViewMode();
+        }
         
+        public void Search(string searchString) {
+            if (searchString == _lastSearchString) return;
+            _lastSearchString = searchString;
+            
+            if (searchString.Length < SearchIndex.SearchLength) {
+                CancelSearch();
+            } else {
+                var searchResult = _termSearchIndex.GetSearchResult(searchString);
+                LocaleTerm[] foundTerms = new LocaleTerm[searchResult.Count];
+                for (int i = 0; i < searchResult.Count; i++) {
+                    foundTerms[i] = _resourceTermDict[searchResult[i]];
+                }
+                _lastDefaultPage = _defaultContent.CurrentPage;
+                _searchContent.SetTerms(foundTerms);
+                _searchContent.SetPageWithoutNotify(1);
+                SetViewMode(ViewMode.Search);
+            }
+        }
+        
+        public void CancelSearch() {
+            if (_viewMode == ViewMode.Search) {
+                //_searchToolbar.SearchField.SetValueWithoutNotify(string.Empty);
+                SetViewMode(ViewMode.Default);
+                _defaultContent.SetPageWithoutNotify(_lastDefaultPage);
+                _lastSearchString = string.Empty;
+            }
+        }
+
     }
 }
