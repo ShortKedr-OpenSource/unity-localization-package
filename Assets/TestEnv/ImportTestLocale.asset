@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5639012927770336526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a57dab89ae4a238bd7b28baf969c50, type: 3}
+  m_Name: new_term
+  m_EditorClassIdentifier: 
+  term: test_1
+  smartValue: {fileID: 0}
+--- !u!114 &-4165973274920678570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4c89475bb14a4a9d4f35b35827321f, type: 3}
+  m_Name: test_audio_term
+  m_EditorClassIdentifier: 
+  term: test_audio_term
+  smartValue: {fileID: 8300000, guid: 8a52629047b120945b49a4633638ce64, type: 3}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15734691dc64420a9985820c49ceb7ba, type: 3}
+  m_Name: ImportTestLocale
+  m_EditorClassIdentifier: 
+  language: 10
+  terms:
+  - {fileID: -4165973274920678570}
+  - {fileID: 5389431794923539595}
+  - {fileID: -5639012927770336526}
+--- !u!114 &5389431794923539595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
+  m_Name: test_string_term
+  m_EditorClassIdentifier: 
+  term: test_string_term
+  smartValue: Yes! Your Grace!

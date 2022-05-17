@@ -5,7 +5,7 @@ using Krugames.LocalizationSystem.Editor.Serialization.DataTransferObjects;
 using Krugames.LocalizationSystem.Editor.Serialization.Serializers;
 using Krugames.LocalizationSystem.Models.Interfaces;
 
-[assembly: RegisterLocaleSerializer(typeof(LocaleXmlSerializer), "XML")]
+[assembly: RegisterLocaleSerializer(typeof(LocaleXmlSerializer), "XML", "xml")]
 
 namespace Krugames.LocalizationSystem.Editor.Serialization.Serializers {
     

@@ -1,0 +1,30 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <uie:Toolbar style="flex-grow: 1; max-height: 21px; min-height: 21px; height: 21px;">
+        <uie:ToolbarButton text="Button" display-tooltip-when-elided="true" />
+        <uie:ToolbarButton text="Button" display-tooltip-when-elided="true" />
+        <uie:ToolbarButton text="Button" display-tooltip-when-elided="true" />
+        <uie:ToolbarButton text="Button" display-tooltip-when-elided="true" />
+        <uie:ToolbarButton text="Button" display-tooltip-when-elided="true" />
+        <uie:ToolbarButton text="Button" display-tooltip-when-elided="true" />
+        <uie:ToolbarButton text="Button" display-tooltip-when-elided="true" />
+        <uie:ToolbarButton text="Button" display-tooltip-when-elided="true" />
+        <uie:ToolbarButton text="Button" display-tooltip-when-elided="true" />
+        <uie:ToolbarButton text="Button" display-tooltip-when-elided="true" />
+        <uie:ToolbarButton text="Button" display-tooltip-when-elided="true" />
+    </uie:Toolbar>
+    <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" show-vertical-scroller="false" style="opacity: 1; display: flex; overflow: hidden; min-height: 50px; flex-grow: 1;">
+        <uie:BoundsIntField label="BoundsInt" />
+        <uie:BoundsIntField label="BoundsInt" />
+        <uie:BoundsIntField label="BoundsInt" />
+        <uie:BoundsIntField label="BoundsInt" />
+        <uie:BoundsIntField label="BoundsInt" />
+        <uie:BoundsIntField label="BoundsInt" />
+        <uie:BoundsIntField label="BoundsInt" />
+        <uie:BoundsIntField label="BoundsInt" />
+        <uie:BoundsIntField label="BoundsInt" />
+        <uie:BoundsIntField label="BoundsInt" />
+        <uie:BoundsIntField label="BoundsInt" />
+        <uie:BoundsIntField label="BoundsInt" />
+        <uie:BoundsIntField label="BoundsInt" />
+    </ui:ScrollView>
+</ui:UXML>

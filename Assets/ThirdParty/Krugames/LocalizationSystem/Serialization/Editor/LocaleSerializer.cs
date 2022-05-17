@@ -12,6 +12,7 @@ namespace Krugames.LocalizationSystem.Editor.Serialization {
         public abstract object Serialize(ILocale locale);
         
         public abstract void Deserialize(ILocale targetLocale, object data);
+        
     }
     
     /// <summary>

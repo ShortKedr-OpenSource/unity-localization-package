@@ -220,6 +220,7 @@ namespace Krugames.LocalizationSystem.Editor.UI {
                 _terms = terms;
                 _pageCount = Mathf.CeilToInt((float) _terms.Length / _pageLength);
             }
+            _selection = SelectionInfo.Nothing;
             BuildIndexCache();
             OnLayoutChange?.Invoke(this, _terms);
             Rebuild();

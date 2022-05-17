@@ -3,7 +3,7 @@ using System.IO;
 using Krugames.LocalizationSystem.Common.Extensions;
 using Krugames.LocalizationSystem.Editor.Serialization.Utility;
 using Krugames.LocalizationSystem.Models;
-using Krugames.LocalizationSystem.Models.Utility.Editor;
+using Krugames.LocalizationSystem.Models.Utility;
 using UnityEditor;
 using UnityEngine;
 
@@ -33,9 +33,9 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.DataTransferObjects {
 
             object value = localeTerm.Value;
             bool isAsset = false;
-            if (value is UnityEngine.Object unityObject) {
+            if (value is UnityEngine.Object unityObject && AssetDatabase.Contains(unityObject)) {
                 string path = AssetDatabase.GetAssetPath(unityObject);
-                value = Path.GetFileName(path);
+                value = path;
                 isAsset = true;
             }
             

@@ -1,5 +1,7 @@
 ﻿using System;
+using Krugames.LocalizationSystem.Editor.Serialization.Utility;
 using Krugames.LocalizationSystem.Models;
+using Krugames.LocalizationSystem.Models.Utility.Editor;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,7 +19,8 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         private Rect _importBtnRect;
         
         private LocaleTermSelector _termSelector;
-        private LocaleSerializerSelector _serializerSelector;
+        private LocaleSerializerSelector _serializerExportSelector;
+        private LocaleSerializerSelector _serializerImportSelector;
 
         private Locale _locale;
         private SerializedProperty _languageProp;
@@ -49,15 +52,26 @@ namespace Krugames.LocalizationSystem.Editor.UI {
             _footerContainer = new IMGUIContainer(OnIMGUIFooterGUI);
             
             _localeTermList.OnTermSelect += TermSelectEvent;
+            _localeTermList.OnTermDeleteSelect += TermDeleteSelectEvent;
             ObjectChangeEvents.changesPublished += ObjectChangeEvent;
         }
-
+        
         private void ObjectChangeEvent(ref ObjectChangeEventStream stream) {
             _localeTermList.UpdateView();
         }
 
         private void TermSelectEvent(LocaleTermListView termList, LocaleTerm localeTerm) {
+            if (_localeTermEditor.Term != null) LocaleUtility.RenameTermSubAsset(_locale, _localeTermEditor.Term);
             _localeTermEditor.SetTerm(localeTerm);
+        }
+        
+        private void TermDeleteSelectEvent(LocaleTermListView self, LocaleTerm localeTerm) {
+            if (localeTerm == null) return;
+            if (_localeTermEditor.Term == localeTerm) _localeTermEditor.SetTerm(null);
+            bool result = LocaleUtility.RemoveLocaleTerm(_locale, localeTerm);
+            if (result) {
+                _localeTermList.SetTerms(_locale.GetTerms());
+            }
         }
 
         private void OnIMGUIHeaderGUI() {
@@ -83,13 +97,13 @@ namespace Krugames.LocalizationSystem.Editor.UI {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Export", GUILayout.MinWidth(110.5f), GUILayout.MinHeight(26))) {
-                if (_serializerSelector == null) _serializerSelector = LocaleSerializerSelector.Create(Export);
-                PopupWindow.Show(_exportBtnRect, _serializerSelector);
+                if (_serializerExportSelector == null) _serializerExportSelector = LocaleSerializerSelector.Create(Export);
+                PopupWindow.Show(_exportBtnRect, _serializerExportSelector);
             }
             if (Event.current.type == EventType.Repaint) _exportBtnRect = GUILayoutUtility.GetLastRect();
             if (GUILayout.Button("Import", GUILayout.MinWidth(110.5f), GUILayout.MinHeight(26))) {
-                if (_serializerSelector == null) _serializerSelector = LocaleSerializerSelector.Create(Export);
-                PopupWindow.Show(_importBtnRect, _serializerSelector);
+                if (_serializerImportSelector == null) _serializerImportSelector = LocaleSerializerSelector.Create(Import);
+                PopupWindow.Show(_importBtnRect, _serializerImportSelector);
             }
             if (Event.current.type == EventType.Repaint) _importBtnRect = GUILayoutUtility.GetLastRect();
             GUILayout.FlexibleSpace();
@@ -99,18 +113,24 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         }
 
         private void AddTerm(Type termType, Type valueType) {
-            Debug.Log($"TermType: {termType}; ValueType: {valueType}");
+            string defaulTermName = "new_term";
+            LocaleTerm term = LocaleUtility.AddLocaleTerm(_locale, defaulTermName, termType, false);
+            _localeTermList.SetTerms(_locale.GetTerms());
+            _localeTermEditor.SetTerm(term);
         }
         
         private void Export(Type serializerType) {
-            Debug.Log($"SerializerType: {serializerType}");
+            LocaleSerializerUtility.Export(_locale, serializerType);
         }
         
-        private void OpenLocalizationEditor() {
-            Debug.Log("Open Localization Editor");
+        private void Import(Type serializerType) {
+             LocaleSerializerUtility.Import(_locale, serializerType);
+            _localeTermEditor.SetTerm(null);
+            _localeTermList.SetTerms(_locale.GetTerms());
         }
 
         private void OnDestroy() {
+            if (_localeTermEditor.Term != null) LocaleUtility.RenameTermSubAsset(_locale, _localeTermEditor.Term);
             ObjectChangeEvents.changesPublished -= ObjectChangeEvent;
         }
     }

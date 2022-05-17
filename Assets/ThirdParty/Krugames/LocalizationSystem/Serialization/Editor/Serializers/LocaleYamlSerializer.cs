@@ -5,7 +5,7 @@ using Krugames.LocalizationSystem.Models.Interfaces;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-[assembly: RegisterLocaleSerializer(typeof(LocaleYamlSerializer), "YAML")]
+[assembly: RegisterLocaleSerializer(typeof(LocaleYamlSerializer), "YAML", "yaml")]
 
 namespace Krugames.LocalizationSystem.Editor.Serialization.Serializers {
     

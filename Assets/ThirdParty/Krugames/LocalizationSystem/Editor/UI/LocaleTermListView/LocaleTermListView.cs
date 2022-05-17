@@ -12,6 +12,8 @@ using UnityEngine.UIElements;
 //TODO can be templated to generic ListView<TItemType>, ListViewElement<TItemType>
 //TODO fix issue with PagerToolbar when it shows 1/0 with PageCount=0
 //TODO test callback overcall, fix if necessary
+//TODO ability to switch term places in array
+//BUG elementsCount == itemPerPage cause bug - you dont see any elements
 namespace Krugames.LocalizationSystem.Editor.UI {
     public class LocaleTermListView : Box {
         
@@ -157,7 +159,9 @@ namespace Krugames.LocalizationSystem.Editor.UI {
 
         public void SetTerms(LocaleTerm[] terms) {
             CancelSearch();
-            
+            _searchToolbar.SearchField.SetValueWithoutNotify(string.Empty);
+            _selection = LocaleTermListViewContent.SelectionInfo.Nothing;
+
             if (terms == null) _terms = Array.Empty<LocaleTerm>();
             else _terms = terms;
             
@@ -251,10 +255,21 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         
         public void CancelSearch() {
             if (_viewMode == ViewMode.Search) {
-                //_searchToolbar.SearchField.SetValueWithoutNotify(string.Empty);
                 SetViewMode(ViewMode.Default);
                 _defaultContent.SetPageWithoutNotify(_lastDefaultPage);
                 _lastSearchString = string.Empty;
+            }
+        }
+
+        public void Select(LocaleTerm term) {
+            switch (_viewMode) {
+                case ViewMode.Default:
+                    _defaultContent.Select(term);
+                    break;
+                
+                case ViewMode.Search:
+                    _searchContent.Select(term);
+                    break;
             }
         }
 

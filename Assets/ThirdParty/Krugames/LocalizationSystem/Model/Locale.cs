@@ -8,7 +8,11 @@ using UnityEngine;
 namespace Krugames.LocalizationSystem.Models {
     
     [CreateAssetMenu(fileName = "Locale", menuName = "Localization/Locale", order = 0)]
-    public class Locale : ScriptableObject, ILocale, ICacheCarrier, ILocaleGettableLayout, ILocaleSettableLayout {
+    public class Locale : ScriptableObject, ILocale, ICacheCarrier, ILocaleGettableLayout 
+#if UNITY_EDITOR
+        ,ILocaleSettableLayout, IModifiableLocale
+#endif
+    {
 
         private const int DefaultBuffer = 64;
 
@@ -322,6 +326,11 @@ namespace Krugames.LocalizationSystem.Models {
         }
 
 #if UNITY_EDITOR
+
+        private const string OnlyEditorObsoleteMessage =
+            "Method use allowed only in editor. In-Editor use LocaleUtility methods instead";
+        
+        [Obsolete(OnlyEditorObsoleteMessage)]
         public void SetLayout(TermStructureInfo[] layout) {
 
             if (Application.isPlaying) {
@@ -332,6 +341,29 @@ namespace Krugames.LocalizationSystem.Models {
             
         }
 
+        [Obsolete(OnlyEditorObsoleteMessage)]
+        public bool SetLanguage(SystemLanguage newLanguage) {
+            
+            if (Application.isPlaying) {
+                Debug.LogError("Static Locale can not be changed in runtime!");
+                return false;
+            }
+            
+            throw new NotImplementedException();
+        }
+
+        [Obsolete(OnlyEditorObsoleteMessage)]
+        public bool SetTerms(LocaleTerm[] terms) {
+            
+            if (Application.isPlaying) {
+                Debug.LogError("Static Locale can not be changed in runtime!");
+                return false;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        [Obsolete(OnlyEditorObsoleteMessage)]
         public bool AddTerm(LocaleTerm term) {
             
             if (Application.isPlaying) {
@@ -346,6 +378,7 @@ namespace Krugames.LocalizationSystem.Models {
             return true;
         }
 
+        [Obsolete(OnlyEditorObsoleteMessage)]
         public bool RemoveTerm(LocaleTerm term) {
             if (Application.isPlaying) {
                 Debug.LogError("Static Locale can not be changed in runtime!");
@@ -358,21 +391,6 @@ namespace Krugames.LocalizationSystem.Models {
             RebuildCache(); //TODO replace with cache partial update
             return result;
         }
-
-        public bool ContainsTerm(LocaleTerm term) {
-            if (term == null) return false;
-            return terms.Contains(term);
-            //TODO rework to cache
-        }
 #endif
-        
-        //TODO EditorOnly AddTerm method
-        //TODO EditorOnly RemoveTerm method
-        //TODO EditorOnly ContainsTerm(LocaleTerm) method
-        //TODO EditorOnly TermContainmentCache
-        
-        //TODO ContainsTerm(string) method
-        //TODO OnOpenAsset attribute method
-        
     }
 }

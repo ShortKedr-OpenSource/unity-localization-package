@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Krugames.LocalizationSystem.Models.Attributes;
-using Krugames.LocalizationSystem.Models.Utility.Editor;
+using Krugames.LocalizationSystem.Models.Utility;
 
 namespace Krugames.LocalizationSystem.Models.Locators {
     public static class LocaleTermLocator {

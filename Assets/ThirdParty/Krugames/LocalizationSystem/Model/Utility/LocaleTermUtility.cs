@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Krugames.LocalizationSystem.Models.Utility.Editor {
+namespace Krugames.LocalizationSystem.Models.Utility {
     public static class LocaleTermUtility {
         
         public readonly static Type BaseType = typeof(LocaleTerm);

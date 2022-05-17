@@ -16,9 +16,8 @@ namespace Krugames.LocalizationSystem.Models.Dynamic {
     /// Also, dynamic locales can stay in memory after being unreferenced,
     /// so to manage unreferenced Dynamic Localization API stuff, check ReferenceManager class
     /// </summary>
-    public class DynamicLocale : ILocale, ILocaleGettableLayout, ILocaleSettableLayout {
-        //TODO implement
-        
+    public class DynamicLocale : ILocale, IModifiableLocale, ILocaleGettableLayout, ILocaleSettableLayout {
+
         public DynamicLocale() {
             throw new NotImplementedException();
         }
@@ -106,6 +105,22 @@ namespace Krugames.LocalizationSystem.Models.Dynamic {
         }
 
         public void SetLayout(TermStructureInfo[] layout) {
+            throw new NotImplementedException();
+        }
+
+        public bool SetLanguage(SystemLanguage newLanguage) {
+            throw new NotImplementedException();
+        }
+
+        public bool SetTerms(LocaleTerm[] terms) {
+            throw new NotImplementedException();
+        }
+
+        public bool AddTerm(LocaleTerm term) {
+            throw new NotImplementedException();
+        }
+
+        public bool RemoveTerm(LocaleTerm term) {
             throw new NotImplementedException();
         }
     }

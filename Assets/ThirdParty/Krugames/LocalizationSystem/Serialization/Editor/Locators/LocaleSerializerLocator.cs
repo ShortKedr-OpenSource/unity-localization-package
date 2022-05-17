@@ -6,11 +6,25 @@ using Krugames.LocalizationSystem.Editor.Serialization.Attributes;
 namespace Krugames.LocalizationSystem.Editor.Serialization.Locators {
     public static class LocaleSerializerLocator {
 
+        public class LocaleSerializerBuildData {
+            private RegisterLocaleSerializerAttribute _registerAttribute;
+
+            public Type SerializerType => _registerAttribute.SerializerType;
+            public string Name => _registerAttribute.Name;
+            public string Extension => _registerAttribute.Extension;
+
+            public LocaleSerializerBuildData(RegisterLocaleSerializerAttribute registerAttribute) {
+                _registerAttribute = registerAttribute;
+            }
+        }
+        
         private const int DefaultBuffer = 8;
 
         private static RegisterLocaleSerializerAttribute[] _locators;
         private static LocaleSerializerBuildData[] _buildData;
 
+        private static Dictionary<Type, LocaleSerializerBuildData> _buildDataBySerializerType;
+        
         private static bool _isInitialized = false;
 
         /// <summary>
@@ -37,7 +51,7 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Locators {
         private static void Initialize() {
             List<RegisterLocaleSerializerAttribute> locators = new List<RegisterLocaleSerializerAttribute>(DefaultBuffer);
             List<LocaleSerializerBuildData> buildData = new List<LocaleSerializerBuildData>(DefaultBuffer);
-            
+
             foreach (ICustomAttributeProvider assembly in AppDomain.CurrentDomain.GetAssemblies()) {
                 var attributes = assembly.GetCustomAttributes(typeof(RegisterLocaleSerializerAttribute), false);
 
@@ -52,18 +66,19 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Locators {
 
             _locators = locators.ToArray();
             _buildData = buildData.ToArray();
+            
+            _buildDataBySerializerType = new Dictionary<Type, LocaleSerializerBuildData>(buildData.Count);
+            for (int i = 0; i < _buildData.Length; i++) {
+                _buildDataBySerializerType.Add(_buildData[i].SerializerType, _buildData[i]);
+            }
+            
             _isInitialized = true;
         }
 
-        public class LocaleSerializerBuildData {
-            private RegisterLocaleSerializerAttribute _registerAttribute;
-
-            public Type SerializerType => _registerAttribute.SerializerType;
-            public string Name => _registerAttribute.Name;
-
-            public LocaleSerializerBuildData(RegisterLocaleSerializerAttribute registerAttribute) {
-                _registerAttribute = registerAttribute;
-            }
+        public static LocaleSerializerBuildData GetBuildData(Type serializerType) {
+            if (_buildDataBySerializerType.ContainsKey(serializerType))
+                return _buildDataBySerializerType[serializerType];
+            return null;
         }
     }
 }

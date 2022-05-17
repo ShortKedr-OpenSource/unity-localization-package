@@ -1,6 +1,6 @@
 ﻿using System;
 using Krugames.LocalizationSystem.Common.Extensions;
-using Krugames.LocalizationSystem.Models.Utility.Editor;
+using Krugames.LocalizationSystem.Models.Utility;
 using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Models.Attributes {

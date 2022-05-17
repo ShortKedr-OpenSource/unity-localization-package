@@ -17,10 +17,12 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Attributes {
         
         public readonly Type SerializerType;
         public readonly string Name;
+        public readonly string Extension;
         
-        public RegisterLocaleSerializerAttribute(Type serializerType, string name = "") {
+        public RegisterLocaleSerializerAttribute(Type serializerType, string name = "", string extension = "") {
             SerializerType = serializerType;
             Name = (name == "") ? SerializerType.Name : name;
+            Extension = extension;
         }
 
         public bool IsValid {

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Editor.UI {
     public class LocaleSerializerSelector : SelectorListPopup {
-        public delegate void SelectDelegate(Type selectedSerializerType);
+        public delegate void SelectDelegate(Type serializerType);
 
         private static LocaleSerializerLocator.LocaleSerializerBuildData[] _buildData = LocaleSerializerLocator.BuildData;
 

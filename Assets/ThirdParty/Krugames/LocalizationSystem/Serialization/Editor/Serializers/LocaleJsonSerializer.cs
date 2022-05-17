@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Krugames.LocalizationSystem.Editor.Serialization.Attributes;
 using Krugames.LocalizationSystem.Editor.Serialization.DataTransferObjects;
 using Krugames.LocalizationSystem.Editor.Serialization.Serializers;
 using Krugames.LocalizationSystem.Models.Interfaces;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
-[assembly: RegisterLocaleSerializer(typeof(LocaleJsonSerializer), "JSON")]
+[assembly: RegisterLocaleSerializer(typeof(LocaleJsonSerializer), "JSON", "json")]
 
 namespace Krugames.LocalizationSystem.Editor.Serialization.Serializers {
     
@@ -16,10 +18,20 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Serializers {
 
         private JsonSerializerSettings _settings;
         private Formatting _formatting;
-        
+
+        public LocaleJsonSerializer() : this(Formatting.None){
+        }
+
         public LocaleJsonSerializer(Formatting formatting = Formatting.None, JsonSerializerSettings settings = null) {
             _settings = settings;
             _formatting = formatting;
+            if (_settings == null) {
+                _settings = new JsonSerializerSettings() {
+                    Converters = new List<JsonConverter>() {
+                        new StringEnumConverter(),
+                    }
+                };
+            }
         }
 
         public override string SerializeSmart(ILocale locale) {
@@ -28,6 +40,7 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Serializers {
         }
 
         public override void DeserializeSmart(ILocale targetLocale, string data) {
+            throw new NotImplementedException();
             List<TermData> terms = JsonConvert.DeserializeObject<List<TermData>>(data, _settings);
             //TODO change layout of locale;
             //TODO assign value;
