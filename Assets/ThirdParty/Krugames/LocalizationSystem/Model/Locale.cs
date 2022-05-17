@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Krugames.LocalizationSystem.Models.Interfaces;
 using Krugames.LocalizationSystem.Models.Locators;
 using Krugames.LocalizationSystem.Models.Structs;
+using UnityEditor;
 using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Models {
@@ -337,8 +338,8 @@ namespace Krugames.LocalizationSystem.Models {
                 Debug.LogError("Static Locale can not be changed in runtime!");
                 return;
             }
-            //TODO use LocaleUtility to change layout
-            
+
+            throw new NotImplementedException();
         }
 
         [Obsolete(OnlyEditorObsoleteMessage)]
@@ -348,12 +349,14 @@ namespace Krugames.LocalizationSystem.Models {
                 Debug.LogError("Static Locale can not be changed in runtime!");
                 return false;
             }
-            
-            throw new NotImplementedException();
+
+            language = newLanguage;
+            EditorUtility.SetDirty(this);
+            return true;
         }
 
         [Obsolete(OnlyEditorObsoleteMessage)]
-        public bool SetTerms(LocaleTerm[] terms) {
+        public bool ClearTerms() {
             
             if (Application.isPlaying) {
                 Debug.LogError("Static Locale can not be changed in runtime!");
@@ -361,6 +364,7 @@ namespace Krugames.LocalizationSystem.Models {
             }
 
             throw new NotImplementedException();
+            EditorUtility.SetDirty(this);
         }
 
         [Obsolete(OnlyEditorObsoleteMessage)]
@@ -374,6 +378,7 @@ namespace Krugames.LocalizationSystem.Models {
             if (term == null) return false;
             if (!_wasInitialized) InitializeInternal();
             terms.Add(term);
+            EditorUtility.SetDirty(this);
             RebuildCache(); //TODO replace with cache partial update
             return true;
         }
@@ -388,6 +393,7 @@ namespace Krugames.LocalizationSystem.Models {
             if (term == null) return false;
             if (!_wasInitialized) InitializeInternal();
             bool result = terms.Remove(term);
+            EditorUtility.SetDirty(this);
             RebuildCache(); //TODO replace with cache partial update
             return result;
         }

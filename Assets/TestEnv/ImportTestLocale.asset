@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7a57dab89ae4a238bd7b28baf969c50, type: 3}
-  m_Name: new_term
+  m_Name: test_sprite_term
   m_EditorClassIdentifier: 
-  term: test_1
-  smartValue: {fileID: 0}
+  term: test_sprite_term
+  smartValue: {fileID: 21300000, guid: fe43d52e949d8424f98e86b13a3475ce, type: 3}
 --- !u!114 &-4165973274920678570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,6 +45,7 @@ MonoBehaviour:
   - {fileID: -4165973274920678570}
   - {fileID: 5389431794923539595}
   - {fileID: -5639012927770336526}
+  - {fileID: 6388743744549047995}
 --- !u!114 &5389431794923539595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,3 +60,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   term: test_string_term
   smartValue: Yes! Your Grace!
+--- !u!114 &6388743744549047995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
+  m_Name: my_string_term_q
+  m_EditorClassIdentifier: 
+  term: my_string_term_q
+  smartValue: Value

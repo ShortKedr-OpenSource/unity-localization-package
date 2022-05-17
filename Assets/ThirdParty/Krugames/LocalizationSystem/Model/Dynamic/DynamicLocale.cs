@@ -112,7 +112,7 @@ namespace Krugames.LocalizationSystem.Models.Dynamic {
             throw new NotImplementedException();
         }
 
-        public bool SetTerms(LocaleTerm[] terms) {
+        public bool ClearTerms() {
             throw new NotImplementedException();
         }
 

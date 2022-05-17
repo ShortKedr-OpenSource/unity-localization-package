@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Models.Interfaces {
+    //TODO edit this thing
     public interface IModifiableLocale {
         /// <summary>
         /// Sets Locale language
@@ -10,11 +11,10 @@ namespace Krugames.LocalizationSystem.Models.Interfaces {
         public bool SetLanguage(SystemLanguage newLanguage);
         
         /// <summary>
-        /// Replace Locale terms with new terms array
+        /// Clear all terms from Locale term base
         /// </summary>
-        /// <param name="terms">new terms</param>
-        /// <returns>true if terms was set</returns>
-        public bool SetTerms(LocaleTerm[] terms);
+        /// <returns>true if term base was cleared</returns>
+        public bool ClearTerms();
 
         /// <summary>
         /// Add new term to Locale term base

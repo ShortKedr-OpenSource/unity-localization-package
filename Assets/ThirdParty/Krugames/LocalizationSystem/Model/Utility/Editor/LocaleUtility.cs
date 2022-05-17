@@ -1,16 +1,15 @@
 ﻿using System;
 using Krugames.LocalizationSystem.Common.Extensions;
-using Krugames.LocalizationSystem.Models.Interfaces;
 using Krugames.LocalizationSystem.Models.Structs;
-using Krugames.LocalizationSystem.Models.Validation;
 using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+//TODO create better sub-asset flow and naming
 namespace Krugames.LocalizationSystem.Models.Utility.Editor {
     public static class LocaleUtility {
         
+        //TODO replace to editor part of Locale class
         public static LocaleTerm AddLocaleTerm(Locale locale, string termName, Type termType, bool preventDuplicate = true) {
             
             if (Application.isPlaying) {
@@ -51,11 +50,15 @@ namespace Krugames.LocalizationSystem.Models.Utility.Editor {
 #pragma warning disable CS0618
             locale.AddTerm(termObject);
 #pragma warning restore CS0618
-            AssetDatabase.ImportAsset(localePath);
+            EditorUtility.SetDirty(locale);
+            EditorUtility.SetDirty(termObject);
+            AssetDatabase.ImportAsset(localePath, ImportAssetOptions.ForceUpdate);
 
             return termObject;
         }
 
+        //TODO add sub-asset parent check, only can be removed
+        //TODO replace to editor part of Locale class
         public static bool RemoveLocaleTerm(Locale locale, LocaleTerm term) {
             
             //TODO implement
@@ -71,7 +74,6 @@ namespace Krugames.LocalizationSystem.Models.Utility.Editor {
 
             bool isAsset = AssetDatabase.IsMainAsset(locale);
             bool isSubAsset = AssetDatabase.IsSubAsset(term);
-            bool isLocaleChild = AssetDatabase.LoadAssetAtPath<Locale>(termPath) == locale;
 
             if (!isAsset) {
                 Debug.LogError($"Term can not be removed from non asset locale. Locale must be an asset!");
@@ -80,10 +82,7 @@ namespace Krugames.LocalizationSystem.Models.Utility.Editor {
             
             if (!isSubAsset) {
                 Debug.LogError("Non sub-asset term can not be removed from locale!");
-            }
-
-            if (isLocaleChild) {
-                Debug.LogError("Term asset can not be removed from another locale!");
+                return false;
             }
 
 #pragma warning disable CS0618
@@ -91,8 +90,9 @@ namespace Krugames.LocalizationSystem.Models.Utility.Editor {
 #pragma warning restore CS0618
             AssetDatabase.RemoveObjectFromAsset(term);
             Object.DestroyImmediate(term);
+            EditorUtility.SetDirty(locale);
             AssetDatabase.ImportAsset(termPath);
-
+        
             return true;
         }
 
@@ -108,18 +108,29 @@ namespace Krugames.LocalizationSystem.Models.Utility.Editor {
 #pragma warning restore CS0618
         }
 
-        public static bool SetTerms(Locale locale, LocaleTerm[] terms) {
+        public static bool ClearTerms(Locale locale) {
 #pragma warning disable CS0618
-            return locale.SetTerms(terms);
+            return locale.ClearTerms();
 #pragma warning restore CS0618
         }
         
+        //TODO add sub-asset parent check
         public static void RenameTermSubAsset(Locale locale, LocaleTerm term) {
             if (!AssetDatabase.IsSubAsset(term)) return;
             string termPath = AssetDatabase.GetAssetPath(term);
-            if (AssetDatabase.LoadAssetAtPath<Locale>(termPath) != locale) return;
-            term.name = term.Term;
-            AssetDatabase.ImportAsset(termPath);
+            if (term.name != term.Term) {
+                term.name = term.Term;
+                EditorUtility.SetDirty(locale);
+                EditorUtility.SetDirty(term);
+                AssetDatabase.ImportAsset(termPath);
+            }
+            
+            Object[] objects = AssetDatabase.LoadAllAssetsAtPath(termPath);
+            string debugString = "";
+            for (int i = 0; i < objects.Length; i++) {
+                debugString += objects[i] + "\n";
+            }
+            Debug.Log(debugString);
         }
     }
 }
