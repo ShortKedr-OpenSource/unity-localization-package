@@ -1,6 +1,7 @@
 ﻿using System;
 using Krugames.LocalizationSystem.Common.Extensions;
 using Krugames.LocalizationSystem.Models.Structs;
+using ThirdParty.Krugames.LocalizationSystem.Common.Editor;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -116,7 +117,7 @@ namespace Krugames.LocalizationSystem.Models.Utility.Editor {
         
         //TODO add sub-asset parent check
         public static void RenameTermSubAsset(Locale locale, LocaleTerm term) {
-            if (!AssetDatabase.IsSubAsset(term)) return;
+            if (!AssetHelper.IsSubAssetOf(term, locale)) return;
             string termPath = AssetDatabase.GetAssetPath(term);
             if (term.name != term.Term) {
                 term.name = term.Term;
@@ -124,13 +125,6 @@ namespace Krugames.LocalizationSystem.Models.Utility.Editor {
                 EditorUtility.SetDirty(term);
                 AssetDatabase.ImportAsset(termPath);
             }
-            
-            Object[] objects = AssetDatabase.LoadAllAssetsAtPath(termPath);
-            string debugString = "";
-            for (int i = 0; i < objects.Length; i++) {
-                debugString += objects[i] + "\n";
-            }
-            Debug.Log(debugString);
         }
     }
 }
