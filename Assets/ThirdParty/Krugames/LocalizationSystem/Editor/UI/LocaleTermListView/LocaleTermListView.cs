@@ -9,6 +9,7 @@ using ThirdParty.Krugames.LocalizationSystem.Editor.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+//TODO fix: searchIndex still the same if term changes
 //TODO can be templated to generic ListView<TItemType>, ListViewElement<TItemType>
 //TODO fix issue with PagerToolbar when it shows 1/0 with PageCount=0
 //TODO test callback overcall, fix if necessary

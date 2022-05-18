@@ -9,12 +9,6 @@ namespace Krugames.LocalizationSystem.Models.Interfaces {
         /// <param name="newLanguage">new language to set</param>
         /// <returns>true if language was set</returns>
         public bool SetLanguage(SystemLanguage newLanguage);
-        
-        /// <summary>
-        /// Clear all terms from Locale term base
-        /// </summary>
-        /// <returns>true if term base was cleared</returns>
-        public bool ClearTerms();
 
         /// <summary>
         /// Add new term to Locale term base
@@ -28,5 +22,18 @@ namespace Krugames.LocalizationSystem.Models.Interfaces {
         /// <param name="term">term to remove</param>
         /// <returns>true if term was removed</returns>
         public bool RemoveTerm(LocaleTerm term);
+
+        /// <summary>
+        /// Replace current term base with new one
+        /// </summary>
+        /// <param name="terms">terms array for new term base</param>
+        /// <returns>true if no errors was occured</returns>
+        public bool SetTerms(LocaleTerm[] terms);
+        
+        /// <summary>
+        /// Clear all terms from Locale term base
+        /// </summary>
+        /// <returns>true if term base was cleared</returns>
+        public bool ClearTerms();
     }
 }

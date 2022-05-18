@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using Krugames.LocalizationSystem.Models.Interfaces;
 using Krugames.LocalizationSystem.Models.Locators;
 using Krugames.LocalizationSystem.Models.Structs;
-using UnityEditor;
 using UnityEngine;
+using static UnityEngine.Object;
+
+#if UNITY_EDITOR
+using Krugames.LocalizationSystem.Common.Editor;
+using UnityEditor;
+#endif
 
 namespace Krugames.LocalizationSystem.Models {
     
@@ -340,6 +345,7 @@ namespace Krugames.LocalizationSystem.Models {
             }
 
             throw new NotImplementedException();
+            //TODO implement
         }
 
         [Obsolete(OnlyEditorObsoleteMessage)]
@@ -355,6 +361,115 @@ namespace Krugames.LocalizationSystem.Models {
             return true;
         }
 
+        /// <summary>
+        /// Add term to locale term base.
+        /// Additionally saves term as locale's sub-asset, if it is not asset instance;
+        /// It's not possible to add sub-assets instances via this method
+        /// </summary>
+        /// <param name="term">term to add</param>
+        /// <returns>True if term was added. Sub-asset instances can-not be added</returns>
+        [Obsolete(OnlyEditorObsoleteMessage)]
+        public bool AddTerm(LocaleTerm term) {
+            return AddTerm_Private(term, true, true, true);
+        }
+
+        private bool AddTerm_Private(LocaleTerm term, bool setDirty, bool reimportLocale, bool rebuildCache) {
+            if (Application.isPlaying) {
+                Debug.LogError("Static Locale can not be changed in runtime!");
+                return false;
+            }
+
+            if (!AssetDatabase.IsMainAsset(this)) {
+                Debug.LogError($"Term can not be added to non asset locale. Locale must be an asset!");
+                return false;
+            }
+
+            if (term == null) return false;
+            if (!_wasInitialized) InitializeInternal();
+
+            if (AssetDatabase.IsSubAsset(term)) {
+                Debug.LogError("Term sub-assets can not be added! " +
+                               "To successfully add new term, create new term instance or pass main asset term");
+                return false;
+            }
+            
+            if (AssetDatabase.IsMainAsset(term)) {
+                terms.Add(term);
+                if (setDirty) EditorUtility.SetDirty(this);
+            } else {
+                AssetDatabase.AddObjectToAsset(term, this);
+                terms.Add(term);
+                if (setDirty) EditorUtility.SetDirty(this);
+
+                string localeAssetPath = AssetDatabase.GetAssetPath(this);
+                if (reimportLocale) AssetDatabase.ImportAsset(localeAssetPath, ImportAssetOptions.ForceUpdate);
+            }
+
+            if (rebuildCache) RebuildCache(); //TODO replace with cache partial update
+            return true;
+        }
+
+        
+        /// <summary>
+        /// Removes term from locale term base
+        /// If locale is sub-asset of current locale - it will be deleted;
+        /// </summary>
+        /// <param name="term">term to remove</param>
+        /// <returns>true if term was removed</returns>
+        [Obsolete(OnlyEditorObsoleteMessage)]
+        public bool RemoveTerm(LocaleTerm term) {
+            return RemoveTerm_Private(term, true, true, true);
+        }
+
+        private bool RemoveTerm_Private(LocaleTerm term, bool setDirty, bool reimportLocale, bool rebuildCache) {
+            if (Application.isPlaying) {
+                Debug.LogError("Static Locale can not be changed in runtime!");
+                return false;
+            }
+            
+            if (term == null) return false;
+            if (!_wasInitialized) InitializeInternal();
+
+            bool result = false;
+            if (AssetHelper.IsSubAssetOf(term, this)) {
+                AssetDatabase.RemoveObjectFromAsset(term);
+                result = terms.Remove(term);
+                DestroyImmediate(term);
+                if (setDirty) EditorUtility.SetDirty(this);
+
+                if (reimportLocale) {
+                    string localeAssetPath = AssetDatabase.GetAssetPath(this);
+                    AssetDatabase.ImportAsset(localeAssetPath, ImportAssetOptions.ForceUpdate);
+                }
+            } else {
+                result = terms.Remove(term);
+                if (setDirty) EditorUtility.SetDirty(this);
+            }
+            
+            if (rebuildCache) RebuildCache(); //TODO replace with cache partial update
+            return result;
+        }
+        
+        [Obsolete(OnlyEditorObsoleteMessage)]
+        public bool SetTerms(LocaleTerm[] terms) {
+            if (Application.isPlaying) {
+                Debug.LogError("Static Locale can not be changed in runtime!");
+                return false;
+            }
+
+            ClearTerms();
+
+            for (int i = 0; i < terms.Length; i++) { 
+                AddTerm_Private(terms[i], false, false, false);
+            }
+            
+            EditorUtility.SetDirty(this);
+            string localeAssetPath = AssetDatabase.GetAssetPath(this);
+            AssetDatabase.ImportAsset(localeAssetPath, ImportAssetOptions.ForceUpdate);
+            RebuildCache();
+            return true;
+        }
+        
         [Obsolete(OnlyEditorObsoleteMessage)]
         public bool ClearTerms() {
             
@@ -363,39 +478,15 @@ namespace Krugames.LocalizationSystem.Models {
                 return false;
             }
 
-            throw new NotImplementedException();
-            EditorUtility.SetDirty(this);
-        }
-
-        [Obsolete(OnlyEditorObsoleteMessage)]
-        public bool AddTerm(LocaleTerm term) {
-            
-            if (Application.isPlaying) {
-                Debug.LogError("Static Locale can not be changed in runtime!");
-                return false;
+            for (int i = 0; i < terms.Count; i++) {
+                RemoveTerm_Private(terms[i], false, false, false);
             }
             
-            if (term == null) return false;
-            if (!_wasInitialized) InitializeInternal();
-            terms.Add(term);
             EditorUtility.SetDirty(this);
-            RebuildCache(); //TODO replace with cache partial update
+            string localeAssetPath = AssetDatabase.GetAssetPath(this);
+            AssetDatabase.ImportAsset(localeAssetPath, ImportAssetOptions.ForceUpdate);
+            RebuildCache();
             return true;
-        }
-
-        [Obsolete(OnlyEditorObsoleteMessage)]
-        public bool RemoveTerm(LocaleTerm term) {
-            if (Application.isPlaying) {
-                Debug.LogError("Static Locale can not be changed in runtime!");
-                return false;
-            }
-            
-            if (term == null) return false;
-            if (!_wasInitialized) InitializeInternal();
-            bool result = terms.Remove(term);
-            EditorUtility.SetDirty(this);
-            RebuildCache(); //TODO replace with cache partial update
-            return result;
         }
 #endif
     }

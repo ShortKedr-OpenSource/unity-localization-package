@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using PopupWindow = UnityEditor.PopupWindow;
 
+//TODO Add Undo ability
 //TODO Make fixed height and sizes in pecentage + fixed + flex-grow
 namespace Krugames.LocalizationSystem.Editor.UI {
     [CustomEditor(typeof(Locale))]
@@ -114,7 +115,7 @@ namespace Krugames.LocalizationSystem.Editor.UI {
 
         private void AddTerm(Type termType, Type valueType) {
             string defaulTermName = "new_term";
-            LocaleTerm term = LocaleUtility.AddLocaleTerm(_locale, defaulTermName, termType, false);
+            LocaleTerm term = LocaleUtility.AddLocaleTerm(_locale, defaulTermName, termType);
             _localeTermList.SetTerms(_locale.GetTerms());
             _localeTermEditor.SetTerm(term);
         }

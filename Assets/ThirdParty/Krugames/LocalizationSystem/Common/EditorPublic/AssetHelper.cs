@@ -1,12 +1,10 @@
-﻿using System;
+﻿#if UNITY_EDITOR
 using System.Collections.Generic;
-using Krugames.LocalizationSystem.Models;
 using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace ThirdParty.Krugames.LocalizationSystem.Common.Editor {
+namespace Krugames.LocalizationSystem.Common.Editor {
     /// <summary>
     /// Provides additional functionality for asset objects in addition to AssetDatabase
     /// </summary>
@@ -82,3 +80,4 @@ namespace ThirdParty.Krugames.LocalizationSystem.Common.Editor {
         }
     }
 }
+#endif
