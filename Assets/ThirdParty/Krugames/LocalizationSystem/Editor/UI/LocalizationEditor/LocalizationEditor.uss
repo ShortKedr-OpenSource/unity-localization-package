@@ -1,0 +1,26 @@
+#MainToolbar {
+    
+}
+
+#ContentRoot {
+    
+}
+
+#LocaleTab {
+    border-color: var(--unity-colors-toolbar-border);
+    border-right-width: 1px;
+}
+
+#BaseLocaleView {
+    border-width: 1px;
+    border-radius: 4;
+    border-color: var(--unity-colors-toolbar-border);
+    overflow: hidden;
+}
+
+#OtherLocalesView {
+    border-width: 1px;
+    border-radius: 4;
+    border-color: var(--unity-colors-toolbar-border);
+    overflow: hidden;
+}

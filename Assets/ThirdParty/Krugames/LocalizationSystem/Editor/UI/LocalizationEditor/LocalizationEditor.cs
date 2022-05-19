@@ -1,5 +1,7 @@
 ﻿using Krugames.LocalizationSystem.Editor.Package;
+using Krugames.LocalizationSystem.Models;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -43,7 +45,9 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         }
 
         private void AssignVisualTreeComponents() {
-            //TODO assign visual tree components to fields;
+            /*LocaleLibrary library = LocaleLibrary.Instance;
+            SerializedProperty property = new SerializedObject(library).FindProperty("baseLocale");
+            rootVisualElement.Q<PropertyField>("BaseLocaleField").BindProperty(property);*/
         }
         
     }
