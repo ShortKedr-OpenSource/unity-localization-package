@@ -5,6 +5,7 @@ using Krugames.LocalizationSystem.Models;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+//BUG elementsCount == itemPerPage cause bug - you dont see any elements
 namespace Krugames.LocalizationSystem.Editor.UI {
     public class LocaleTermListViewContent : VisualElement {
 
@@ -142,8 +143,8 @@ namespace Krugames.LocalizationSystem.Editor.UI {
         private PageInfo GetPageInfo(int pageNumber) {
             int startIndex = ((pageNumber-1) * _pageLength);
             int endIndex = (pageNumber == _pageCount)
-                ? (startIndex - 1 + _terms.Length % _pageLength)
-                : (pageNumber) * _pageLength - 1;
+                ? (startIndex + (_terms.Length-1) % _pageLength)
+                : (pageNumber * _pageLength) - 1;
             int count = endIndex - startIndex + 1;
             return new PageInfo(startIndex, endIndex, count);
         }

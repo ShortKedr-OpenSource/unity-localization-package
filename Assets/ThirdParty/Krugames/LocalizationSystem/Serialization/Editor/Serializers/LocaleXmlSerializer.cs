@@ -21,8 +21,11 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Serializers {
             return stringWriter.ToString();
         }
 
-        public override void DeserializeSmart(ILocale targetLocale, string data) {
-            throw new System.NotImplementedException();
+        public override void DeserializeSmart(IModifiableLocale targetLocale, string data) {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(LocaleData));
+            using StringReader stringReader = new StringReader(data);
+            LocaleData localeData = (LocaleData) xmlSerializer.Deserialize(stringReader);
+            localeData.SetDataToLocale(targetLocale);
         }
     }
 }

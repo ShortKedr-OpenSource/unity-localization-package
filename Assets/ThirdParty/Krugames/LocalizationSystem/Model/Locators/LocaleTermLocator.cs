@@ -7,11 +7,27 @@ using Krugames.LocalizationSystem.Models.Utility;
 namespace Krugames.LocalizationSystem.Models.Locators {
     public static class LocaleTermLocator {
         
+        public class LocaleTermBuildData {
+            
+            private RegisterLocaleTermAttribute _registerAttribute;
+            public readonly Type ValueType;
+            
+            public Type TermType => _registerAttribute.TermType;
+            public string Name => _registerAttribute.Name;
+
+            public LocaleTermBuildData(RegisterLocaleTermAttribute registerAttribute) {
+                _registerAttribute = registerAttribute;
+                ValueType = LocaleTermUtility.GetValueTypeOfGenericTermType(registerAttribute.TermType);
+            }
+        }
+        
         private const int DefaultBuffer = 32;
         
         private static RegisterLocaleTermAttribute[] _locators;
         private static LocaleTermBuildData[] _buildData;
-        
+
+        private static Dictionary<Type, Type> _termTypeByValueType;
+
         private static bool _isInitialized = false;
 
         /// <summary>
@@ -54,21 +70,19 @@ namespace Krugames.LocalizationSystem.Models.Locators {
 
             _locators = locators.ToArray();
             _buildData = buildData.ToArray();
+
+            _termTypeByValueType = new Dictionary<Type, Type>(_buildData.Length);
+            for (int i = 0; i < _buildData.Length; i++) {
+                _termTypeByValueType.Add(_buildData[i].ValueType, _buildData[i].TermType);
+            }
+            
             _isInitialized = true;
         }
-        
-        public class LocaleTermBuildData {
-            
-            private RegisterLocaleTermAttribute _registerAttribute;
-            public readonly Type ValueType;
-            
-            public Type TermType => _registerAttribute.TermType;
-            public string Name => _registerAttribute.Name;
 
-            public LocaleTermBuildData(RegisterLocaleTermAttribute registerAttribute) {
-                _registerAttribute = registerAttribute;
-                ValueType = LocaleTermUtility.GetValueTypeOfGenericTermType(registerAttribute.TermType);
-            }
+        public static Type GetTermTypeByValueType(Type valueType) {
+            if (!_isInitialized) Initialize();
+            if (_termTypeByValueType.ContainsKey(valueType)) return _termTypeByValueType[valueType];
+            return null;
         }
     }
 }

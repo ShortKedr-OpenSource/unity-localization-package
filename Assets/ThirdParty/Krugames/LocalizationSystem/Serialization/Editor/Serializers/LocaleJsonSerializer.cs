@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Krugames.LocalizationSystem.Editor.Serialization.Attributes;
 using Krugames.LocalizationSystem.Editor.Serialization.DataTransferObjects;
 using Krugames.LocalizationSystem.Editor.Serialization.Serializers;
@@ -29,7 +28,7 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Serializers {
                 _settings = new JsonSerializerSettings() {
                     Converters = new List<JsonConverter>() {
                         new StringEnumConverter(),
-                    }
+                    },
                 };
             }
         }
@@ -39,12 +38,9 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Serializers {
             return JsonConvert.SerializeObject(localeData, _formatting, _settings);
         }
 
-        public override void DeserializeSmart(ILocale targetLocale, string data) {
-            throw new NotImplementedException();
-            List<TermData> terms = JsonConvert.DeserializeObject<List<TermData>>(data, _settings);
-            //TODO change layout of locale;
-            //TODO assign value;
-            //TODO assign assets from Database;
+        public override void DeserializeSmart(IModifiableLocale targetLocale, string data) {
+            LocaleData localeData = JsonConvert.DeserializeObject<LocaleData>(data, _settings);
+            localeData.SetDataToLocale(targetLocale);
         }
     }
 }

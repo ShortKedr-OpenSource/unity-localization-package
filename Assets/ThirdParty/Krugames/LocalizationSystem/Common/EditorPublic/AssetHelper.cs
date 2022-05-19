@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -21,9 +22,11 @@ namespace Krugames.LocalizationSystem.Common.Editor {
         }
 
         private static void UpdateSubAssetReferenceCache(string mainAssetPath) {
+            //TODO rework, since multiple main assets can be loaded
             Object[] assets = AssetDatabase.LoadAllAssetsAtPath(mainAssetPath);
+            if (assets.Length == 0) return;
             Object mainAsset = null;
-            List<Object> subAssets = new List<Object>(assets.Length - 1);
+            List<Object> subAssets = new List<Object>(assets.Length-1);
             for (int i = 0; i < assets.Length; i++) {
                 if (mainAsset == null && AssetDatabase.IsMainAsset(assets[i])) {
                     mainAsset = assets[i];

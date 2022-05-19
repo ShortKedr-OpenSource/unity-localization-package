@@ -10,7 +10,10 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Utility {
     public static class JsonPrimitiveChecker {
         public static bool IsPrimitive(object value) {
             Type type = value.GetType();
+            return IsPrimitive(type);
+        }
 
+        public static bool IsPrimitive(Type type) {
             if (type == typeof(string)) return true;
             if (type == typeof(byte)) return true;
             if (type == typeof(sbyte)) return true;
@@ -29,7 +32,6 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Utility {
             if (type == typeof(Type)) return true;
             if (type == typeof(Guid)) return true;
             if (type == typeof(TypeConverter)) return true;
-
             return false;
         }
     }

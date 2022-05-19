@@ -1,6 +1,8 @@
 ﻿using System;
 using Krugames.LocalizationSystem.Models.Interfaces;
 
+//TODO need safety checks for extendable localization types
+
 namespace Krugames.LocalizationSystem.Editor.Serialization {
 
     /// <summary>
@@ -11,7 +13,7 @@ namespace Krugames.LocalizationSystem.Editor.Serialization {
     public abstract class LocaleSerializer {
         public abstract object Serialize(ILocale locale);
         
-        public abstract void Deserialize(ILocale targetLocale, object data);
+        public abstract void Deserialize(IModifiableLocale targetLocale, object data);
         
     }
     
@@ -24,7 +26,7 @@ namespace Krugames.LocalizationSystem.Editor.Serialization {
             return SerializeSmart(locale);
         }
 
-        public override void Deserialize(ILocale targetLocale, object data) {
+        public override void Deserialize(IModifiableLocale targetLocale, object data) {
             if (data is TEndDataType implData) {
                 DeserializeSmart(targetLocale, implData);
             } else {
@@ -33,6 +35,6 @@ namespace Krugames.LocalizationSystem.Editor.Serialization {
         }
 
         public abstract TEndDataType SerializeSmart(ILocale locale);
-        public abstract void DeserializeSmart(ILocale targetLocale, TEndDataType data);
+        public abstract void DeserializeSmart(IModifiableLocale targetLocale, TEndDataType data);
     }
 }

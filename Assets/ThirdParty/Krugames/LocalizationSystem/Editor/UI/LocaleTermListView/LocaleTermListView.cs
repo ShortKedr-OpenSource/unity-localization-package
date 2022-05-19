@@ -9,12 +9,14 @@ using ThirdParty.Krugames.LocalizationSystem.Editor.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+//TODO selection on new item (LocaleInspector)
+//TODO add searchIndex partial resource change: remove existed resource, add new resource
+//TODO fix: search cancel after term base change operation 
 //TODO fix: searchIndex still the same if term changes
 //TODO can be templated to generic ListView<TItemType>, ListViewElement<TItemType>
 //TODO fix issue with PagerToolbar when it shows 1/0 with PageCount=0
 //TODO test callback overcall, fix if necessary
 //TODO ability to switch term places in array
-//BUG elementsCount == itemPerPage cause bug - you dont see any elements
 namespace Krugames.LocalizationSystem.Editor.UI {
     public class LocaleTermListView : Box {
         

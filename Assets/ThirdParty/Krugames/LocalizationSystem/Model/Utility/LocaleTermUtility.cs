@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Krugames.LocalizationSystem.Models.Locators;
 
 namespace Krugames.LocalizationSystem.Models.Utility {
     public static class LocaleTermUtility {
@@ -16,6 +17,14 @@ namespace Krugames.LocalizationSystem.Models.Utility {
 
         public static Type GetValueTypeOfGenericTermType<TTermType>() where TTermType : LocaleTerm {
             return GetValueTypeOfGenericTermType(typeof(TTermType));
+        }
+
+        public static Type GetTermTypeByValueType(Type valueType) {
+            return LocaleTermLocator.GetTermTypeByValueType(valueType);
+        }
+
+        public static Type GetTermTypeByValueType<TValueType>() {
+            return LocaleTermLocator.GetTermTypeByValueType(typeof(TValueType));
         }
     }
 }

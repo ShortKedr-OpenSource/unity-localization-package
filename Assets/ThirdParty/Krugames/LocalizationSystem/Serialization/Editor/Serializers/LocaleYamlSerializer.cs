@@ -15,15 +15,19 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Serializers {
     public class LocaleYamlSerializer : LocaleSerializer<string>{
         public override string SerializeSmart(ILocale locale) {
             LocaleData localeData = new LocaleData(locale);
-            ISerializer serializer = new SerializerBuilder().
-                WithNamingConvention(CamelCaseNamingConvention.Instance).
-                Build();
+            ISerializer serializer = new SerializerBuilder()
+                .WithNamingConvention(CamelCaseNamingConvention.Instance)
+                .Build();
             string yaml = serializer.Serialize(localeData);
             return yaml;
         }
 
-        public override void DeserializeSmart(ILocale targetLocale, string data) {
-            throw new System.NotImplementedException();
+        public override void DeserializeSmart(IModifiableLocale targetLocale, string data) {
+            IDeserializer deserializer = new DeserializerBuilder()
+                .WithNamingConvention(CamelCaseNamingConvention.Instance)
+                .Build();
+            LocaleData localeData = deserializer.Deserialize<LocaleData>(data);
+            localeData.SetDataToLocale(targetLocale);
         }
     }
 }

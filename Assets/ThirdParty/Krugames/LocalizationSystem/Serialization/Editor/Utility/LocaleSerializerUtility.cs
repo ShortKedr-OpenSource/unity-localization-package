@@ -16,7 +16,7 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Utility {
             File.WriteAllText(path, serializedData);
         }
 
-        public static void DeserializeFromFile(string path, ILocale targetLocale, LocaleSerializer<string> serializer) {
+        public static void DeserializeFromFile(string path, IModifiableLocale targetLocale, LocaleSerializer<string> serializer) {
             string data = File.ReadAllText(path);
             serializer.DeserializeSmart(targetLocale, data);
         }
@@ -26,7 +26,7 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Utility {
             File.WriteAllBytes(path, serializedData);
         }
 
-        public static void DeserializeFromFile(string path, ILocale targetLocale, LocaleSerializer<byte[]> serializer) {
+        public static void DeserializeFromFile(string path, IModifiableLocale targetLocale, LocaleSerializer<byte[]> serializer) {
             byte[] data = File.ReadAllBytes(path);
             serializer.DeserializeSmart(targetLocale, data);
         }
@@ -67,7 +67,7 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.Utility {
             }
         }
 
-        public static void Import(ILocale targetLocale, Type serializerType) {
+        public static void Import(IModifiableLocale targetLocale, Type serializerType) {
             var buildData = LocaleSerializerLocator.GetBuildData(serializerType);
             object serializer = CreateSerializer(serializerType);
 

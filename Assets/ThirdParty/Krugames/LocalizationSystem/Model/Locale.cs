@@ -478,7 +478,7 @@ namespace Krugames.LocalizationSystem.Models {
                 return false;
             }
 
-            for (int i = 0; i < terms.Count; i++) {
+            for (int i = terms.Count-1; i >= 0; i--) {
                 RemoveTerm_Private(terms[i], false, false, false);
             }
             

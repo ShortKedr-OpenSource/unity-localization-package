@@ -42,11 +42,14 @@ namespace Krugames.LocalizationSystem.Models {
         }
 
         public override void SetValue(object value) {
-            if (value is TValueType revealedValue) {
+            if (value == null) {
+                this.smartValue = default;
+                this.value = this.smartValue;
+            } else if (value is TValueType revealedValue) {
                 this.value = value;
                 this.smartValue = revealedValue;
             } else {
-                throw new ArgumentException("Wrong type of argument. Argument is not type of " + nameof(TValueType));
+                throw new ArgumentException("Wrong type of argument. Argument is not type of " + typeof(TValueType));
             }
         }
 

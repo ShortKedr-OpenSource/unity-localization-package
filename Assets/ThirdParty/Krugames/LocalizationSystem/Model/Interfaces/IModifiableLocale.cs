@@ -2,7 +2,7 @@
 
 namespace Krugames.LocalizationSystem.Models.Interfaces {
     //TODO edit this thing
-    public interface IModifiableLocale {
+    public interface IModifiableLocale : ILocale{
         /// <summary>
         /// Sets Locale language
         /// </summary>

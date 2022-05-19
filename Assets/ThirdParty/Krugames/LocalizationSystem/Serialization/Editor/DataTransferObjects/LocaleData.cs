@@ -26,5 +26,12 @@ namespace Krugames.LocalizationSystem.Editor.Serialization.DataTransferObjects {
             this.language = locale.Language;
             this.termData = resultTermData.ToArray();
         }
+
+        public void SetDataToLocale(IModifiableLocale targetLocale) {
+            List<LocaleTerm> termInstances = new List<LocaleTerm>(termData.Length);
+            for (int i = 0; i < termData.Length; i++) termInstances.Add(termData[i].CreateTermInstance());
+            targetLocale.SetLanguage(language);
+            targetLocale.SetTerms(termInstances.ToArray());
+        }
     }
 }
