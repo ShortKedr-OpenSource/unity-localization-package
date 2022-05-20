@@ -32,9 +32,9 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         
         private VisualElement _root;
 
-        private Toolbar _toolbar; // TODO ElementToolbar, left, right, middle
-        private Button _leftPanelToggleButton; //TODO ToggleButton, place to left
-        private Button _rightPanelToggleButton; //TODO ToggleButton, place to right
+        private ElementToolbar _toolbar; // TODO ElementToolbar, left, right, middle
+        private ToggleButton _leftPanelToggleButton; //TODO ToggleButton, place to left
+        private ToggleButton _rightPanelToggleButton; //TODO ToggleButton, place to right
         private EnumField _viewModeSelector; //TODO ButtonEnum, place to center;
 
         private VisualElement _contentRoot;
@@ -60,28 +60,21 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             
             _root = rootVisualElement;
 
-            _toolbar = new Toolbar() {
-                style = {
-                    minHeight = 24,
-                    maxHeight = 24,
-                    flexGrow = 1,
-                }
-            };
+            _toolbar = new ElementToolbar();
 
-            _leftPanelToggleButton = new ToolbarButton(ToggleLeftPanel) {
-                text = "<"
-            };
-
-            _rightPanelToggleButton = new ToolbarButton(ToggleRightPanel) {
-                text = ">"
-            };
+            _leftPanelToggleButton = new ToggleButton(ToggleLeftPanel);
+            _rightPanelToggleButton = new ToggleButton(ToggleRightPanel);
 
             _viewModeSelector = new EnumField("View mode", ViewMode.Plain);
             _viewModeSelector.BindProperty(serializedObject.FindProperty("viewMode"));
             
-            _toolbar.Add(_leftPanelToggleButton);
-            _toolbar.Add(_viewModeSelector);
-            _toolbar.Add(_rightPanelToggleButton);
+            _toolbar.LeftAnchor.Add(_leftPanelToggleButton);
+            //_toolbar.CenterAnchor.Add(_viewModeSelector);
+            _toolbar.RightAnchor.Add(_rightPanelToggleButton);
+
+            for (int i = 0; i < 12; i++)  _toolbar.LeftAnchor.Add(new Label($"Left{i+1}"));
+            for (int i = 0; i < 12; i++)  _toolbar.RightAnchor.Add(new Label($"Right{i+1}"));
+            for (int i = 0; i < 3; i++)  _toolbar.CenterAnchor.Add(new Label($"Center{i+1}"));
 
             _contentRoot = new VisualElement() {
                 style = {

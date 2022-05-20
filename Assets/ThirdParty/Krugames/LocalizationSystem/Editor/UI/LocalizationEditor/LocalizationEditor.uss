@@ -5,3 +5,56 @@ TittledContentBox {
     overflow: hidden;
     margin: 2px;
 }
+
+ElementToolbar{
+    overflow: visible;
+    min-height: 24px;
+    max-height: 24px;
+    flex-grow: 1;
+}
+
+.ElementToolbar_LeftAnchor {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.0);
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.ElementToolbar_RightAnchor {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.0);
+    width: 100%;
+    height: 100%;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+}
+
+.ElementToolbar_CenterAnchor {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.0);
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    justify-content: center;
+}
+
+ToggleButton {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    background-image: var(--unity-icons-pane_options);
+}
+
+ToggleButton:checked {
+    background-color: aqua;
+}
+
+ToggleButton:hover {
+    background-color: red;
+}
+
+ToggleButton:active {
+    background-color: darkred;
+}
