@@ -44,7 +44,10 @@ namespace Krugames.LocalizationSystem.Models {
 
         public event CallbackDelegate OnInitialized;
         public event LanguageChangeDelegate OnLanguageChanged;
-        
+
+        public Locale BaseLocale => baseLocale;
+        public Locale[] StaticLocales => staticLocales;
+
         /// <summary>
         /// Return current used language
         /// </summary>
@@ -98,7 +101,7 @@ namespace Krugames.LocalizationSystem.Models {
         /// <summary>
         /// Return all static working locales
         /// </summary>
-        public Locale[] StaticLocales {
+        public Locale[] ValidStaticLocales {
             get {
                 if (!_wasInitialized) InitializeInternal();
                 return _validStaticLocales.ToArray();
@@ -133,7 +136,7 @@ namespace Krugames.LocalizationSystem.Models {
         public void Initialize() {
             if (!_wasInitialized) InitializeInternal();
         }
-        
+
         private void InitializeInternal() {
 
             int buffer = 1 + staticLocales.Length + DefaultDynamicBuffer;

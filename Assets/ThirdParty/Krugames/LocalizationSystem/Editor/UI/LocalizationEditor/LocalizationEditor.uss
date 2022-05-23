@@ -1,9 +1,15 @@
-TittledContentBox {
-    border-radius: 4px;
+. {
+    --list-element-active-background: rgba(72, 130, 255, 0.25);
+    --list-element-hover-background: rgba(72, 130, 255, 0.4);
+    --list-element-selected-background: rgba(112, 255, 72, 0.25);
+}
+
+.TittledContentBox {
+    border-radius: 0;
     border-width: 1px;
-    border-color: var(--unity-colors-default-border);
+    border-color: var(--unity-colors-toolbar-border);/*rgba(0, 0, 0, 0.1);*/
     overflow: hidden;
-    margin: 2px;
+    margin: 0;
 }
 
 ElementToolbar{
@@ -43,18 +49,108 @@ ElementToolbar{
 ToggleButton {
     width: 20px;
     height: 20px;
-    border-radius: 4px;
-    background-image: var(--unity-icons-pane_options);
+    border-color: var(--unity-colors-app_toolbar_button-border);
+    background-color: var(--unity-colors-app_toolbar_button-background);
+    -unity-font-style: normal;
 }
 
-ToggleButton:checked {
-    background-color: aqua;
+ToggleButton.Checked {
+    background-color: var(--unity-colors-app_toolbar_button-background-checked);
+}
+
+ToggleButton.Checked:hover{
+    background-color: var(--unity-colors-button-background-focus);
 }
 
 ToggleButton:hover {
-    background-color: red;
+    background-color: var(--unity-colors-app_toolbar_button-background-hover);
 }
 
 ToggleButton:active {
-    background-color: darkred;
+    background-color: var(--unity-colors-app_toolbar_button-background-pressed);
+}
+
+ToggleButton.LeftPanel.Checked {
+    -unity-font-style: bold;
+}
+
+ToggleButton.RightPanel.Checked {
+    -unity-font-style: bold;
+}
+
+EnumButton {
+    flex-direction: row;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+LocaleListElement {
+    flex-direction: row;
+    flex-grow: 1;
+    overflow: hidden;
+    border-width: 0;
+    height: 25px;
+    min-height: 25px;
+    max-height: 25px;
+    -unity-text-align: middle-left;
+    align-items: stretch;
+}
+
+.LocaleListElement_LocaleLabel {
+    flex-grow: 0.0;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    overflow: hidden;
+    width:30%;
+    border-right-color: rgba(0, 0, 0, 0.3);
+    border-right-width: 1px;
+}
+
+.LocaleListElement_LangLabel {
+    flex-grow: 1.0;
+    flex-shrink: 1.0;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    overflow: hidden;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.LocaleListElement_PropsButton {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 18px;
+    border-width: 0;
+    background-color: rgba(0,0,0,0);
+    background-image: var(--unity-icons-pane_options);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.LocaleListElement_PropsButton:hover {
+    background-color: var(--unity-colors-button-background-hover);
+}
+
+.LocaleListElement_PropsButton:active {
+    background-color: var(--unity-colors-button-background-pressed);
+}
+
+LocaleListElement.Even {
+    background-color: rgba(1, 1, 1, 0.05);
+}
+
+LocaleListElement.Odd {
+    background-color: rgba(1, 1, 1, 0.1);
+}
+
+LocaleListElement:hover, LocaleListElement.Odd:hover, LocaleListElement.Even:hover {
+    background-color: var(--list-element-hover-background);
+}
+
+LocaleListElement:active, LocaleListElement.Odd:active, LocaleListElement.Even:active {
+    background-color: var(--list-element-active-background);
+}
+
+LocaleListElement.Selected, LocaleListElement.Odd.Selected, LocaleListElement.Even.Selected {
+    background-color: var(--list-element-selected-background);
 }

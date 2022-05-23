@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
     public class TittledContentBox : Box {
 
+        protected const string UssClassName = nameof(TittledContentBox);
+        
         private Toolbar _toolbar;
         private Label _tittle;
         private VisualElement _content;
@@ -14,6 +16,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
 
         public TittledContentBox(string tittle) {
 
+            AddToClassList(UssClassName);
+            
             _toolbar = new Toolbar() {
                 style = {
                     flexGrow = 1f,

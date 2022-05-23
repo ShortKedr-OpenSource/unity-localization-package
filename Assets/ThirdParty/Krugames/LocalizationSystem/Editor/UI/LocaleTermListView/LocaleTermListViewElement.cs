@@ -1,12 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using Krugames.LocalizationSystem.Editor.Styles;
-using Krugames.LocalizationSystem.Implementation;
 using Krugames.LocalizationSystem.Models;
-using ThirdParty.Krugames.LocalizationSystem.Editor.UI;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.UIElements;
-using PopupWindow = UnityEditor.PopupWindow;
 
 namespace Krugames.LocalizationSystem.Editor.UI {
     public class LocaleTermListViewElement : Box {
