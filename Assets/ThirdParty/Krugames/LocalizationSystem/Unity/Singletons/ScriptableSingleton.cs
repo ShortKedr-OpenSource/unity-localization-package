@@ -18,7 +18,7 @@ namespace Krugames.LocalizationSystem.Unity.Singletons {
         where TEndType : ScriptableSingleton<TEndType> {
         
         protected const string ResourceFolder = "Resources";
-        protected const string SingletonFolder = "Singletons";
+        protected const string SingletonFolder = "Localization";
 
 #if UNITY_EDITOR
         protected const string AssetsFolder = "Assets";

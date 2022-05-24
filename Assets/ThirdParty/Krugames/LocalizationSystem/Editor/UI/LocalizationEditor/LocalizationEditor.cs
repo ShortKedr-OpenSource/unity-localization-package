@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using Krugames.LocalizationSystem.Common.Editor.UnityInternal;
 using Krugames.LocalizationSystem.Editor.Package;
+using Krugames.LocalizationSystem.Editor.Styles;
 using Krugames.LocalizationSystem.Implementation;
 using Krugames.LocalizationSystem.Models;
+using Krugames.LocalizationSystem.Models.Structs;
+using Krugames.LocalizationSystem.Models.Utility.Editor;
 using ThirdParty.Krugames.LocalizationSystem.Editor.UI;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -83,20 +86,21 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         
         private void Awake() {
             _localeLibrary = LocaleLibrary.Instance;
+            if (_localeLibrary.BaseLocale == null) LocaleLibraryUtility.AddLocaleToLibrary(SystemLanguage.English);
             LoadEditorValues();
         }
 
         private void OnDestroy() {
             SaveEditorValues();
+            LocaleLibraryUtility.SortLocaleLibraryStaticLocales();
         }
 
         public void CreateGUI() {
 
             SerializedObject serializedObject = new SerializedObject(this);
 
-            ImportStyleSheet();
-
             _root = rootVisualElement;
+            _root.styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
 
             #region Toolbar
             _toolbar = new ElementToolbar();
@@ -152,7 +156,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
 
             _content.LeftPanel.Add(_localeParamEditor);
             _content.LeftPanel.Add(_localeList);
-            _content.LeftPanel.Add(new Button() {
+            _content.LeftPanel.Add(new Button(AddLocaleButtonEvent) {
                 text = "Add Locale",
                 style = {
                     minHeight = 26,
@@ -187,11 +191,21 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             for (int i = 0; i < 17; i++) editBox.Content.Add(new Button(){text="Term "+i.ToString()});
             for (int i = 0; i < 4; i++) functionsBox.Content.Add(new Button(){text="Function "+i.ToString()});
 
-            _content.Content.Add(new LocaleTermListViewContent(_localeLibrary.BaseLocale.GetTerms(), 24));
             _content.RightPanel.Add(functionsBox);
             
             InitializePopups();
-            UpdateLocaleList();
+            SetupLocaleList();
+        }
+
+        private void AddLocaleButtonEvent() {
+            Locale locale = LocaleLibraryUtility.AddLocaleToLibrary(SystemLanguage.Unknown);
+            if (locale != null) {
+                TermStructureInfo[] layout = _localeLibrary.BaseLocale.GetLayout();
+#pragma warning disable CS0618
+                locale.SetLayout(layout);
+#pragma warning restore CS0618
+                SetupLocaleList();
+            }
         }
 
         private void InitializePopups() {
@@ -218,7 +232,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             });
         }
 
-        private void UpdateLocaleList() {
+        private void SetupLocaleList() {
             var baseLocale = _localeLibrary.BaseLocale;
             var staticLocales = _localeLibrary.StaticLocales;
             List<Locale> allStaticLocales = new List<Locale>(1 + staticLocales.Length);
@@ -241,6 +255,18 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             }
         }
 
+        private void UpdateLocaleList() {
+            var listElements = _localeList.ListElements;
+            var baseStaticLocale = _localeLibrary.BaseLocale;
+            for (int i = 0; i < listElements.Length; i++) {
+                if (listElements[i].Locale == baseStaticLocale) {
+                    listElements[i].SetCustomLabel(baseStaticLocale.name + " (Base)");
+                    break;
+                }
+            }
+            _localeList.UpdateValues();
+        }
+
         private void OpenManagedLocaleProperties() {
             if (_managedLocaleListElement == null || _managedLocaleListElement.Locale == null) return;
             EditorInternalUtility.OpenPropertyEditor(_managedLocaleListElement.Locale);
@@ -248,12 +274,15 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         
         private void RemoveManagedLocale() {
             if (_managedLocaleListElement == null || _managedLocaleListElement.Locale == null) return;
-            //TODO remove managedLocale from locales;
-            Debug.Log("Remove managed Locale");
+            bool result = LocaleLibraryUtility.RemoveLocaleFromLibrary(_managedLocaleListElement.Locale);
+            if (result) SetupLocaleList();
         }
 
         private void LocaleParamEditorOnOnChange(LocaleParamEditor self) {
-            _localeList.UpdateValues();
+            if (self.Locale != null) {
+                LocaleLibraryUtility.RenameLocaleAssetToLanguageMatch(self.Locale);
+                UpdateLocaleList();
+            }
         }
 
         private void LocalePropertiesClickEvent(LocaleList self, LocaleListElement selectedElement) {
@@ -292,13 +321,6 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             Rect buttonRect = _translationButton.worldBound;
             buttonRect.width = 0;
             UnityEditor.PopupWindow.Show(buttonRect, _translationOptionPopup);
-        }
-
-        private void ImportStyleSheet() {
-            string ussPath = PackageVariables.PackagePath + "Editor/UI/LocalizationEditor/LocalizationEditor.uss";
-            StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(ussPath);
-            if (styleSheet != null) rootVisualElement.styleSheets.Add(styleSheet);
-            else Debug.LogError($"{nameof(LocalizationEditor)} uss style sheet asset not found!");
         }
 
         private void SetDefaultEditorValues() {

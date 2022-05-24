@@ -1,4 +1,5 @@
-﻿using Krugames.LocalizationSystem.Models;
+﻿using Krugames.LocalizationSystem.Editor.Styles;
+using Krugames.LocalizationSystem.Models;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -11,7 +12,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         private SerializedProperty _languageProperty;
 
         private ScrollView _scrollView;
-        private Label _localeLabel;
+        private Label _nameLabel;
         private PropertyField _languageField;
 
         private string _customLabel = string.Empty;
@@ -19,14 +20,19 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         public delegate void ValueChangeDelegate(LocaleParamEditor self);
         public event ValueChangeDelegate OnChange;
 
+        public Locale Locale => _locale;
+
         public LocaleParamEditor(string tittle, Locale locale) : base(tittle) {
+            
+            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            
             _scrollView = new ScrollView(ScrollViewMode.Vertical);
-            _localeLabel = new Label();
+            _nameLabel = new Label();
             _languageField = new PropertyField();
             
             _languageField.RegisterValueChangeCallback(SerializedPropertyChanged);
             
-            _scrollView.Add(_localeLabel);
+            _scrollView.Add(_nameLabel);
             _scrollView.Add(_languageField);
 
             Content.Add(_scrollView);
@@ -35,6 +41,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
 
         private void SerializedPropertyChanged(SerializedPropertyChangeEvent evt) {
             OnChange?.Invoke(this);
+            _nameLabel.text = (string.IsNullOrEmpty(_customLabel)) ? _locale.name : _customLabel;
         }
 
         public void SetLocale(Locale locale) {
@@ -43,7 +50,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             if (locale != null) {
                 _localeSerializedObject = new SerializedObject(_locale);
                 _languageProperty = _localeSerializedObject.FindProperty("language");
-                _localeLabel.text = (string.IsNullOrEmpty(_customLabel)) ? locale.name : _customLabel;
+                _nameLabel.text = (string.IsNullOrEmpty(_customLabel)) ? _locale.name : _customLabel;
                 _languageField.BindProperty(_languageProperty);
                 _scrollView.visible = true;
             } else {

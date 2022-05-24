@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Krugames.LocalizationSystem.Editor.Styles;
 using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
@@ -14,6 +15,9 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         private Dictionary<ToggleButton, int> _indexByToggleButton;
 
         public EnumButton(TEnumType value) {
+            
+            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            
             _enumValues = Enum.GetValues(EnumType);
             _buttons = new ToggleButton[_enumValues.Length];
             _indexByToggleButton = new Dictionary<ToggleButton, int>(_enumValues.Length);

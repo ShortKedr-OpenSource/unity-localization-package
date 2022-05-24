@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using Krugames.LocalizationSystem.Models.Dynamic;
 using Krugames.LocalizationSystem.Models.Interfaces;
-using UnityEditor;
 using UnityEngine;
 
-//TODO Change Base Locale method;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 //TODO Add base language
 
 namespace Krugames.LocalizationSystem.Models {
@@ -19,7 +21,7 @@ namespace Krugames.LocalizationSystem.Models {
         private const int DefaultDynamicBuffer = 4;
 
         [SerializeField] private Locale baseLocale;
-        [SerializeField] private Locale[] staticLocales;
+        [SerializeField] private List<Locale> staticLocales;
 
         private SystemLanguage _currentLanguage = SystemLanguage.English;
         private ILocale _currentLocale = null;
@@ -46,7 +48,7 @@ namespace Krugames.LocalizationSystem.Models {
         public event LanguageChangeDelegate OnLanguageChanged;
 
         public Locale BaseLocale => baseLocale;
-        public Locale[] StaticLocales => staticLocales;
+        public Locale[] StaticLocales => staticLocales.ToArray();
 
         /// <summary>
         /// Return current used language
@@ -139,7 +141,7 @@ namespace Krugames.LocalizationSystem.Models {
 
         private void InitializeInternal() {
 
-            int buffer = 1 + staticLocales.Length + DefaultDynamicBuffer;
+            int buffer = 1 + staticLocales.Count + DefaultDynamicBuffer;
             
             _validLocales = new List<ILocale>(buffer);
 
@@ -160,7 +162,7 @@ namespace Krugames.LocalizationSystem.Models {
                 Debug.LogWarning("Base locale is null. First valid locale will be used as Base instead");
             }
             
-            for (int i = 0; i < staticLocales.Length; i++) {
+            for (int i = 0; i < staticLocales.Count; i++) {
                 if (staticLocales[i] == null) {
                     Debug.LogWarning("Static locale is null. Reference will be skipped");
                     continue;
@@ -508,6 +510,98 @@ namespace Krugames.LocalizationSystem.Models {
 #endif
             return default;
         }
+        
+        
+#if UNITY_EDITOR
 
+        private const string OnlyEditorObsoleteMessage =
+            "Method use allowed only in editor. In-Editor use LocaleUtility methods instead";
+
+        [Obsolete(OnlyEditorObsoleteMessage)]
+        public bool SetBaseStaticLocale(Locale baseStaticLocale) {
+            
+            if (Application.isPlaying) {
+                Debug.LogError("Static Library can not be changed in runtime!");
+                return false;
+            }
+
+            if (baseStaticLocale == null) {
+                Debug.LogError("Base static locale can not be null");
+                return false;
+            }
+            
+            if (!AssetDatabase.IsMainAsset(baseStaticLocale)) {
+                Debug.LogError("Base static locale must have status of main project asset");
+                return false;
+            }
+
+            this.baseLocale = baseStaticLocale;
+            EditorUtility.SetDirty(this);
+            return true;
+            //TODO add rebuild cache if needed
+        }
+
+        [Obsolete(OnlyEditorObsoleteMessage)]
+        public bool AddStaticLocale(Locale staticLocale) {
+            if (Application.isPlaying) {
+                Debug.LogError("Static Library can not be changed in runtime!");
+                return false;
+            }
+
+            if (staticLocale == null) {
+                Debug.LogError("Static locale can not be null");
+                return false;
+            }
+            
+            if (!AssetDatabase.IsMainAsset(baseLocale)) {
+                Debug.LogError("Static locales must have status of main project asset");
+                return false;
+            }
+
+            if (staticLocales.Contains(staticLocale)) {
+                Debug.LogError("Static locales already exists");
+                return false;
+            }
+            
+            staticLocales.Add(staticLocale);
+            EditorUtility.SetDirty(this);
+            return true;
+            //TODO add rebuild cache if needed
+        }
+
+        [Obsolete(OnlyEditorObsoleteMessage)]
+        public bool RemoveStaticLocale(Locale staticLocale) {
+            if (Application.isPlaying) {
+                Debug.LogError("Static Library can not be changed in runtime!");
+                return false;
+            }
+
+            bool result = staticLocales.Remove(staticLocale);
+            EditorUtility.SetDirty(this);
+            return result;
+            //TODO add rebuild cache if needed
+        }
+
+        [Obsolete(OnlyEditorObsoleteMessage)]
+        public bool SortStaticLocales() {
+            if (Application.isPlaying) {
+                Debug.LogError("Static Library can not be changed in runtime!");
+                return false;
+            }
+
+            int CompareMethod(Locale left, Locale right) {
+                return String.CompareOrdinal(left.Language.ToString(), right.Language.ToString());
+            }
+            staticLocales.Sort(CompareMethod);
+            
+            EditorUtility.SetDirty(this);
+            return true;
+            //TODO add rebuild cache if needed
+        }
+        
+        //TODO add SetStaticLocales(Locale[] locales);
+        
+        
+#endif
     }
 }

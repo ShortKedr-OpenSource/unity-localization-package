@@ -10,12 +10,19 @@ namespace Krugames.LocalizationSystem.Editor.Styles {
     internal static class LocalizationEditorStyles {
 
         private const string GlobalStylePackagePath = "Editor/Styles/GlobalStyle.uss";
+        private const string LocalizationEditorStylePackagePath = "Editor/UI/LocalizationEditor/LocalizationEditor.uss";
+        
         
         public static readonly StyleSheet GlobalStyle;
+        public static readonly StyleSheet LocalizationEditorStyle;
 
         static LocalizationEditorStyles() {
-            GlobalStyle = (StyleSheet)AssetDatabase.LoadAssetAtPath(
-                PackageVariables.PackagePath + GlobalStylePackagePath, typeof(StyleSheet));
+            GlobalStyle = AssetDatabase.LoadAssetAtPath<StyleSheet>(
+                PackageVariables.PackagePath + GlobalStylePackagePath);
+
+            LocalizationEditorStyle = AssetDatabase.LoadAssetAtPath<StyleSheet>(
+                PackageVariables.PackagePath + LocalizationEditorStylePackagePath);
         }
+        
     }
 }

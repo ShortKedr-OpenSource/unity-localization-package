@@ -1,4 +1,5 @@
-﻿using Krugames.LocalizationSystem.Models;
+﻿using Krugames.LocalizationSystem.Editor.Styles;
+using Krugames.LocalizationSystem.Models;
 using UnityEditor;
 using UnityEngine.UIElements;
 
@@ -63,6 +64,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             _locale = locale;
             _fillRule = fillRule;
             _allowProperties = allowProperties;
+            
+            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
             AddFillRuleClass();
 
             _localeLabel = new Label() {

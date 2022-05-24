@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Krugames.LocalizationSystem.Editor.Styles;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
@@ -43,6 +44,9 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         }
 
         public TwoSidePanelView(bool showLeftPanel, bool showRightPanel) {
+            
+            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            
             _showLeftPanel = showLeftPanel;
             _showRightPanel = showRightPanel;
 

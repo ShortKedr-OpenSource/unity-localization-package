@@ -1,4 +1,5 @@
-﻿using UnityEngine.UIElements;
+﻿using Krugames.LocalizationSystem.Editor.Styles;
+using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
     public class ToggleButton : Button, INotifyValueChanged<bool> {
@@ -13,6 +14,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         private ToggleMode _mode;
 
         public ToggleButton(bool value, EventCallback<ChangeEvent<bool>> changeCallback, ToggleMode mode = ToggleMode.Switchable) {
+            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
             RegisterCallback(changeCallback);
             this.value = value;
             _mode = mode;

@@ -1,4 +1,5 @@
-﻿using UnityEditor.UIElements;
+﻿using Krugames.LocalizationSystem.Editor.Styles;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
@@ -18,6 +19,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
 
         public ElementToolbar() {
 
+            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            
             _leftAnchor = new VisualElement() {
                 pickingMode = PickingMode.Ignore,
                 focusable = false,

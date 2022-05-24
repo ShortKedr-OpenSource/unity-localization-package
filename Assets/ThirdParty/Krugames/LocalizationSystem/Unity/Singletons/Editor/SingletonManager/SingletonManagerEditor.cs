@@ -19,7 +19,8 @@ namespace Krugames.LocalizationSystem.Unity.Singletons.Editor.SingletonManager {
         private SingletonList _singletonList;
         #endregion
         
-        [MenuItem("Tools/Singleton Manager")]
+        //TODO review this
+        //[MenuItem("Window/Krugames/Localization Singleton Manager")]
         private static void ShowWindow() {
             var window = GetWindow<SingletonManagerEditor>(false, "Singleton Manager", true);
             window.minSize = MinSize;

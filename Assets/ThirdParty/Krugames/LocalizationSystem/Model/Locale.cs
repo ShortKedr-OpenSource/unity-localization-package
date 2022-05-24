@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Krugames.LocalizationSystem.Common.Extensions;
 using Krugames.LocalizationSystem.Models.Interfaces;
 using Krugames.LocalizationSystem.Models.Locators;
 using Krugames.LocalizationSystem.Models.Structs;
@@ -8,6 +9,7 @@ using static UnityEngine.Object;
 
 #if UNITY_EDITOR
 using Krugames.LocalizationSystem.Common.Editor;
+using Krugames.LocalizationSystem.Models.Utility;
 using UnityEditor;
 #endif
 
@@ -344,8 +346,44 @@ namespace Krugames.LocalizationSystem.Models {
                 return;
             }
 
-            throw new NotImplementedException();
-            //TODO implement
+            HashSet<LocaleTerm> termsToSaveCache = new HashSet<LocaleTerm>();
+            List<LocaleTerm> termsToSave = new List<LocaleTerm>(16);
+            List<TermStructureInfo> termsToCreate = new List<TermStructureInfo>(16);
+
+            for (int i = 0; i < layout.Length; i++) {
+                LocaleTerm term = GetTerm(layout[i].termName, layout[i].termType);
+                if (term != null) {
+                    termsToSave.Add(term);
+                    termsToSaveCache.Add(term);
+                } else {
+                    termsToCreate.Add(layout[i]);
+                }
+            }
+
+            for (int i = 0; i < terms.Count; i++) {
+                if (termsToSaveCache.Contains(terms[i])) continue;
+                RemoveTerm(terms[i]);
+            }
+
+            //TODO review
+            for (int i = 0; i < termsToCreate.Count; i++) {
+                string termName = termsToCreate[i].termName;
+                Type termType = termsToCreate[i].termType;
+                
+                bool validType = termType.IsInheritor(LocaleTermUtility.BaseType) && !termType.IsAbstract;
+                if (!validType) continue;
+                
+                LocaleTerm termObject = (LocaleTerm)ScriptableObject.CreateInstance(termType);
+                termObject.name = termName;
+
+                SerializedObject serializedTermObject = new SerializedObject(termObject);
+                serializedTermObject.FindProperty("term").stringValue = termName;
+                serializedTermObject.ApplyModifiedPropertiesWithoutUndo();
+
+                AddTerm(termObject);
+            }
+            
+            EditorUtility.SetDirty(this);
         }
 
         [Obsolete(OnlyEditorObsoleteMessage)]

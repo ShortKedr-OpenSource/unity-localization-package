@@ -1,9 +1,10 @@
 ﻿using System;
+using Krugames.LocalizationSystem.Editor.Styles;
 using Krugames.LocalizationSystem.Models;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+//TODO add array navigation
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
     public class LocaleList : TittledContentBox {
 
@@ -65,6 +66,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
 
         public LocaleList(string tittle, Locale[] locales) : base(tittle) {
 
+            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            
             _scrollView = new ScrollView(ScrollViewMode.Vertical) {
                 style = {
                     flexGrow = 1.0f

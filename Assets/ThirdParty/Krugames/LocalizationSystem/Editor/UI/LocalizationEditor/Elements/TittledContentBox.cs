@@ -1,4 +1,5 @@
-﻿using UnityEditor.UIElements;
+﻿using Krugames.LocalizationSystem.Editor.Styles;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -16,6 +17,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
 
         public TittledContentBox(string tittle) {
 
+            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            
             AddToClassList(UssClassName);
             
             _toolbar = new Toolbar() {
