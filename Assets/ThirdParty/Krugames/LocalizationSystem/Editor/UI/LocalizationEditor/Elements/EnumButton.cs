@@ -16,7 +16,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
 
         public EnumButton(TEnumType value) {
             
-            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            //TODO review, style imports many times, cuz of hierarchy
+            //styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
             
             _enumValues = Enum.GetValues(EnumType);
             _buttons = new ToggleButton[_enumValues.Length];

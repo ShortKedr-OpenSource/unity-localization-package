@@ -4,6 +4,7 @@
     --list-element-selected-background: rgba(112, 255, 72, 0.25);
 }
 
+/* Elements [Start] */
 .TittledContentBox {
     border-radius: 0;
     border-width: 1px;
@@ -82,6 +83,24 @@ EnumButton {
     flex-direction: row;
     background-color: rgba(0, 0, 0, 0.0);
 }
+/* Elements [End] */
+
+/* Left Panel [Start] */
+LocaleParamEditor.TittledContentBox {
+    min-height: 100;
+    max-height: 150;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+LocaleList.TittledContentBox {
+    flex-grow: 1;
+    border-right-width: 0;
+    border-left-width: 0;
+    border-bottom-width: 0;
+}
 
 LocaleListElement {
     flex-direction: row;
@@ -154,3 +173,217 @@ LocaleListElement:active, LocaleListElement.Odd:active, LocaleListElement.Even:a
 LocaleListElement.Selected, LocaleListElement.Odd.Selected, LocaleListElement.Even.Selected {
     background-color: var(--list-element-selected-background);
 }
+
+.LeftPanel_AddLocaleButton {
+    min-height: 26px;
+    min-width: 225px;
+    max-width: 225px;
+    align-self: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Left Panel [End] */
+
+/* Plain View [Start] */
+
+PlainLocaleEditor {
+    
+}
+
+TittleSearchToolbar {
+    flex-grow: 0;
+    justify-content: center;
+    min-height: 24px;
+    max-height: 24px;
+    -unity-font-style: bold;
+}
+
+.TittleSearchToolbar_Tittle {
+    flex-grow: 1.0;
+    flex-direction: row;
+    justify-content: flex-end;
+    -unity-text-align: middle-center;
+}
+
+.TittleSearchToolbar_Search {
+    width: 20%;
+    max-width: 150px;
+    min-width: 50px;
+}
+
+TermElementTableHeader {
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+}
+
+.TermElementTableHeader_HeaderContainer {
+    flex-direction: row;
+    flex-grow: 1;
+    overflow: hidden;
+    border-width: 0;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.TermElementTableHeader_TermLabel {
+    flex-grow: 0.3;
+    max-width: 30%;
+    width: auto;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-right-width: 1px;
+    border-right-color: var(--unity-colors-toolbar-border);
+}
+
+.TermElementTableHeader_ValueLabel {
+    flex-grow: 0.35;
+    max-width: 35%;
+    width: auto;
+    border-right-width: 1px;
+    border-right-color: var(--unity-colors-toolbar-border);
+}
+
+.TermElementTableHeader_NoteLabel {
+    flex-grow: 0.35;
+    max-width: 35%;
+    width: auto;
+}
+
+.TermElementTableHeader_PropsPlaceholder {
+    flex-grow: 0;
+    width: 18px;
+    min-width: 18px;
+    border-width: 0;
+    background-color: rgba(0,0,0,0);
+    background-image: var(--unity-icons-pane_options);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.TermElementTableHeader_ScrollerPlaceholder {
+}
+
+PagerTooltipToolbar {
+    height: 24px;
+    min-height: 24px;
+    max-height: 24px;
+    border-bottom-width: 0;
+    border-top-width: 1px;
+    justify-content: flex-end;
+    align-items: stretch;
+}
+
+.PagerTooltipToolbar_Previous {
+    width: 24px;
+    background-image: var(--unity-icons-arrow_left);
+}
+
+.PagerTooltipToolbar_Next {
+    width: 24px;
+    background-image: var(--unity-icons-arrow_right);
+}
+
+.PagerTooltipToolbar_CurrentField {
+    background-color: rgba(0, 0, 0, 0.0);
+    border-width: 0;
+    min-width: 24px;
+    -unity-text-align: middle-right;
+}
+
+.PagerTooltipToolbar_PageInfoLabel {
+    -unity-text-align: middle-center;
+}
+
+.PagerTooltipToolbar_InfoLabel {
+    -unity-text-align: middle-center;
+}
+
+.PagerTooltipToolbar_TooltipLabel {
+    flex-grow: 1;
+    -unity-text-align: middle-left;
+    margin-left: 4px;
+}
+
+TermElement {
+    flex-direction: row;
+    flex-grow: 1;
+    overflow: hidden;
+    border-width: 0;
+    height: 25px;
+    min-height: 25px;
+    max-height: 25px;
+    -unity-text-align: middle-left;
+    align-items: stretch;
+}
+
+.TermElement_TermLabel {
+    flex-grow: 0.3;
+    max-width: 30%;
+    width: auto;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    overflow: hidden;
+    border-right-color: rgba(0, 0, 0, 0.3);
+    border-right-width: 1px;
+}
+
+.TermElement_ValueLabel {
+    flex-grow: 0.35;
+    max-width: 35%;
+    width:auto;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    overflow: hidden;
+    border-right-color: rgba(0, 0, 0, 0.3);
+    border-right-width: 1px;
+}
+
+.TermElement_NoteLabel {
+    flex-grow: 0.35;
+    max-width: 35%;
+    width:auto;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    overflow: hidden;
+}
+
+.TermElement_PropsButton {
+    flex-grow: 0;
+    width: 18px;
+    min-width: 18px;
+    border-width: 0;
+    background-color: rgba(0,0,0,0);
+    background-image: var(--unity-icons-pane_options);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.TermElement_PropsButton:hover {
+    background-color: var(--unity-colors-button-background-hover);
+}
+
+.TermElement_PropsButton:active {
+    background-color: var(--unity-colors-button-background-pressed);
+}
+
+TermElement:hover, TermElement.Odd:hover, TermElement.Even:hover {
+    background-color: var(--list-element-hover-background);
+}
+
+TermElement:active, TermElement.Odd:active, TermElement.Even:active {
+    background-color: var(--list-element-active-background);
+}
+
+TermElement.Selected, TermElement.Odd.Selected, TermElement.Even.Selected {
+    background-color: var(--list-element-selected-background);
+}
+
+TermElement.Even {
+    background-color: rgba(1, 1, 1, 0.05);
+}
+
+TermElement.Odd {
+    background-color: rgba(1, 1, 1, 0.1);
+}
+/* Plain View [End] */

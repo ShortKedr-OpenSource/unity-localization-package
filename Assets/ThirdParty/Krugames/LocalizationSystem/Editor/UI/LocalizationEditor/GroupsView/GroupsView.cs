@@ -2,13 +2,16 @@
 using Krugames.LocalizationSystem.Models;
 using UnityEngine.UIElements;
 
-namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.GroupsView {
+namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
     public class GroupsView : VisualElement {
 
         private LocaleLibrary _localeLibrary;
 
         public GroupsView(LocaleLibrary localeLibrary) {
-            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            //TODO review, style imports many times, cuz of hierarchy
+            //styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            
+            Add(new Label("Groups view"));
         }
 
         //TODO private 

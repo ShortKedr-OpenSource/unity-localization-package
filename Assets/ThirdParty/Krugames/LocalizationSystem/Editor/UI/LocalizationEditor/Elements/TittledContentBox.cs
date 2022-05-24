@@ -17,7 +17,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
 
         public TittledContentBox(string tittle) {
 
-            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            //TODO review, style imports many times, cuz of hierarchy
+            //styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
             
             AddToClassList(UssClassName);
             

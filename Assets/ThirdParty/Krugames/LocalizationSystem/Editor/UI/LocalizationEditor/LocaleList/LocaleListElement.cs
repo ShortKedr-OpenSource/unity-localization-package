@@ -65,7 +65,9 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             _fillRule = fillRule;
             _allowProperties = allowProperties;
             
-            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            //TODO review, style imports many times, cuz of hierarchy
+            //styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            
             AddFillRuleClass();
 
             _localeLabel = new Label() {

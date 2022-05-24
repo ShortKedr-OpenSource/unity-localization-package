@@ -70,7 +70,7 @@ namespace Krugames.LocalizationSystem.Models.Utility.Editor {
             return result;
         }
 
-        public static bool SortLocaleLibraryStaticLocales() {
+        public static bool SortStaticLocales() {
 #pragma warning disable CS0618
             return LocaleLibrary.Instance.SortStaticLocales();
 #pragma warning restore CS0618

@@ -14,7 +14,10 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         private ToggleMode _mode;
 
         public ToggleButton(bool value, EventCallback<ChangeEvent<bool>> changeCallback, ToggleMode mode = ToggleMode.Switchable) {
-            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            
+            //TODO review, style imports many times, cuz of hierarchy
+            //styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            
             RegisterCallback(changeCallback);
             this.value = value;
             _mode = mode;

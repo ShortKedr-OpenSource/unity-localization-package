@@ -19,7 +19,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
 
         public ElementToolbar() {
 
-            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            //TODO review, style imports many times, cuz of hierarchy
+            ////styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
             
             _leftAnchor = new VisualElement() {
                 pickingMode = PickingMode.Ignore,

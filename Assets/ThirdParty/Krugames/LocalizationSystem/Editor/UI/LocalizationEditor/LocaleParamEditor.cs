@@ -23,8 +23,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         public Locale Locale => _locale;
 
         public LocaleParamEditor(string tittle, Locale locale) : base(tittle) {
-            
-            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            //TODO review, style imports many times, cuz of hierarchy
+            //styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
             
             _scrollView = new ScrollView(ScrollViewMode.Vertical);
             _nameLabel = new Label();

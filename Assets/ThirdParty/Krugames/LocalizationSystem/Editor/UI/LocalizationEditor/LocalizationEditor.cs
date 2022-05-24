@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Krugames.LocalizationSystem.Common.Editor.UnityInternal;
-using Krugames.LocalizationSystem.Editor.Package;
 using Krugames.LocalizationSystem.Editor.Styles;
+using Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView;
 using Krugames.LocalizationSystem.Implementation;
 using Krugames.LocalizationSystem.Models;
 using Krugames.LocalizationSystem.Models.Structs;
@@ -14,7 +14,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-//TODO encapsulate leftPanel, rightPanel, + view to TwoSidePanelView class
+//TODO add NoteServer
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
     
     /// <summary>
@@ -28,14 +28,15 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         }
 
         private static class EditorSaveKeys {
-            public const string CreationMark = "Krugames_LocalizationEditor_CreationMark";
-            public const string ViewMode = "Krugames_LocalizationEditor_ViewMode";
-            public const string LeftPanelState = "Krugames_Localization_LeftPanelState";
-            public const string RightPanelState = "Krugames_Localization_RightPanelState";
+            public const string CreationMarkKey = "Krugames_LocalizationEditor_CreationMark";
+            public const string ViewModeKey = "Krugames_LocalizationEditor_ViewMode";
+            public const string LeftPanelStateKey = "Krugames_Localization_LeftPanelState";
+            public const string RightPanelStateKey = "Krugames_Localization_RightPanelState";
         }
 
         private const string LeftPanelToggleClassName = "LeftPanel";
         private const string RightPanelToggleClassName = "RightPanel";
+        private const string AddLocaleButtonClassName = "LeftPanel_AddLocaleButton";
         
         private static readonly Vector2 MinSize = new Vector2(1000, 500);
         private static readonly Vector2 DefaultSize = new Vector2(1000, 500);
@@ -43,68 +44,95 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         [SerializeField] private ViewMode viewMode;
         [SerializeField] private bool leftPanelState;
         [SerializeField] private bool rightPanelState;
-        
-        private LocaleLibrary _localeLibrary;
 
-        
         private VisualElement _root;
-
         private ElementToolbar _toolbar;
+        private TwoSidePanelView _content;
+
+        #region ToolbarElements
         private ToggleButton _leftPanelToggleButton;
         private ToggleButton _rightPanelToggleButton;
         private EnumButton<ViewMode> _viewModeSelector;
         private Button _validationButton;
         private Button _translationButton;
-        
-        private TwoSidePanelView _content;
-        
+        #endregion
+
+        #region ContentElements
+        private PlainLocaleEditor _plainLocaleEditor;
+        private GroupsView _groupsView;
+        #endregion
+
+        #region LeftPanelElements
         private LocaleParamEditor _localeParamEditor;
         private LocaleList _localeList;
+        private Button _addLocaleButton;
+        #endregion
 
-        private OptionPopup _validationOptionPopup;
-        private OptionPopup _translationOptionPopup;
+        #region RightPanelElements
+        private FunctionList _functionList;
+        #endregion
 
-        private LocaleListElement _managedLocaleListElement;
         private OptionPopup _managedLocaleBaseOptionPopup;
         private OptionPopup _managedLocaleOptionPopup;
+        private OptionPopup _validationOptionPopup;
+        private OptionPopup _translationOptionPopup;
         
+        private SerializedObject _serializedObject;
+        private LocaleLibrary _localeLibrary;
+        private LocaleListElement _managedLocaleListElement;
 
         [MenuItem("Window/Krugames/Localization")]
         public static void Open() {
             LocalizationEditor editorWindow = EditorWindow.GetWindow<LocalizationEditor>("Localization", true);
             editorWindow.minSize = MinSize;
-            if (!EditorPrefs.HasKey(EditorSaveKeys.CreationMark)) {
+            if (!EditorPrefs.HasKey(EditorSaveKeys.CreationMarkKey)) {
                 editorWindow.position = new Rect(editorWindow.position.position, DefaultSize);
-                EditorPrefs.SetBool(EditorSaveKeys.CreationMark, true);
+                EditorPrefs.SetBool(EditorSaveKeys.CreationMarkKey, true);
             }
             editorWindow.Show();
         }
-        
-        private void OnEnable() {
-            this.SetAntiAliasing(4);
-        }
-        
+
         private void Awake() {
-            _localeLibrary = LocaleLibrary.Instance;
-            if (_localeLibrary.BaseLocale == null) LocaleLibraryUtility.AddLocaleToLibrary(SystemLanguage.English);
+            this.SetAntiAliasing(4);
             LoadEditorValues();
         }
 
         private void OnDestroy() {
             SaveEditorValues();
-            LocaleLibraryUtility.SortLocaleLibraryStaticLocales();
+            LocaleLibraryUtility.SortStaticLocales();
         }
 
         public void CreateGUI() {
-
-            SerializedObject serializedObject = new SerializedObject(this);
+            _serializedObject = new SerializedObject(this);
+            _localeLibrary = LocaleLibrary.Instance;
+            _managedLocaleListElement = null;
+            if (_localeLibrary.BaseLocale == null) LocaleLibraryUtility.AddLocaleToLibrary(SystemLanguage.English);
 
             _root = rootVisualElement;
             _root.styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
 
-            #region Toolbar
             _toolbar = new ElementToolbar();
+            _content = new TwoSidePanelView(leftPanelState, rightPanelState);
+            
+            _root.Add(_toolbar);
+            _root.Add(_content);
 
+            CreateToolbarUI();
+            CreateContentUI();
+            CreateLeftPanelUI();
+            CreateRightPanelUI();
+
+            _localeParamEditor.OnChange += LocaleParamEditorOnOnChange;
+            _localeList.OnSelect += LocaleSelectEvent;
+            _localeList.OnPropertiesClick += LocalePropertiesClickEvent;
+            
+            _viewModeSelector.RegisterCallback<ChangeEvent<ViewMode>>(Event_ViewModeChanged);
+            
+            InitializePopups();
+            SetupLocaleList();
+        }
+
+        private void CreateToolbarUI() {
             _leftPanelToggleButton = new ToggleButton(leftPanelState, LeftPanelStateChangeEvent) {text = "L"};
             _leftPanelToggleButton.AddToClassList(LeftPanelToggleClassName);
 
@@ -112,10 +140,10 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             _rightPanelToggleButton.AddToClassList(RightPanelToggleClassName);
 
             _viewModeSelector = new EnumButton<ViewMode>(viewMode);
-            _viewModeSelector.BindProperty(serializedObject.FindProperty("viewMode"));
+            _viewModeSelector.BindProperty(_serializedObject.FindProperty("viewMode"));
 
-            _validationButton = new Button(ValidationButtonClickEvent) {text = "Validation"};
-            _translationButton = new Button(TranslationButtonClickEvent) {text = "Translation"};
+            _validationButton = new Button(ValidationButtonClickEvent) {text = "Validate"};
+            _translationButton = new Button(TranslationButtonClickEvent) {text = "Translate"};
             
             _toolbar.LeftAnchor.Add(_leftPanelToggleButton);
             _toolbar.LeftAnchor.Add(new ToolbarSpacer());
@@ -125,76 +153,46 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             _toolbar.RightAnchor.Add(_rightPanelToggleButton);
             _toolbar.RightAnchor.Add(new ToolbarSpacer());
             _toolbar.RightAnchor.Add(_viewModeSelector);
-            #endregion
+        }
 
-            _content = new TwoSidePanelView(leftPanelState, rightPanelState);
+        private void CreateContentUI() {
+            _plainLocaleEditor = new PlainLocaleEditor(null);
+            _groupsView = new GroupsView(null);
+            UpdateCurrentView();
+        }
+        
+        private void CreateLeftPanelUI() {
+            _localeParamEditor = new LocaleParamEditor("Selected locale", null);
+            _localeList = new LocaleList("Locales", null);
+
+            _addLocaleButton = new Button(AddLocaleButtonEvent) {text = "Add locale"};
+            _addLocaleButton.AddToClassList(AddLocaleButtonClassName);
             
-            #region LeftPanel
-            _localeParamEditor = new LocaleParamEditor("Selected locale", null) {
-                style = {
-                    minHeight = 100,
-                    maxHeight = 150,
-                    borderRightWidth = 0,
-                    borderLeftWidth = 0,
-                    borderTopWidth = 0,
-                    borderBottomWidth = 0,
-                }
-            };
-
-            _localeList = new LocaleList("Locales", null) {
-                style = {
-                    flexGrow = 1f,
-                    borderRightWidth = 0,
-                    borderLeftWidth = 0,
-                    borderBottomWidth = 0,
-                }
-            };
-
-            _localeParamEditor.OnChange += LocaleParamEditorOnOnChange;
-            _localeList.OnSelect += LocaleSelectEvent;
-            _localeList.OnPropertiesClick += LocalePropertiesClickEvent;
-
             _content.LeftPanel.Add(_localeParamEditor);
             _content.LeftPanel.Add(_localeList);
-            _content.LeftPanel.Add(new Button(AddLocaleButtonEvent) {
-                text = "Add Locale",
-                style = {
-                    minHeight = 26,
-                    maxWidth = 225,
-                    minWidth = 225,
-                    alignSelf = new StyleEnum<Align>(Align.Center),
-                    marginTop = 10,
-                    marginBottom = 10,
-                }
-            });
-            #endregion
-            
-            _root.Add(_toolbar);
-            _root.Add(_content);
-            
-            var editBox = new TittledContentBox("English (158 terms, 97 notes, 13 empty)") {
-                style = {
-                    height = new StyleLength(StyleKeyword.Auto),
-                    alignSelf = new StyleEnum<Align>(Align.Stretch),
-                    flexGrow = 1,
-                }
-            };
+            _content.LeftPanel.Add(_addLocaleButton);
+        }
 
-            var functionsBox = new TittledContentBox("Functions") {
-                style = {
-                    height = new StyleLength(StyleKeyword.Auto),
-                    alignSelf = new StyleEnum<Align>(Align.Stretch),
-                    flexGrow = 1,
-                }
-            };
+        private void CreateRightPanelUI() {
+            _functionList = new FunctionList("Functions");
+            _content.RightPanel.Add(_functionList);
+        }
 
-            for (int i = 0; i < 17; i++) editBox.Content.Add(new Button(){text="Term "+i.ToString()});
-            for (int i = 0; i < 4; i++) functionsBox.Content.Add(new Button(){text="Function "+i.ToString()});
-
-            _content.RightPanel.Add(functionsBox);
-            
-            InitializePopups();
-            SetupLocaleList();
+        private void UpdateCurrentView() {
+            _plainLocaleEditor.RemoveFromHierarchy();
+            _groupsView.RemoveFromHierarchy();
+            switch (viewMode) {
+                case ViewMode.Plain:
+                    _content.Content.Add(_plainLocaleEditor);
+                    break;
+                case ViewMode.Grouping:
+                    _content.Content.Add(_groupsView);
+                    break;
+            }
+        }
+        
+        private void Event_ViewModeChanged(ChangeEvent<ViewMode> evt) {
+            UpdateCurrentView();
         }
 
         private void AddLocaleButtonEvent() {
@@ -330,25 +328,25 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         }
         
         private void SaveEditorValues() {
-            EditorPrefs.SetString(EditorSaveKeys.ViewMode, viewMode.ToString());
-            EditorPrefs.SetBool(EditorSaveKeys.LeftPanelState, (leftPanelState = _content.ShowLeftPanel));
-            EditorPrefs.SetBool(EditorSaveKeys.RightPanelState, (rightPanelState = _content.ShowRightPanel));
+            EditorPrefs.SetString(EditorSaveKeys.ViewModeKey, viewMode.ToString());
+            EditorPrefs.SetBool(EditorSaveKeys.LeftPanelStateKey, (leftPanelState = _content.ShowLeftPanel));
+            EditorPrefs.SetBool(EditorSaveKeys.RightPanelStateKey, (rightPanelState = _content.ShowRightPanel));
         }
 
         private void LoadEditorValues() {
             SetDefaultEditorValues();
             
-            if (EditorPrefs.HasKey(EditorSaveKeys.ViewMode)) {
-                string value = EditorPrefs.GetString(EditorSaveKeys.ViewMode);
+            if (EditorPrefs.HasKey(EditorSaveKeys.ViewModeKey)) {
+                string value = EditorPrefs.GetString(EditorSaveKeys.ViewModeKey);
                 Enum.TryParse(value, out viewMode);
             }
 
-            if (EditorPrefs.HasKey(EditorSaveKeys.LeftPanelState)) {
-                leftPanelState = EditorPrefs.GetBool(EditorSaveKeys.LeftPanelState);
+            if (EditorPrefs.HasKey(EditorSaveKeys.LeftPanelStateKey)) {
+                leftPanelState = EditorPrefs.GetBool(EditorSaveKeys.LeftPanelStateKey);
             }
 
-            if (EditorPrefs.HasKey(EditorSaveKeys.RightPanelState)) {
-                rightPanelState = EditorPrefs.GetBool(EditorSaveKeys.RightPanelState);
+            if (EditorPrefs.HasKey(EditorSaveKeys.RightPanelStateKey)) {
+                rightPanelState = EditorPrefs.GetBool(EditorSaveKeys.RightPanelStateKey);
             }
         }
 

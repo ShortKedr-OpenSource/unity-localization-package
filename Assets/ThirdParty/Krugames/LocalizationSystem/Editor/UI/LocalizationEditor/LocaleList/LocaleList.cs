@@ -65,8 +65,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         public SelectionInfo Selection => _selection;
 
         public LocaleList(string tittle, Locale[] locales) : base(tittle) {
-
-            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            //TODO review, style imports many times, cuz of hierarchy
+            //styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
             
             _scrollView = new ScrollView(ScrollViewMode.Vertical) {
                 style = {

@@ -45,7 +45,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
 
         public TwoSidePanelView(bool showLeftPanel, bool showRightPanel) {
             
-            styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+            //TODO review, style imports many times, cuz of hierarchy
+            //styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
             
             _showLeftPanel = showLeftPanel;
             _showRightPanel = showRightPanel;
