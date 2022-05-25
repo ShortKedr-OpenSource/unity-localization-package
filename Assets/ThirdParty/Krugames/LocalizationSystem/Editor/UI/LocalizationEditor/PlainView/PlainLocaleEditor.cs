@@ -53,8 +53,6 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
 
             _defaultList = new PlainTermElementList(null, DefaultPageLength);
             _searchList = new PlainTermElementList(null, DefaultPageLength);
-
-            _elementToolbar = new ElementToolbar();
             
             _toolbarPager = new PagerTooltipToolbar() {
                 style = {
