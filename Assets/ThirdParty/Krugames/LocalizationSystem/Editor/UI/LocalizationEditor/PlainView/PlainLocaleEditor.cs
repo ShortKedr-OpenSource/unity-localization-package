@@ -1,26 +1,46 @@
-﻿using Krugames.LocalizationSystem.Editor.Styles;
+﻿using System.Collections.Generic;
 using Krugames.LocalizationSystem.Models;
 using Krugames.LocalizationSystem.Models.Terms;
+using RenwordDigital.StringSearchEngine;
+using ThirdParty.Krugames.LocalizationSystem.Editor.UI;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+//TODO allow remove terms
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
     public class PlainLocaleEditor : VisualElement {
 
+        private enum ViewMode {
+            Default = 0,
+            Search = 1
+        }
+        
         private Locale _locale;
 
         private TittleSearchToolbar _toolbar;
-        private TermElementTableHeader _tableHeader;
-        private ScrollView _elementList;
+        private PlaintTermElementTableHeader _tableHeader;
+        private VisualElement _listContainer;
         private PagerTooltipToolbar _toolbarPager;
+        
+        private PlainTermElementList _defaultList;
+        private PlainTermElementList _searchList;
+        
+        private SearchIndex _termSearchIndex;
+        private Dictionary<Resource, LocaleTerm> _resourceTermDict;
+        private string _lastSearchString = string.Empty;
+        private int _lastDefaultPage;
+        
+        private ViewMode _viewMode;
+        private LocaleTermListViewContent.SelectionInfo _selection = LocaleTermListViewContent.SelectionInfo.Nothing;
+        private int _itemsPerPage;
+        
+        private OptionPopup _managedElementOptions; 
+        private PlainTermElement _managedElement = null;
 
         public PlainLocaleEditor(Locale locale) {
             _locale = locale;
-            
-            //TODO review, style imports many times, cuz of hierarchy
-            //styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
 
             style.flexGrow = 1f;
             style.borderTopWidth = 0;
@@ -33,14 +53,10 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
             var tittle = new Label("English");
             var search = new ToolbarSearchField();
 
-            _tableHeader = new TermElementTableHeader();
+            _tableHeader = new PlaintTermElementTableHeader();
 
-            _elementList = new ScrollView(ScrollViewMode.Vertical) {
-                showVertical = true, //TODO remove
-                style = {
-                    flexGrow = 1f,
-                }
-            };
+            _defaultList = new PlainTermElementList();
+            _searchList = new PlainTermElementList();
 
             _toolbarPager = new PagerTooltipToolbar() {
                 style = {
@@ -51,20 +67,22 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
             
             Add(_toolbar);
             Add(_tableHeader);
-            Add(_elementList);
+            Add(_defaultList);
             Add(_toolbarPager);
 
 
             StringTerm term = ScriptableObject.CreateInstance<StringTerm>();
-            term.SetSmartValue("oqwjecjwqoiecjioqw");
+            term.SetSmartValue("value");
 
             SerializedObject obj = new SerializedObject(term);
             obj.FindProperty("term").stringValue = "string_term";
             obj.ApplyModifiedProperties();
 
-            for (int i = 0; i < 9; i++) {
-                _elementList.Add(new TermElement(term, (i % 2 == 0) ? FillRule.Even : FillRule.Odd));
+            List<LocaleTerm> terms = new List<LocaleTerm>();
+            for (int i = 0; i < 10; i++) {
+                terms.Add(term);
             }
+            _defaultList.SetTerms(terms.ToArray());
 
         }
 

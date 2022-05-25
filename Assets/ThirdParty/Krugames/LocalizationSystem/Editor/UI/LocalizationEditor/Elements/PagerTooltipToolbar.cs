@@ -1,9 +1,7 @@
-﻿
-using Krugames.LocalizationSystem.Editor.Styles;
-using UnityEditor.UIElements;
+﻿using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
+namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
     public class PagerTooltipToolbar : Toolbar {
         
         private const string PreviousButtonClassName = nameof(PagerTooltipToolbar)+"_Previous";

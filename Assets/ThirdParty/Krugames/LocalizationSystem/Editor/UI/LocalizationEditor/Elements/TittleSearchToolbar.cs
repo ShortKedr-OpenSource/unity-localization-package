@@ -1,8 +1,7 @@
-﻿using Krugames.LocalizationSystem.Editor.Styles;
-using UnityEditor.UIElements;
+﻿using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
+namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
     public class TittleSearchToolbar : Toolbar {
 
         private const string TittleClassName = nameof(TittleSearchToolbar) + "_Tittle";

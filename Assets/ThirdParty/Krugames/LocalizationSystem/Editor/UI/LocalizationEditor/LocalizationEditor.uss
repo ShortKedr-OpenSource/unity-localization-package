@@ -83,6 +83,47 @@ EnumButton {
     flex-direction: row;
     background-color: rgba(0, 0, 0, 0.0);
 }
+
+PagerTooltipToolbar {
+    height: 24px;
+    min-height: 24px;
+    max-height: 24px;
+    border-bottom-width: 0;
+    border-top-width: 1px;
+    justify-content: flex-end;
+    align-items: stretch;
+}
+
+.PagerTooltipToolbar_Previous {
+    width: 24px;
+    background-image: var(--unity-icons-arrow_left);
+}
+
+.PagerTooltipToolbar_Next {
+    width: 24px;
+    background-image: var(--unity-icons-arrow_right);
+}
+
+.PagerTooltipToolbar_CurrentField {
+    background-color: rgba(0, 0, 0, 0.0);
+    border-width: 0;
+    min-width: 24px;
+    -unity-text-align: middle-right;
+}
+
+.PagerTooltipToolbar_PageInfoLabel {
+    -unity-text-align: middle-center;
+}
+
+.PagerTooltipToolbar_InfoLabel {
+    -unity-text-align: middle-center;
+}
+
+.PagerTooltipToolbar_TooltipLabel {
+    flex-grow: 1;
+    -unity-text-align: middle-left;
+    margin-left: 4px;
+}
 /* Elements [End] */
 
 /* Left Panel [Start] */
@@ -212,12 +253,12 @@ TittleSearchToolbar {
     min-width: 50px;
 }
 
-TermElementTableHeader {
+PlainTermElementTableHeader {
     -unity-text-align: middle-center;
     -unity-font-style: bold;
 }
 
-.TermElementTableHeader_HeaderContainer {
+.PlainTermElementTableHeader_HeaderContainer {
     flex-direction: row;
     flex-grow: 1;
     overflow: hidden;
@@ -225,87 +266,59 @@ TermElementTableHeader {
     background-color: rgba(0, 0, 0, 0.0);
 }
 
-.TermElementTableHeader_TermLabel {
+.PlainTermElementTableHeader_TermLabel {
     flex-grow: 0.3;
-    max-width: 30%;
+    flex-shrink: 1.0;
+    flex-basis: 30%;
     width: auto;
-    flex-shrink: 0;
     overflow: hidden;
     border-right-width: 1px;
     border-right-color: var(--unity-colors-toolbar-border);
 }
 
-.TermElementTableHeader_ValueLabel {
+.PlainTermElementTableHeader_ValueLabel {
     flex-grow: 0.35;
-    max-width: 35%;
+    flex-shrink: 1.0;
+    flex-basis: 35%;
     width: auto;
-    border-right-width: 1px;
-    border-right-color: var(--unity-colors-toolbar-border);
+    overflow: hidden;
 }
 
-.TermElementTableHeader_NoteLabel {
+.PlainTermElementTableHeader_NoteLabel {
     flex-grow: 0.35;
-    max-width: 35%;
+    flex-shrink: 1.0;
+    flex-basis: 35%;
     width: auto;
+    overflow: hidden;
+    border-left-width: 1px;
+    border-left-color: var(--unity-colors-toolbar-border);
 }
 
-.TermElementTableHeader_PropsPlaceholder {
+.PlainTermElementTableHeader_PropsPlaceholder {
+    opacity: 0;
     flex-grow: 0;
     width: 18px;
-    min-width: 18px;
     border-width: 0;
     background-color: rgba(0,0,0,0);
     background-image: var(--unity-icons-pane_options);
     -unity-background-scale-mode: scale-to-fit;
 }
 
-.TermElementTableHeader_ScrollerPlaceholder {
+.PlainTermElementTableHeader_ScrollerPlaceholder {
+    opacity: 0;
 }
 
-PagerTooltipToolbar {
-    height: 24px;
-    min-height: 24px;
-    max-height: 24px;
-    border-bottom-width: 0;
-    border-top-width: 1px;
-    justify-content: flex-end;
-    align-items: stretch;
-}
-
-.PagerTooltipToolbar_Previous {
-    width: 24px;
-    background-image: var(--unity-icons-arrow_left);
-}
-
-.PagerTooltipToolbar_Next {
-    width: 24px;
-    background-image: var(--unity-icons-arrow_right);
-}
-
-.PagerTooltipToolbar_CurrentField {
-    background-color: rgba(0, 0, 0, 0.0);
+PlainTermElement {
+    flex-direction: column;
+    flex-grow: 1;
+    width: auto;
+    height: auto;
     border-width: 0;
-    min-width: 24px;
-    -unity-text-align: middle-right;
 }
 
-.PagerTooltipToolbar_PageInfoLabel {
-    -unity-text-align: middle-center;
-}
-
-.PagerTooltipToolbar_InfoLabel {
-    -unity-text-align: middle-center;
-}
-
-.PagerTooltipToolbar_TooltipLabel {
-    flex-grow: 1;
-    -unity-text-align: middle-left;
-    margin-left: 4px;
-}
-
-TermElement {
+.PlainTermElement_MainRoot {
     flex-direction: row;
-    flex-grow: 1;
+    flex-grow: 0;
     overflow: hidden;
     border-width: 0;
     height: 25px;
@@ -315,9 +328,23 @@ TermElement {
     align-items: stretch;
 }
 
-.TermElement_TermLabel {
+.PlainTermElement_EditorRoot {
+    height: auto;
+    padding: 10px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(0, 0, 0, 0.3);
+}
+
+.PlainTermElement_Editor {
+    flex-grow: 0;
+    width:auto;
+    height:auto;
+}
+
+.PlainTermElement_TermLabel {
     flex-grow: 0.3;
-    max-width: 30%;
+    flex-shrink: 1.0;
+    flex-basis: 30%;
     width: auto;
     padding-top: 3px;
     padding-bottom: 3px;
@@ -327,10 +354,10 @@ TermElement {
     border-right-width: 1px;
 }
 
-.TermElement_ValueLabel {
+.PlainTermElement_ValueLabel {
     flex-grow: 0.35;
-    max-width: 35%;
-    width:auto;
+    flex-shrink: 1.0;
+    flex-basis: 35%;
     padding-top: 3px;
     padding-bottom: 3px;
     padding-left: 5px;
@@ -339,51 +366,56 @@ TermElement {
     border-right-width: 1px;
 }
 
-.TermElement_NoteLabel {
+.PlainTermElement_NoteLabel {
     flex-grow: 0.35;
-    max-width: 35%;
-    width:auto;
+    flex-shrink: 1.0;
+    flex-basis: 35%;
     padding-top: 3px;
     padding-bottom: 3px;
     padding-left: 5px;
     overflow: hidden;
 }
 
-.TermElement_PropsButton {
+.PlainTermElement_PropsButton {
     flex-grow: 0;
     width: 18px;
-    min-width: 18px;
     border-width: 0;
     background-color: rgba(0,0,0,0);
     background-image: var(--unity-icons-pane_options);
     -unity-background-scale-mode: scale-to-fit;
 }
 
-.TermElement_PropsButton:hover {
+.PlainTermElement_PropsButton:hover {
     background-color: var(--unity-colors-button-background-hover);
 }
 
-.TermElement_PropsButton:active {
+.PlainTermElement_PropsButton:active {
     background-color: var(--unity-colors-button-background-pressed);
 }
 
-TermElement:hover, TermElement.Odd:hover, TermElement.Even:hover {
+.PlainTermElement_MainRoot:hover, .PlainTermElement_MainRoot.Odd:hover, .PlainTermElement_MainRoot.Even:hover {
     background-color: var(--list-element-hover-background);
 }
 
-TermElement:active, TermElement.Odd:active, TermElement.Even:active {
+.PlainTermElement_MainRoot:active, .PlainTermElement_MainRoot.Odd:active, .PlainTermElement_MainRoot.Even:active {
     background-color: var(--list-element-active-background);
 }
 
-TermElement.Selected, TermElement.Odd.Selected, TermElement.Even.Selected {
+.PlainTermElement_MainRoot.Active, .PlainTermElement_MainRoot.Odd.Active, .PlainTermElement_MainRoot.Even.Active {
     background-color: var(--list-element-selected-background);
 }
 
-TermElement.Even {
+PlainTermElement.Even {
     background-color: rgba(1, 1, 1, 0.05);
 }
 
-TermElement.Odd {
+PlainTermElement.Odd {
     background-color: rgba(1, 1, 1, 0.1);
+}
+
+PlainTermElementList {
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
 }
 /* Plain View [End] */

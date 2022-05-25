@@ -23,6 +23,7 @@ namespace Krugames.LocalizationSystem.Common.Editor {
 
         private static void UpdateSubAssetReferenceCache(string mainAssetPath) {
             //TODO rework, since multiple main assets can be loaded
+            //BUG current approach generates bug, when multiple main assets are loaded, see todo above
             Object[] assets = AssetDatabase.LoadAllAssetsAtPath(mainAssetPath);
             if (assets.Length == 0) return;
             Object mainAsset = null;

@@ -7,6 +7,7 @@ using Krugames.LocalizationSystem.Implementation;
 using Krugames.LocalizationSystem.Models;
 using Krugames.LocalizationSystem.Models.Structs;
 using Krugames.LocalizationSystem.Models.Utility.Editor;
+using Krugames.LocalizationSystem.RapidStorage.Servers;
 using ThirdParty.Krugames.LocalizationSystem.Editor.UI;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -90,6 +91,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
                 EditorPrefs.SetBool(EditorSaveKeys.CreationMarkKey, true);
             }
             editorWindow.Show();
+            var a = TermNoteServer.Instance;
+            TermNoteServer.SetNote("my_term", "my note");
         }
 
         private void Awake() {

@@ -5,14 +5,14 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
-    public class TermElementTableHeader : Toolbar {
+    public class PlaintTermElementTableHeader : Toolbar {
 
-        private const string HeaderContainerClassName = nameof(TermElementTableHeader)+"_HeaderContainer";
-        private const string TermLabelClassName = nameof(TermElementTableHeader)+"_TermLabel";
-        private const string ValueLabelClassName = nameof(TermElementTableHeader)+"_ValueLabel";
-        private const string NoteLabelClassName = nameof(TermElementTableHeader)+"_NoteLabel";
-        private const string PropsPlaceholderClassName = nameof(TermElementTableHeader)+"_PropsPlaceholder";
-        private const string ScrollerPlaceholderClassName = nameof(TermElementTableHeader)+"_ScrollerPlaceholder";
+        private const string HeaderContainerClassName = nameof(PlaintTermElementTableHeader)+"_HeaderContainer";
+        private const string TermLabelClassName = nameof(PlaintTermElementTableHeader)+"_TermLabel";
+        private const string ValueLabelClassName = nameof(PlaintTermElementTableHeader)+"_ValueLabel";
+        private const string NoteLabelClassName = nameof(PlaintTermElementTableHeader)+"_NoteLabel";
+        private const string PropsPlaceholderClassName = nameof(PlaintTermElementTableHeader)+"_PropsPlaceholder";
+        private const string ScrollerPlaceholderClassName = nameof(PlaintTermElementTableHeader)+"_ScrollerPlaceholder";
 
         private readonly Box _headerContainer;
         private readonly Label _termHeadLabel;
@@ -27,9 +27,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
 
         public Label NoteHeadLabel => _noteHeadLabel;
 
-        public TermElementTableHeader() {
-            //TODO review, style imports many times, cuz of hierarchy
-            //styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
+        public PlaintTermElementTableHeader() {
 
             style.unityTextAlign = new StyleEnum<TextAnchor>(TextAnchor.MiddleCenter);
             style.unityFontStyleAndWeight = new StyleEnum<FontStyle>(FontStyle.Bold);
