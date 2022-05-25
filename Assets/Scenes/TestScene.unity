@@ -167,15 +167,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9139fdd0d72d44129649194891c32470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localeLibrary: {fileID: 11400000, guid: 34dd4d5a33dfaeb468f29e3e5f7765d4, type: 2}
-  testString1: 
-  testString2: 
-  testString3: 
-  testTexture: {fileID: 0}
-  testSprite: {fileID: 0}
-  testAudioClip1: {fileID: 0}
-  testAudioClip2: {fileID: 0}
-  testAudioClip3: {fileID: 0}
 --- !u!114 &263392274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,7 +343,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8059802b079d45e6860f5f7e3aabe915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localeLibrary: {fileID: 11400000, guid: 34dd4d5a33dfaeb468f29e3e5f7765d4, type: 2}
 --- !u!4 &663915442
 Transform:
   m_ObjectHideFlags: 0
@@ -660,7 +650,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ada220a100b042358107a5e06477d894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locale: {fileID: 11400000, guid: c905de7e3a6fa4343acc456405096b3c, type: 2}
 --- !u!4 &925370776
 Transform:
   m_ObjectHideFlags: 0

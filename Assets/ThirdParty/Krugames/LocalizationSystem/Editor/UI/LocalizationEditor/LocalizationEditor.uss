@@ -229,7 +229,8 @@ LocaleListElement.Selected, LocaleListElement.Odd.Selected, LocaleListElement.Ev
 /* Plain View [Start] */
 
 PlainLocaleEditor {
-    
+    flex-grow: 1;
+    border: 0;
 }
 
 TittleSearchToolbar {
@@ -335,12 +336,6 @@ PlainTermElement {
     border-bottom-color: rgba(0, 0, 0, 0.3);
 }
 
-.PlainTermElement_Editor {
-    flex-grow: 0;
-    width:auto;
-    height:auto;
-}
-
 .PlainTermElement_TermLabel {
     flex-grow: 0.3;
     flex-shrink: 1.0;
@@ -383,6 +378,15 @@ PlainTermElement {
     background-color: rgba(0,0,0,0);
     background-image: var(--unity-icons-pane_options);
     -unity-background-scale-mode: scale-to-fit;
+}
+
+.PlainTermElement_TermProperty {
+}
+
+.PlainTermElement_ValueProperty {
+}
+
+.PlainTermElement_NoteProperty {
 }
 
 .PlainTermElement_PropsButton:hover {

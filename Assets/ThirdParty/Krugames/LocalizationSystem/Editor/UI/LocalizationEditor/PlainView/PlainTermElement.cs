@@ -7,6 +7,7 @@ using Krugames.LocalizationSystem.RapidStorage.Servers;
 using TMPro;
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
@@ -21,12 +22,17 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
         public const string ValueLabelClassName = nameof(PlainTermElement)+"_ValueLabel";
         public const string NoteLabelClassName = nameof(PlainTermElement) + "_NoteLabel";
         public const string PropsButtonClassName = nameof(PlainTermElement)+"_PropsButton";
-        public const string InspectorClassName = nameof(PlainTermElement) + "_Editor";
+        public const string TermPropertyClassName = nameof(PlainTermElement) + "_TermProperty";
+        public const string ValuePropertyClassName = nameof(PlainTermElement) + "_ValueProperty";
+        public const string NotePropertyClassName = nameof(PlainTermElement) + "_NoteProperty";
         
         private LocaleTerm _localeTerm;
         private FillRule _fillRule;
-        private UnityEditor.Editor _termEditor;
-        private bool _allowEditorDrawing = false;
+        private bool _hideTermPropertyField = false;
+
+        private SerializedObject _serializedObject;
+        private SerializedProperty _termProperty;
+        private SerializedProperty _smartValueProperty;
 
         private readonly Box _mainRoot;
         private readonly Box _editorRoot;
@@ -36,13 +42,14 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
         private readonly Label _noteLabel;
         private readonly Button _propsButton;
         
-        private readonly IMGUIContainer _editorElement;
-        private readonly TextField _noteField;
+        private readonly PropertyField _termPropertyField;
+        private readonly PropertyField _smartValuePropertyField;
+        private readonly TextField _notePropertyField;
 
         private readonly Clickable _clickable;
 
         private string _previousTermName;
-        
+
         public delegate void ActiveStateChangeDelegate(PlainTermElement element, bool newState);
         public delegate void ClickDelegate(PlainTermElement element);
         public event ClickDelegate OnClick;
@@ -70,7 +77,15 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
             }
         }
 
-        
+        public bool HideTermPropertyField {
+            get => _hideTermPropertyField;
+            set {
+                _hideTermPropertyField = value;
+                RebuildEditor();
+            }
+        }
+
+
         public PlainTermElement(LocaleTerm localeTerm, FillRule fillRule) {
             _fillRule = fillRule;
             AddFillRuleClass();
@@ -78,22 +93,14 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
             _mainRoot = new Box();
             _editorRoot = new Box();
             
-            _termLabel = new Label() {
-                pickingMode = PickingMode.Position,
-            };
-
-            _valueLabel = new Label() {
-                pickingMode = PickingMode.Position,
-            };
-            
-            _noteLabel = new Label() {
-                pickingMode = PickingMode.Position,
-            };
-
+            _termLabel = new Label() { pickingMode = PickingMode.Position};
+            _valueLabel = new Label() {pickingMode = PickingMode.Position,};
+            _noteLabel = new Label() {pickingMode = PickingMode.Position,};
             _propsButton = new Button(Event_PropertiesButtonClick);
 
-            _editorElement = new IMGUIContainer(OnEditorGUI);
-            _noteField = new TextField("Note");
+            _termPropertyField = new PropertyField();
+            _smartValuePropertyField = new PropertyField();
+            _notePropertyField = new TextField("Note");
             
             _mainRoot.AddToClassList(MainRootClassName);
             _editorRoot.AddToClassList(EditorRootClassName);
@@ -101,15 +108,14 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
             _valueLabel.AddToClassList(ValueLabelClassName);
             _noteLabel.AddToClassList(NoteLabelClassName);
             _propsButton.AddToClassList(PropsButtonClassName);
-            _editorElement.AddToClassList(InspectorClassName);
+            _termPropertyField.AddToClassList(TermPropertyClassName);
+            _smartValuePropertyField.AddToClassList(ValuePropertyClassName);
+            _notePropertyField.AddToClassList(NotePropertyClassName);
             
             _mainRoot.Add(_termLabel);
             _mainRoot.Add(_valueLabel);
             _mainRoot.Add(_noteLabel);
             _mainRoot.Add(_propsButton);
-
-            _editorRoot.Add(_editorElement);
-            _editorRoot.Add(_noteField);
 
             Add(_mainRoot);
 
@@ -118,16 +124,11 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
 
             _mainRoot.RegisterCallback<MouseUpEvent>(Event_ElementMouseUp);
             _noteLabel.RegisterCallback<ChangeEvent<string>>(Event_NoteLabelChange);
-            _noteField.RegisterCallback<ChangeEvent<string>>(Event_NoteFieldChange);
-            
-            SetTerm(localeTerm);
+            _notePropertyField.RegisterCallback<ChangeEvent<string>>(Event_NoteFieldChange);
             
             ObjectChangeEvents.changesPublished += Event_OnObjectChangesPublished;
-        }
-
-        private void OnEditorGUI() {
-            if (!_allowEditorDrawing) return;
-            _termEditor.OnInspectorGUI();
+            
+            SetTerm(localeTerm);
         }
 
         private void AddFillRuleClass() {
@@ -160,8 +161,15 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
             SetEditorOpenState(!GetEditorOpenState());
         }
 
+        private void RebuildEditor() {
+            _editorRoot.Clear();
+            if (!_hideTermPropertyField && _termProperty != null) _editorRoot.Add(_termPropertyField);
+            if (_smartValueProperty != null) _editorRoot.Add(_smartValuePropertyField);
+            _editorRoot.Add(_notePropertyField);
+        }
+
         private void Event_ElementClick() {
-            SwitchEditorOpenState(); //TODO replace with mode
+            SwitchEditorOpenState();
             OnClick?.Invoke(this);
         }
 
@@ -190,24 +198,41 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
 
             if (_localeTerm != null && _previousTermName != _localeTerm.Term) {
                 _previousTermName = _localeTerm.Term;
-                _noteField.SetValueWithoutNotify(TermNoteServer.GetNote(_localeTerm.Term));
-                _noteLabel.text = _noteField.value;
+                _notePropertyField.SetValueWithoutNotify(TermNoteServer.GetNote(_localeTerm.Term));
+                _noteLabel.text = _notePropertyField.value;
                 Update();
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetTerm(LocaleTerm localeTerm) {
-            if (_localeTerm != null) TermNoteServer.SetNote(_localeTerm.Term, _noteField.text);
+            
+            if (_localeTerm != null) TermNoteServer.SetNote(_localeTerm.Term, _notePropertyField.text);
+            _termPropertyField.Unbind();
+            _smartValuePropertyField.Unbind();
+
             _localeTerm = localeTerm;
-            if (_localeTerm == null) _termEditor = null;
-            else {
-                _termEditor = UnityEditor.Editor.CreateEditor(localeTerm);
-                _noteField.SetValueWithoutNotify(TermNoteServer.GetNote(_localeTerm.Term));
-                _noteLabel.text = _noteField.value;
+            
+            if (_localeTerm == null) {
+                _serializedObject = null;
+                _termProperty = null;
+                _smartValueProperty = null;
+            } else {
+                _serializedObject = new SerializedObject(localeTerm);
+
+                _termProperty = _serializedObject.FindProperty("term");
+                _smartValueProperty = _serializedObject.FindProperty("smartValue");
+
+                if (_termProperty != null) _termPropertyField.BindProperty(_termProperty);
+                if (_smartValueProperty != null) _smartValuePropertyField.BindProperty(_smartValueProperty);
+
+                _notePropertyField.SetValueWithoutNotify(TermNoteServer.GetNote(_localeTerm.Term));
+                _noteLabel.text = _notePropertyField.value;
+                _noteLabel.tooltip = _noteLabel.text;
+                
                 _previousTermName = _localeTerm.Term;
             }
-            _allowEditorDrawing = _termEditor != null;
+            RebuildEditor();
             SetEditorOpenState(false);
             Update();
         }

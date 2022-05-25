@@ -1,18 +1,16 @@
-﻿using Krugames.LocalizationSystem.Editor.Styles;
-using UnityEditor;
-using UnityEditor.UIElements;
+﻿using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
-    public class PlaintTermElementTableHeader : Toolbar {
+    public class PlainTermElementTableHeader : Toolbar {
 
-        private const string HeaderContainerClassName = nameof(PlaintTermElementTableHeader)+"_HeaderContainer";
-        private const string TermLabelClassName = nameof(PlaintTermElementTableHeader)+"_TermLabel";
-        private const string ValueLabelClassName = nameof(PlaintTermElementTableHeader)+"_ValueLabel";
-        private const string NoteLabelClassName = nameof(PlaintTermElementTableHeader)+"_NoteLabel";
-        private const string PropsPlaceholderClassName = nameof(PlaintTermElementTableHeader)+"_PropsPlaceholder";
-        private const string ScrollerPlaceholderClassName = nameof(PlaintTermElementTableHeader)+"_ScrollerPlaceholder";
+        private const string HeaderContainerClassName = nameof(PlainTermElementTableHeader)+"_HeaderContainer";
+        private const string TermLabelClassName = nameof(PlainTermElementTableHeader)+"_TermLabel";
+        private const string ValueLabelClassName = nameof(PlainTermElementTableHeader)+"_ValueLabel";
+        private const string NoteLabelClassName = nameof(PlainTermElementTableHeader)+"_NoteLabel";
+        private const string PropsPlaceholderClassName = nameof(PlainTermElementTableHeader)+"_PropsPlaceholder";
+        private const string ScrollerPlaceholderClassName = nameof(PlainTermElementTableHeader)+"_ScrollerPlaceholder";
 
         private readonly Box _headerContainer;
         private readonly Label _termHeadLabel;
@@ -27,7 +25,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
 
         public Label NoteHeadLabel => _noteHeadLabel;
 
-        public PlaintTermElementTableHeader() {
+        public PlainTermElementTableHeader() {
 
             style.unityTextAlign = new StyleEnum<TextAnchor>(TextAnchor.MiddleCenter);
             style.unityFontStyleAndWeight = new StyleEnum<FontStyle>(FontStyle.Bold);

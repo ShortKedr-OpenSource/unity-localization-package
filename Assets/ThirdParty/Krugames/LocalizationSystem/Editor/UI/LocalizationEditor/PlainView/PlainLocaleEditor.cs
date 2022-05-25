@@ -4,23 +4,26 @@ using Krugames.LocalizationSystem.Models.Terms;
 using RenwordDigital.StringSearchEngine;
 using ThirdParty.Krugames.LocalizationSystem.Editor.UI;
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 //TODO allow remove terms
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
     public class PlainLocaleEditor : VisualElement {
-
+        
         private enum ViewMode {
             Default = 0,
             Search = 1
         }
+
+        private const int DefaultPageLength = 25;
         
         private Locale _locale;
 
+        private LocaleTerm[] _terms;
+
         private TittleSearchToolbar _toolbar;
-        private PlaintTermElementTableHeader _tableHeader;
+        private PlainTermElementTableHeader _tableHeader;
         private VisualElement _listContainer;
         private PagerTooltipToolbar _toolbarPager;
         
@@ -38,26 +41,21 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
         
         private OptionPopup _managedElementOptions; 
         private PlainTermElement _managedElement = null;
+        
+        //TODO track changes
 
         public PlainLocaleEditor(Locale locale) {
             _locale = locale;
 
-            style.flexGrow = 1f;
-            style.borderTopWidth = 0;
-            style.borderBottomWidth = 0;
-            style.borderLeftWidth = 0;
-            style.borderRightWidth = 0;
-
             _toolbar = new TittleSearchToolbar("Term Editor (Plain)");
 
-            var tittle = new Label("English");
-            var search = new ToolbarSearchField();
+            _tableHeader = new PlainTermElementTableHeader();
 
-            _tableHeader = new PlaintTermElementTableHeader();
+            _defaultList = new PlainTermElementList(null, DefaultPageLength);
+            _searchList = new PlainTermElementList(null, DefaultPageLength);
 
-            _defaultList = new PlainTermElementList();
-            _searchList = new PlainTermElementList();
-
+            _elementToolbar = new ElementToolbar();
+            
             _toolbarPager = new PagerTooltipToolbar() {
                 style = {
                     borderBottomWidth = 0f,
@@ -69,8 +67,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
             Add(_tableHeader);
             Add(_defaultList);
             Add(_toolbarPager);
-
-
+            
             StringTerm term = ScriptableObject.CreateInstance<StringTerm>();
             term.SetSmartValue("value");
 
@@ -83,7 +80,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
                 terms.Add(term);
             }
             _defaultList.SetTerms(terms.ToArray());
-
+            
+            
         }
 
         //TODO private methods
