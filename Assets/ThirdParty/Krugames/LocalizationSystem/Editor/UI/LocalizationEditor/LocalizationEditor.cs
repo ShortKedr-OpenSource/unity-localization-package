@@ -159,7 +159,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             _toolbar.LeftAnchor.Add(_leftPanelToggleButton);
             _toolbar.LeftAnchor.Add(new ToolbarSpacer());
             _toolbar.LeftAnchor.Add(_validationButton);
-            _toolbar.LeftAnchor.Add(_translationButton);
+            //TODO implement complex translation (functional not included in current version)
+            //_toolbar.LeftAnchor.Add(_translationButton); 
 
             _toolbar.RightAnchor.Add(_rightPanelToggleButton);
             _toolbar.RightAnchor.Add(new ToolbarSpacer());
