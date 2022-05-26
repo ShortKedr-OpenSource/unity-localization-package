@@ -255,3 +255,18 @@ PagerToolbar {
     -unity-text-align: middle-center;
 }
 /* Locale Inspector [End] */
+
+/* Validation Report Window [Start] */
+.ValidationReportWindow_DescriptionLabel{
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.ValidationReportWindow_DescriptionLabel{
+    font-size: 12px;
+    -unity-font-style: bold;
+}
+
+.ValidationErrorElement_Label {
+    font-size: 12px;
+}
+/* Validation Report Window [End] */

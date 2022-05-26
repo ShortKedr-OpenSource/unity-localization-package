@@ -248,6 +248,9 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
             visible = true;
             _termLabel.text = _localeTerm.Term;
             _valueLabel.text = _localeTerm.Value.ToString();
+            _notePropertyField.SetValueWithoutNotify(TermNoteServer.GetNote(_localeTerm.Term));
+            _noteLabel.text = _notePropertyField.text;
+            _noteLabel.tooltip = _noteLabel.text;
         }
 
     }

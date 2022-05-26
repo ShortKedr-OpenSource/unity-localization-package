@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Krugames.LocalizationSystem.Common.Editor.UnityInternal;
 using Krugames.LocalizationSystem.Editor.Styles;
 using Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.Functions;
 using Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView;
+using Krugames.LocalizationSystem.Editor.UI.ValidationWindow;
 using Krugames.LocalizationSystem.Implementation;
 using Krugames.LocalizationSystem.Models;
 using Krugames.LocalizationSystem.Models.Structs;
 using Krugames.LocalizationSystem.Models.Terms;
 using Krugames.LocalizationSystem.Models.Utility.Editor;
+using Krugames.LocalizationSystem.Models.Validation;
+using Krugames.LocalizationSystem.Models.Validation.Validators;
 using Krugames.LocalizationSystem.RapidStorage.Servers;
 using ThirdParty.Krugames.LocalizationSystem.Editor.UI;
 using UnityEditor;
@@ -97,8 +101,6 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
                 EditorPrefs.SetBool(EditorSaveKeys.CreationMarkKey, true);
             }
             editorWindow.Show();
-            var a = TermNoteServer.Instance;
-            TermNoteServer.SetNote("my_term", "my note");
         }
 
         private void Awake() {
@@ -192,18 +194,19 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         
         private void InitializePopups() {
             
+            _validationOptionPopup = new OptionPopup(new SelectorListPopup.Element[] {
+                new SelectorListPopup.Element("Language duplicates check", Validation_LanguageDuplicates),
+                new SelectorListPopup.Element("Term duplicates check",Validation_TermDuplicates),
+                new SelectorListPopup.Element("Layout consistency check", Validation_LayoutConsistency),
+                new SelectorListPopup.Element("Empty field check", Validation_EmptyField),
+            });
+            
+            //TODO implement complex translation
             _translationOptionPopup = new OptionPopup(new SelectorListPopup.Element[] {
                 new SelectorListPopup.Element("From base to others", () => Debug.LogWarning("\"From base to others\" feature not available in current version")),
                 new SelectorListPopup.Element("From one to another", () => Debug.LogWarning("\"From one to another\"This feature not available in current version")),
-            }); 
-            
-            _validationOptionPopup = new OptionPopup(new SelectorListPopup.Element[] {
-                new SelectorListPopup.Element("Language duplicates check", () => Debug.Log("1")),
-                new SelectorListPopup.Element("Term duplicates check", () => Debug.Log("2")),
-                new SelectorListPopup.Element("Layout consistency check", () => Debug.Log("3")),
-                new SelectorListPopup.Element("Empty field check", () => Debug.Log("4")),
             });
-            
+
             _managedLocaleBaseOptionPopup = new OptionPopup(new SelectorListPopup.Element[] {
                 new SelectorListPopup.Element("Properties", OpenManagedLocaleProperties),
             });
@@ -433,6 +436,52 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             Rect buttonRect = _translationButton.worldBound;
             buttonRect.width = 0;
             UnityEditor.PopupWindow.Show(buttonRect, _translationOptionPopup);
+        }
+        
+        private void Validation_LanguageDuplicates() {
+            var locales = _localeList.Locales;
+            if (locales == null) {
+                Debug.Log("No locales loaded");
+                return;
+            }
+            var validator = new LanguageDuplicatesValidator();
+            var report = validator.ValidateWithReport(locales);
+            ValidationReportWindow.ShowReport(report, "Language duplicate check result:");
+        }
+
+        private void Validation_TermDuplicates() {
+            var locale = _plainLocaleEditor.Locale;
+            if (locale == null) {
+                Debug.Log("No locale selected");
+                return;
+            }
+            var validator = new TermDuplicateValidator();
+            var report = validator.ValidateWithReport(locale);
+            ValidationReportWindow.ShowReport(report, $"{locale.name} term duplicate check result:");
+        }
+
+        private void Validation_LayoutConsistency() {
+            var baseLocale = _localeLibrary.BaseLocale;
+            var locales = _localeList.Locales;
+            if (locales == null || baseLocale == null) {
+                Debug.Log("No locales loaded");
+                return;
+            }
+            var validator = new LayoutConsistencyValidator();
+            var report = validator.ValidateWithReport(
+                new LayoutConsistencyValidator.LocaleConsistencyModel(baseLocale, locales));
+            ValidationReportWindow.ShowReport(report, "Layout consistency check result:");
+        }
+
+        private void Validation_EmptyField() {
+            var locale = _plainLocaleEditor.Locale;
+            if (locale == null) {
+                Debug.Log("No locale selected");
+                return;
+            }
+            var validator = new LocaleEmptyFieldValidator();
+            var report = validator.ValidateWithReport(locale);
+            ValidationReportWindow.ShowReport(report, "Empty field check result:");
         }
 
     }
