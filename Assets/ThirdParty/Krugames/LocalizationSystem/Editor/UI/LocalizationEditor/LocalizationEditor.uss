@@ -8,13 +8,13 @@
 .TittledContentBox {
     border-radius: 0;
     border-width: 1px;
-    border-color: var(--unity-colors-toolbar-border);/*rgba(0, 0, 0, 0.1);*/
+    border-color: var(--unity-colors-toolbar-border);
     overflow: hidden;
     margin: 0;
 }
 
-ElementToolbar{
-    overflow: visible;
+ElementToolbar {
+    overflow: hidden;
     min-height: 24px;
     max-height: 24px;
     flex-grow: 1;
@@ -90,8 +90,7 @@ PagerTooltipToolbar {
     max-height: 24px;
     border-bottom-width: 0;
     border-top-width: 1px;
-    justify-content: flex-end;
-    align-items: stretch;
+    overflow: hidden;
 }
 
 .PagerTooltipToolbar_Previous {
@@ -121,10 +120,49 @@ PagerTooltipToolbar {
 
 .PagerTooltipToolbar_TooltipLabel {
     flex-grow: 1;
-    -unity-text-align: middle-left;
+    -unity-text-align: middle-center;
     margin-left: 4px;
 }
 /* Elements [End] */
+
+/* TwoSidePanelView [Start] */
+TwoSidePanelView {
+    flex-grow: 1;
+    flex-direction: row;
+}
+
+.TwoSidePanelView_Content {
+    flex-grow: 1;
+    width: auto;
+    align-items: stretch;
+}
+
+.TwoSidePanelView_LeftPanel {
+    flex-grow: 0;
+    min-width: 300px;
+    max-width: 300px;
+    width: auto;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-color: var(--unity-colors-toolbar-border);
+    align-items: stretch;
+    overflow: hidden;
+}
+
+.TwoSidePanelView_RightPanel {
+    flex-grow: 0;
+    min-width: 300px;
+    max-width: 300px;
+    width: auto;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-color: var(--unity-colors-toolbar-border);
+    align-items: stretch;
+    overflow: hidden;
+}
+/* TwoSidePanelView [End] */
 
 /* Left Panel [Start] */
 LocaleParamEditor.TittledContentBox {
@@ -423,3 +461,11 @@ PlainTermElementList {
     flex-grow: 1;
 }
 /* Plain View [End] */
+
+/* Right Panel [Start] */
+FunctionGroupsList.TittledContentBox {
+    flex-grow: 1;
+    border-width: 0;
+}
+
+/* Right Panel [End] */

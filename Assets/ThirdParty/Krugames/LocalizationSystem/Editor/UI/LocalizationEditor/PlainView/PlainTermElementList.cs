@@ -4,6 +4,9 @@ using Krugames.LocalizationSystem.Models;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+
+//TODO fix events, they must called once for action, current called many
+//TODO fix selection && active sate issue (it's not the same, no consistency atm)
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
     public class PlainTermElementList : ScrollView {
 
@@ -86,7 +89,10 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
 
         public SelectionInfo Selection => _selection;
         
-        //TODO add CurrentPage get set;
+        public int CurrentPage {
+            get => _currentPage;
+            set => SetPage(value);
+        }
 
         public PlainTermElementList(int pageLength) : this(null, pageLength){
         }
@@ -208,6 +214,10 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
                     if (_pageElements[i] == element) continue;
                     if (_pageElements[i].Active) _pageElements[i].Active = false;
                 }
+
+                int termIndex = GetTermIndexByListElement(element);
+                _selection = new SelectionInfo(termIndex, element.LocaleTerm);
+                OnSelect?.Invoke(this, _selection);
             }
         }
 

@@ -6,14 +6,30 @@ using UnityEditor;
 using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.Functions {
-    public class TranslateStringTermFunction : IFunction {
+    public class StringTermTranslateFunction : IFunction {
+        
+        public static readonly StringTermTranslateFunction Invalid = 
+            new StringTermTranslateFunction(null, default, null, default);
         
         private StringTerm _fromTerm;
         private SystemLanguage _fromLanguage;
         private StringTerm _toTerm;
         private SystemLanguage _toLanguage;
 
-        public TranslateStringTermFunction(StringTerm fromTerm, SystemLanguage fromLanguage, StringTerm toTerm, SystemLanguage toLanguage) {
+        
+        public StringTerm FromTerm => _fromTerm;
+
+        public SystemLanguage FromLanguage => _fromLanguage;
+
+        public StringTerm ToTerm => _toTerm;
+
+        public SystemLanguage ToLanguage => _toLanguage;
+
+        public bool IsValid => _fromTerm != null && _toTerm != null && _fromLanguage != _toLanguage;
+        
+        public string Description => $"Translate from {_fromLanguage} to {_toLanguage}";
+        
+        public StringTermTranslateFunction(StringTerm fromTerm, SystemLanguage fromLanguage, StringTerm toTerm, SystemLanguage toLanguage) {
             _fromTerm = fromTerm;
             _fromLanguage = fromLanguage;
             _toTerm = toTerm;

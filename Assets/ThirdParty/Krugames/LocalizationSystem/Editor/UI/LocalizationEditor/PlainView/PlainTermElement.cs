@@ -50,11 +50,13 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
 
         private string _previousTermName;
 
+        public delegate void NoteChangeDelegate(PlainTermElement element, string newNote);
         public delegate void ActiveStateChangeDelegate(PlainTermElement element, bool newState);
         public delegate void ClickDelegate(PlainTermElement element);
         public event ClickDelegate OnClick;
         public event ClickDelegate OnPropertiesClick;
         public event ActiveStateChangeDelegate OnActiveStateChanged;
+        public event NoteChangeDelegate OnNoteChange;
 
         
         public LocaleTerm LocaleTerm => _localeTerm;
@@ -189,6 +191,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView {
             if (_localeTerm == null) return;
             TermNoteServer.SetNote(_localeTerm.Term, evt.newValue);
             _noteLabel.text = evt.newValue;
+            OnNoteChange?.Invoke(this, evt.newValue);
         }
         
         private void Event_OnObjectChangesPublished(ref ObjectChangeEventStream stream) {

@@ -14,6 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   term: test_string_2
   smartValue: 
+--- !u!114 &-1014078951178641840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
+  m_Name: my_string
+  m_EditorClassIdentifier: 
+  term: my_string
+  smartValue: 
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36,6 +50,7 @@ MonoBehaviour:
   - {fileID: 8393010896561599021}
   - {fileID: 6431312700378511592}
   - {fileID: 1970756223973646177}
+  - {fileID: -1014078951178641840}
 --- !u!114 &1078455808253206354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +134,7 @@ MonoBehaviour:
   m_Name: test_string_1
   m_EditorClassIdentifier: 
   term: test_string_1
-  smartValue: 
+  smartValue: Bonjour!
 --- !u!114 &8393010896561599021
 MonoBehaviour:
   m_ObjectHideFlags: 0

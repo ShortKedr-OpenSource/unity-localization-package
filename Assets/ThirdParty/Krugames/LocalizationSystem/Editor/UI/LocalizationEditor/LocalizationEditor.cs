@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using Krugames.LocalizationSystem.Common.Editor.UnityInternal;
 using Krugames.LocalizationSystem.Editor.Styles;
+using Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.Functions;
 using Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.PlainView;
 using Krugames.LocalizationSystem.Implementation;
 using Krugames.LocalizationSystem.Models;
 using Krugames.LocalizationSystem.Models.Structs;
+using Krugames.LocalizationSystem.Models.Terms;
 using Krugames.LocalizationSystem.Models.Utility.Editor;
 using Krugames.LocalizationSystem.RapidStorage.Servers;
 using ThirdParty.Krugames.LocalizationSystem.Editor.UI;
@@ -70,8 +72,12 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         #endregion
 
         #region RightPanelElements
-        private FunctionList _functionList;
+        private FunctionGroupsList _functionGroupsList;
         #endregion
+
+        private FunctionGroup<string> _termFunctionGroup;
+        private FunctionElement<TermOpenPropertiesFunction> _termPropertiesFunction;
+        private FunctionElement<StringTermTranslateFunction> _termTranslateFunction;
 
         private OptionPopup _managedLocaleBaseOptionPopup;
         private OptionPopup _managedLocaleOptionPopup;
@@ -125,28 +131,30 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             CreateLeftPanelUI();
             CreateRightPanelUI();
 
-            _localeParamEditor.OnChange += LocaleParamEditorOnOnChange;
-            _localeList.OnSelect += LocaleSelectEvent;
-            _localeList.OnPropertiesClick += LocalePropertiesClickEvent;
+            _localeParamEditor.OnChange += Event_LocaleParamEditorChange;
+            _localeList.OnSelect += Event_OnLocaleSelect;
+            _localeList.OnPropertiesClick += Event_LocalePropertiesClick;
+            _plainLocaleEditor.OnTermSelect += Event_PlainEditorTermSelect;
             
             _viewModeSelector.RegisterCallback<ChangeEvent<ViewMode>>(Event_ViewModeChanged);
             
             InitializePopups();
+            InitializeFunctions();
             SetupLocaleList();
         }
 
         private void CreateToolbarUI() {
-            _leftPanelToggleButton = new ToggleButton(leftPanelState, LeftPanelStateChangeEvent) {text = "L"};
+            _leftPanelToggleButton = new ToggleButton(leftPanelState, Event_LeftPanelStateChange) {text = "L"};
             _leftPanelToggleButton.AddToClassList(LeftPanelToggleClassName);
 
-            _rightPanelToggleButton = new ToggleButton(rightPanelState, RightPanelStateChangeEvent) {text = "F"};
+            _rightPanelToggleButton = new ToggleButton(rightPanelState, Event_RightPanelStateChange) {text = "F"};
             _rightPanelToggleButton.AddToClassList(RightPanelToggleClassName);
 
             _viewModeSelector = new EnumButton<ViewMode>(viewMode);
             _viewModeSelector.BindProperty(_serializedObject.FindProperty("viewMode"));
 
-            _validationButton = new Button(ValidationButtonClickEvent) {text = "Validate"};
-            _translationButton = new Button(TranslationButtonClickEvent) {text = "Translate"};
+            _validationButton = new Button(Event_ValidationButtonClick) {text = "Validate"};
+            _translationButton = new Button(Event_TranslationButtonClick) {text = "Translate"};
             
             _toolbar.LeftAnchor.Add(_leftPanelToggleButton);
             _toolbar.LeftAnchor.Add(new ToolbarSpacer());
@@ -168,7 +176,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             _localeParamEditor = new LocaleParamEditor("Selected locale", null);
             _localeList = new LocaleList("Locales", null);
 
-            _addLocaleButton = new Button(AddLocaleButtonEvent) {text = "Add locale"};
+            _addLocaleButton = new Button(Event_AddLocaleButtonClick) {text = "Add locale"};
             _addLocaleButton.AddToClassList(AddLocaleButtonClassName);
             
             _content.LeftPanel.Add(_localeParamEditor);
@@ -177,38 +185,10 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         }
 
         private void CreateRightPanelUI() {
-            _functionList = new FunctionList("Functions");
-            _content.RightPanel.Add(_functionList);
-        }
-
-        private void UpdateCurrentView() {
-            _plainLocaleEditor.RemoveFromHierarchy();
-            _groupsView.RemoveFromHierarchy();
-            switch (viewMode) {
-                case ViewMode.Plain:
-                    _content.Content.Add(_plainLocaleEditor);
-                    break;
-                case ViewMode.Grouping:
-                    _content.Content.Add(_groupsView);
-                    break;
-            }
+            _functionGroupsList = new FunctionGroupsList("Functions");
+            _content.RightPanel.Add(_functionGroupsList);
         }
         
-        private void Event_ViewModeChanged(ChangeEvent<ViewMode> evt) {
-            UpdateCurrentView();
-        }
-
-        private void AddLocaleButtonEvent() {
-            Locale locale = LocaleLibraryUtility.AddLocaleToLibrary(SystemLanguage.Unknown);
-            if (locale != null) {
-                TermStructureInfo[] layout = _localeLibrary.BaseLocale.GetLayout();
-#pragma warning disable CS0618
-                locale.SetLayout(layout);
-#pragma warning restore CS0618
-                SetupLocaleList();
-            }
-        }
-
         private void InitializePopups() {
             
             _translationOptionPopup = new OptionPopup(new SelectorListPopup.Element[] {
@@ -231,6 +211,36 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
                 new SelectorListPopup.Element("Properties", OpenManagedLocaleProperties),
                 new SelectorListPopup.Element("Remove", RemoveManagedLocale)
             });
+        }
+
+        private void InitializeFunctions() {
+            _termPropertiesFunction =
+                new FunctionElement<TermOpenPropertiesFunction>(TermOpenPropertiesFunction.Invalid, 0);
+            _termTranslateFunction = 
+                new FunctionElement<StringTermTranslateFunction>(StringTermTranslateFunction.Invalid, 1);
+            
+            _termFunctionGroup = new FunctionGroup<string>(string.Empty,
+                new FunctionElement[] {
+                    _termPropertiesFunction,
+                    _termTranslateFunction,
+                }, 0);
+            
+            _functionGroupsList.AddFunctionGroup(
+                _termFunctionGroup
+                );
+        }
+
+        private void UpdateCurrentView() {
+            _plainLocaleEditor.RemoveFromHierarchy();
+            _groupsView.RemoveFromHierarchy();
+            switch (viewMode) {
+                case ViewMode.Plain:
+                    _content.Content.Add(_plainLocaleEditor);
+                    break;
+                case ViewMode.Grouping:
+                    _content.Content.Add(_groupsView);
+                    break;
+            }
         }
 
         private void SetupLocaleList() {
@@ -279,50 +289,28 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             if (result) SetupLocaleList();
         }
 
-        private void LocaleParamEditorOnOnChange(LocaleParamEditor self) {
-            if (self.Locale != null) {
-                LocaleLibraryUtility.RenameLocaleAssetToLanguageMatch(self.Locale);
-                UpdateLocaleList();
+        private void SetLocaleToPlainView(Locale locale) {
+            var baseStaticLocale = _localeLibrary.BaseLocale;
+            if (locale == null) {
+                _plainLocaleEditor.SetLocale(null);
+                _plainLocaleEditor.CanAddTerm = false;
+                _plainLocaleEditor.CanRemoveTerm = false;
+            }
+            else {
+                if (baseStaticLocale == locale) {
+                    _plainLocaleEditor.CanAddTerm = true;
+                    _plainLocaleEditor.CanRemoveTerm = true;
+                } else {
+                    _plainLocaleEditor.CanAddTerm = false;
+                    _plainLocaleEditor.CanRemoveTerm = false;
+                    TermStructureInfo[] layout = _localeLibrary.BaseLocale.GetLayout();
+                    LocaleUtility.SetLayout(locale, layout);
+                }
+                _plainLocaleEditor.SetLocale(locale);
             }
         }
 
-        private void LocalePropertiesClickEvent(LocaleList self, LocaleListElement selectedElement) {
-            _managedLocaleListElement = selectedElement;
-            if (_managedLocaleListElement == null || _managedLocaleListElement.Locale == null) return;
-            var baseStaticLocale = _localeLibrary.BaseLocale;
-            var popup = (_managedLocaleListElement.Locale == baseStaticLocale)
-                ? _managedLocaleBaseOptionPopup
-                : _managedLocaleOptionPopup; 
-            Rect mouseRect = new Rect(Event.current.mousePosition, Vector2.one); 
-            UnityEditor.PopupWindow.Show(mouseRect, popup);
-        }
-
-        private void LocaleSelectEvent(LocaleList self, LocaleList.SelectionInfo selectionInfo) {
-            _localeParamEditor.SetLocale(selectionInfo.Locale);
-            //TODO if viewMode == plain, set data to content view
-        }
-
-        private void LeftPanelStateChangeEvent(ChangeEvent<bool> evt) {
-            leftPanelState = evt.newValue;
-            _content.ShowLeftPanel = evt.newValue;
-        }
         
-        private void RightPanelStateChangeEvent(ChangeEvent<bool> evt) {
-            rightPanelState = evt.newValue;
-            _content.ShowRightPanel = evt.newValue;
-        }
-
-        private void ValidationButtonClickEvent() {
-            Rect buttonRect = _validationButton.worldBound;
-            buttonRect.width = 0;
-            UnityEditor.PopupWindow.Show(buttonRect, _validationOptionPopup);
-        }
-        
-        private void TranslationButtonClickEvent() {
-            Rect buttonRect = _translationButton.worldBound;
-            buttonRect.width = 0;
-            UnityEditor.PopupWindow.Show(buttonRect, _translationOptionPopup);
-        }
 
         private void SetDefaultEditorValues() {
             viewMode = ViewMode.Plain;
@@ -351,6 +339,94 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             if (EditorPrefs.HasKey(EditorSaveKeys.RightPanelStateKey)) {
                 rightPanelState = EditorPrefs.GetBool(EditorSaveKeys.RightPanelStateKey);
             }
+        }
+        
+        private void Event_ViewModeChanged(ChangeEvent<ViewMode> evt) {
+            UpdateCurrentView();
+        }
+        
+        private void Event_PlainEditorTermSelect(PlainLocaleEditor self, LocaleTerm localeTerm) {
+            if (viewMode != ViewMode.Plain) return;
+
+            if (localeTerm is StringTerm toTerm) {
+                var baseLocale = _localeLibrary.BaseLocale;
+                
+                StringTerm fromTerm = (baseLocale != null) ? baseLocale.GetTerm<StringTerm>(localeTerm.Term) : null;
+                SystemLanguage fromLanguage = (baseLocale != null) ? baseLocale.Language : default;
+                SystemLanguage toLanguage = (_plainLocaleEditor.Locale != null) ? _plainLocaleEditor.Locale.Language : default;
+                
+                StringTermTranslateFunction function =
+                    new StringTermTranslateFunction(fromTerm, fromLanguage, toTerm, toLanguage);
+                _termTranslateFunction.SetFunction(function);
+            } else {
+                _termTranslateFunction.SetFunction(StringTermTranslateFunction.Invalid);
+            }
+            
+            _termPropertiesFunction.SetFunction(new TermOpenPropertiesFunction(localeTerm));
+            _termFunctionGroup.SetSource(localeTerm.Term);
+            
+            _functionGroupsList.Update();
+        }
+
+        private void Event_AddLocaleButtonClick() {
+            Locale locale = LocaleLibraryUtility.AddLocaleToLibrary(SystemLanguage.Unknown);
+            if (locale != null) {
+                TermStructureInfo[] layout = _localeLibrary.BaseLocale.GetLayout();
+                LocaleUtility.SetLayout(locale, layout);
+                SetupLocaleList();
+            }
+        }
+        
+        private void Event_LocaleParamEditorChange(LocaleParamEditor self) {
+            if (self.Locale != null) {
+                LocaleLibraryUtility.RenameLocaleAssetToLanguageMatch(self.Locale);
+                UpdateLocaleList();
+            }
+        }
+
+        private void Event_LocalePropertiesClick(LocaleList self, LocaleListElement selectedElement) {
+            _managedLocaleListElement = selectedElement;
+            if (_managedLocaleListElement == null || _managedLocaleListElement.Locale == null) return;
+            var baseStaticLocale = _localeLibrary.BaseLocale;
+            var popup = (_managedLocaleListElement.Locale == baseStaticLocale)
+                ? _managedLocaleBaseOptionPopup
+                : _managedLocaleOptionPopup; 
+            Rect mouseRect = new Rect(Event.current.mousePosition, Vector2.one); 
+            UnityEditor.PopupWindow.Show(mouseRect, popup);
+        }
+
+        private void Event_OnLocaleSelect(LocaleList self, LocaleList.SelectionInfo selectionInfo) {
+            _localeParamEditor.SetLocale(selectionInfo.Locale);
+            switch (viewMode) {
+                case ViewMode.Plain:
+                    SetLocaleToPlainView(selectionInfo.Locale);
+                    break;
+                case ViewMode.Grouping:
+                    SetLocaleToPlainView(selectionInfo.Locale);
+                    break;
+            }
+        }
+        
+        private void Event_LeftPanelStateChange(ChangeEvent<bool> evt) {
+            leftPanelState = evt.newValue;
+            _content.ShowLeftPanel = evt.newValue;
+        }
+        
+        private void Event_RightPanelStateChange(ChangeEvent<bool> evt) {
+            rightPanelState = evt.newValue;
+            _content.ShowRightPanel = evt.newValue;
+        }
+
+        private void Event_ValidationButtonClick() {
+            Rect buttonRect = _validationButton.worldBound;
+            buttonRect.width = 0;
+            UnityEditor.PopupWindow.Show(buttonRect, _validationOptionPopup);
+        }
+        
+        private void Event_TranslationButtonClick() {
+            Rect buttonRect = _translationButton.worldBound;
+            buttonRect.width = 0;
+            UnityEditor.PopupWindow.Show(buttonRect, _translationOptionPopup);
         }
 
     }

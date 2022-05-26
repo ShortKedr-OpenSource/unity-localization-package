@@ -2,7 +2,7 @@
 using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
-    public class PagerTooltipToolbar : Toolbar {
+    public class PagerTooltipToolbar : ElementToolbar {
         
         private const string PreviousButtonClassName = nameof(PagerTooltipToolbar)+"_Previous";
         private const string NextButtonClassName = nameof(PagerTooltipToolbar)+"_Next";
@@ -40,14 +40,11 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
         }
 
         public PagerTooltipToolbar(int pageCount) {
-            //TODO review, style imports many times, cuz of hierarchy
-            //styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
-
             _previousPageButton = new ToolbarButton(PreviousPage);
             _nextPageButton = new ToolbarButton(NextPage);
             _currentPageField = new IntegerField();
             _pagesInfoLabel = new Label();
-            _tooltipLabel = new Label();
+            _tooltipLabel = new Label(){focusable = false, pickingMode = PickingMode.Ignore};
             
             _currentPageField.isDelayed = true;
             _currentPageField.RegisterCallback<ChangeEvent<int>>(CurrentPageFieldChangeAction);
@@ -57,12 +54,13 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             _currentPageField.AddToClassList(CurrentPageClassName);
             _pagesInfoLabel.AddToClassList(PagesInfoClassName);
             _tooltipLabel.AddToClassList(TooltipClassName);
+
+            RightAnchor.Add(_nextPageButton);
+            RightAnchor.Add(_pagesInfoLabel);
+            RightAnchor.Add(_currentPageField);
+            RightAnchor.Add(_previousPageButton);
             
-            Add(_tooltipLabel);
-            Add(_previousPageButton);
-            Add(_currentPageField);
-            Add(_pagesInfoLabel);
-            Add(_nextPageButton);
+            CenterAnchor.Add(_tooltipLabel);
 
             _pageCount = pageCount;
             CurrentPage = 1;

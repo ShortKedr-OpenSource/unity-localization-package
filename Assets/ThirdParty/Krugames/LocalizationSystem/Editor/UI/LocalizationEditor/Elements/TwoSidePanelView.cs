@@ -1,6 +1,4 @@
-﻿using Krugames.LocalizationSystem.Editor.Styles;
-using UnityEngine;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
     /// <summary>
@@ -10,7 +8,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
 
         private const string ContentClassName = nameof(TwoSidePanelView) + "_Content";
         private const string LeftPanelClassName = nameof(TwoSidePanelView) + "_LeftPanel";
-        private const string RightPanelClassName = nameof(TwoSidePanelView) + "RightPanel";
+        private const string RightPanelClassName = nameof(TwoSidePanelView) + "_RightPanel";
         
         private VisualElement _content;
         private VisualElement _leftPanel;
@@ -45,56 +43,16 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
 
         public TwoSidePanelView(bool showLeftPanel, bool showRightPanel) {
             
-            //TODO review, style imports many times, cuz of hierarchy
-            //styleSheets.Add(LocalizationEditorStyles.LocalizationEditorStyle);
-            
             _showLeftPanel = showLeftPanel;
             _showRightPanel = showRightPanel;
 
-            style.flexGrow = 1;
-            style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+            _content = new VisualElement();
+            _leftPanel = new VisualElement();
+            _rightPanel = new VisualElement();
             
-            _content = new VisualElement() {
-                style = {
-                    flexGrow = 1,
-                    width = new StyleLength(StyleKeyword.Auto),
-                    alignItems = new StyleEnum<Align>(Align.Stretch),
-                }
-            };
-
-            _leftPanel = new VisualElement() {
-                style= {
-                    flexGrow = 0,
-                    minWidth = 300,
-                    maxWidth = 300,
-                    width = new StyleLength(StyleKeyword.Auto),
-                    borderRightWidth = 1,
-                    borderLeftWidth = 1,
-                    borderBottomWidth = 1,
-                    borderRightColor = new Color(0, 0, 0, 0.5f), //TODO replace with variable in uss;
-                    borderLeftColor = new Color(0, 0, 0, 0.5f), //TODO replace with variable in uss;
-                    borderBottomColor = new Color(0, 0, 0, 0.5f), //TODO replace with variable in uss;
-                    alignItems = new StyleEnum<Align>(Align.Stretch),
-                    overflow = new StyleEnum<Overflow>(Overflow.Hidden),
-                }
-            };
-
-            _rightPanel = new VisualElement() {
-                style = {
-                    flexGrow = 0,
-                    minWidth = 300,
-                    maxWidth = 300,
-                    width = new StyleLength(StyleKeyword.Auto),
-                    borderRightWidth = 1,
-                    borderLeftWidth = 1,
-                    borderBottomWidth = 1,
-                    borderRightColor = new Color(0, 0, 0, 0.5f), //TODO replace with variable in uss;
-                    borderLeftColor = new Color(0, 0, 0, 0.5f), //TODO replace with variable in uss;
-                    borderBottomColor = new Color(0, 0, 0, 0.5f), //TODO replace with variable in uss;
-                    alignItems = new StyleEnum<Align>(Align.Stretch),
-                    overflow = new StyleEnum<Overflow>(Overflow.Hidden),
-                }
-            };
+            _content.AddToClassList(ContentClassName);
+            _leftPanel.AddToClassList(LeftPanelClassName);
+            _rightPanel.AddToClassList(RightPanelClassName);
 
             Add(_content);
             
