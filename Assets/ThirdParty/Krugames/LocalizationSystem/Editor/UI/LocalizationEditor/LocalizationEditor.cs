@@ -358,6 +358,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
                 
                 StringTermTranslateFunction function =
                     new StringTermTranslateFunction(fromTerm, fromLanguage, toTerm, toLanguage);
+                function.OnSuccess += Event_TranslateFunctionSuccess;
                 _termTranslateFunction.SetFunction(function);
             } else {
                 _termTranslateFunction.SetFunction(StringTermTranslateFunction.Invalid);
@@ -367,6 +368,10 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             _termFunctionGroup.SetSource(localeTerm.Term);
             
             _functionGroupsList.Update();
+        }
+
+        private void Event_TranslateFunctionSuccess(StringTerm changedTerm) {
+            _plainLocaleEditor.UpdateView();
         }
 
         private void Event_AddLocaleButtonClick() {

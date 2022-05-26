@@ -1,4 +1,5 @@
-﻿using Krugames.LocalizationSystem.Models;
+﻿using System;
+using Krugames.LocalizationSystem.Models;
 using Krugames.LocalizationSystem.Models.Terms;
 using Krugames.LocalizationSystem.Translation;
 using Krugames.LocalizationSystem.Translation.RapidApi;
@@ -16,6 +17,8 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.Functions {
         private StringTerm _toTerm;
         private SystemLanguage _toLanguage;
 
+        public delegate void SuccessDelegate(StringTerm changedTerm);
+        public event SuccessDelegate OnSuccess;
         
         public StringTerm FromTerm => _fromTerm;
 
@@ -49,6 +52,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor.Functions {
         private void TranslateSuccessCallback(string translatedData, SystemLanguage language, SystemLanguage translatedFrom) {
             _toTerm.SetSmartValue(translatedData);
             EditorUtility.SetDirty(_toTerm);
+            OnSuccess?.Invoke(_toTerm);
         }
     }
 }

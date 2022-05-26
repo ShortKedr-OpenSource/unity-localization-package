@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: test_string_2
   m_EditorClassIdentifier: 
   term: test_string_2
-  smartValue: 
+  smartValue: Comment vas-tu?
 --- !u!114 &-1014078951178641840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Name: test_string_3
   m_EditorClassIdentifier: 
   term: test_string_3
-  smartValue: 
+  smartValue: Quest-ce que tu fais en ce moment, mon gars ?
 --- !u!114 &6431312700378511592
 MonoBehaviour:
   m_ObjectHideFlags: 0

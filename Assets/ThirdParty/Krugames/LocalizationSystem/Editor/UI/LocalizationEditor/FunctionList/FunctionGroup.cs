@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
     public class FunctionGroup : Box {
-
+        
         private const string TittleClassName = nameof(FunctionGroup) + "_Tittle";
         private const string ContainerClassName = nameof(FunctionGroup) + "_Container";
         
@@ -33,7 +33,7 @@ namespace Krugames.LocalizationSystem.Editor.UI.LocalizationEditor {
             
             Add(_tittleLabel);
             Add(_functionContainer);
-            
+
             if (functionElements != null) AddFunctionElement(functionElements);
         }
 

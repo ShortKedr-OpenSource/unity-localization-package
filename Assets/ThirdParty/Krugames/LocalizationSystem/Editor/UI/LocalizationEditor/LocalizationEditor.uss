@@ -468,4 +468,50 @@ FunctionGroupsList.TittledContentBox {
     border-width: 0;
 }
 
+FunctionGroup {
+    flex-grow: 0;
+    overflow: hidden;
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-color: rgba(0, 0, 0, 0.2);
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+}
+
+.FunctionGroup_Tittle {
+    padding: 4px;
+    height: 30px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-left;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.FunctionGroup_Container {
+    border-width:0;
+    margin:0;
+    padding:0;
+}
+
+FunctionElement {
+    padding-left: 24px;
+    border-width: 0;
+    border-radius: 0;
+    height: 24px;
+    margin: 0;
+
+    -unity-text-align: middle-left;
+    background-color: rgba(255, 255, 255, 0.0);
+    border-top-width: 1px;
+    border-top-color: rgba(0, 0, 0, 0.2);
+}
+
+FunctionElement:hover {
+    background-color: var(--list-element-hover-background);
+}
+
+FunctionElement:active {
+    background-color: var(--list-element-active-background);
+}
+
 /* Right Panel [End] */
