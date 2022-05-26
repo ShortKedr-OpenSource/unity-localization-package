@@ -24,9 +24,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15734691dc64420a9985820c49ceb7ba, type: 3}
-  m_Name: ko-locale 3
+  m_Name: fr-locale
   m_EditorClassIdentifier: 
-  language: 23
+  language: 14
   terms:
   - {fileID: 8203725341660076243}
   - {fileID: -3034724765488323102}
@@ -36,7 +36,6 @@ MonoBehaviour:
   - {fileID: 8393010896561599021}
   - {fileID: 6431312700378511592}
   - {fileID: 1970756223973646177}
-  - {fileID: 6309023453842799184}
 --- !u!114 &1078455808253206354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,20 +78,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   term: test_string_3
   smartValue: Quest-ce que tu fais en ce moment, mon gars ?
---- !u!114 &6309023453842799184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: none_string
-  m_EditorClassIdentifier: 
-  term: none_string
-  smartValue: 
 --- !u!114 &6431312700378511592
 MonoBehaviour:
   m_ObjectHideFlags: 0
