@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: test_string_3
   m_EditorClassIdentifier: 
   term: test_string_3
-  smartValue: 
+  smartValue: Was machst du gerade, mein Junge?
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,4 +133,4 @@ MonoBehaviour:
   m_Name: test_string_2
   m_EditorClassIdentifier: 
   term: test_string_2
-  smartValue: 
+  smartValue: Wie geht es dir?

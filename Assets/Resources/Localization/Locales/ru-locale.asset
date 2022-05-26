@@ -120,7 +120,7 @@ MonoBehaviour:
   - {fileID: -6063704292572525384}
   - {fileID: -2636738842723955172}
   - {fileID: -7123427226252891428}
-  - {fileID: 7161383726753213492}
+  - {fileID: 8454416202226657739}
 --- !u!114 &1272357243865850717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   term: test_string_2
   smartValue: "\u041A\u0430\u043A \u0434\u0435\u043B\u0430?"
---- !u!114 &7161383726753213492
+--- !u!114 &8454416202226657739
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: my_string
+  m_Name: none_string
   m_EditorClassIdentifier: 
-  term: my_string
+  term: none_string
   smartValue: 
