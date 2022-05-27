@@ -6,6 +6,7 @@ using Krugames.LocalizationSystem.Models.Interfaces;
 using UnityEngine;
 
 //TODO Remake callbacks to auto null remove
+//TODO Require Term Attribute
 
 namespace Krugames.LocalizationSystem {
     public static class Localization {

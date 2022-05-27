@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Text;
 using Krugames.LocalizationSystem;
-using Krugames.LocalizationSystem.Models;
 using TMPro;
 using UnityEngine;
 
@@ -19,6 +17,10 @@ namespace Example.SimpleExample {
         private void Awake() {
             Callback_LanguageUpdate();
             Localization.AddLanguageUpdateCallback(Callback_LanguageUpdate);
+        }
+
+        private void OnDestroy() {
+            Localization.RemoveLanguageUpdateCallback(Callback_LanguageUpdate);
         }
 
         private void Callback_LanguageUpdate() {

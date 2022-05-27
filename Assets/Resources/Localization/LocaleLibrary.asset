@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseLocale: {fileID: 11400000, guid: e6b9a4438ee182747a71baad3cb23a8b, type: 2}
   staticLocales:
+  - {fileID: 11400000, guid: 560536689e2b3c24b82fd67f58f8cbb7, type: 2}
   - {fileID: 11400000, guid: fe9821bcff7eefb44b979dd98ce0b8ae, type: 2}
   - {fileID: 11400000, guid: e52c4022af25cfb479b2e6204bbe481e, type: 2}
