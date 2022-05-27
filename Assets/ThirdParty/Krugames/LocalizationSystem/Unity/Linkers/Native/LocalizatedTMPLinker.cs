@@ -3,11 +3,12 @@ using TMPro;
 using UnityEngine;
 
 namespace Krugames.LocalizationSystem.Linkers.Native {
+    [AddComponentMenu("Localization/Native Linkers/TMP Text Linker")]
     public class LocalizatedTMPLinker : NativeLinker {
         //TODO add Term selector
-        //TODO add not persistent Odin Integation
+        //TODO add not persistent Odin Integration
         
-        [SerializeField] private string term; 
+        [SerializeField] private string term = "none"; 
         [SerializeField] private TMP_Text targetText;
         [SerializeField] private TextCase textCase = TextCase.NoChanges;
 

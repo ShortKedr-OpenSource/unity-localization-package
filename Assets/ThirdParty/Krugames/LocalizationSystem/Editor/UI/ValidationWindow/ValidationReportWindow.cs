@@ -1,5 +1,4 @@
-﻿using System;
-using Krugames.LocalizationSystem.Editor.Styles;
+﻿using Krugames.LocalizationSystem.Editor.Styles;
 using Krugames.LocalizationSystem.Models.Validation;
 using UnityEditor;
 using UnityEngine;
@@ -7,6 +6,7 @@ using UnityEngine.UIElements;
 
 
 //TODO report null check;
+//TODO bad data safety (nulls)
 namespace Krugames.LocalizationSystem.Editor.UI.ValidationWindow {
     public class ValidationReportWindow : EditorWindow {
 
@@ -61,8 +61,10 @@ namespace Krugames.LocalizationSystem.Editor.UI.ValidationWindow {
                 }
             };
 
-            for (int i = 0; i < _report.Errors.Length; i++) {
-                _scrollView.Add(new ValidationErrorElement(_report.Errors[i]));
+            if (_report != null) {
+                for (int i = 0; i < _report.Errors.Length; i++) {
+                    _scrollView.Add(new ValidationErrorElement(_report.Errors[i]));
+                }
             }
 
             _root.Add(_descriptionElement);
