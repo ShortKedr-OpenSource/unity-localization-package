@@ -1,5 +1,6 @@
 ﻿using System;
 using Krugames.LocalizationSystem;
+using Krugames.LocalizationSystem.Models;
 using TMPro;
 using UnityEngine;
 
