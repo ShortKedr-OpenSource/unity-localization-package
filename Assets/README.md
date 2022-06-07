@@ -1,52 +1,52 @@
-# Unity Localization Package #
+# Unity Localization Package 
 
-## System ##
+## System
 1. Package automatically defines `KRUGAMES_UNITY_LOCALIZATION` keyword. 
    This keyword serve to be used in external solutions, outside of package
 
-## Resource files ##
+## Resource files
 1. Automatic resource files creation: `Locale`, `LocaleTerm`.
 1. Resource files validation: `Duplets check`.
 
-## User Interface ##
+## User Interface
 1. New reworked Localization Editor 
    with `languages listed int term` workflow approach.
 2. Enhanced `Locale` inspector.
 
-## OOP Model ##
+## OOP Model
 1. Base `LocaleTerm` type and it's inheritance
 1. Custom main editor drawers for `LocaleTerm` inheritors
 1. `LocaleTerm` inheritor types for: `string`, `Sprite`,
 1. Ability to extend `LocaleTerm` types by user's own type and add it to editor
 
-## Game API ##
+## Game API
 1. Native linkers: `UI/Text`, `TMP_Text`, `Image`
 2. Ability to get term value from concrete language
 3. Ability to get term value of corresponding type
 4. Ability to change language
 5. TODO extend this list
 
-## Editor API ##
+## Editor API
 1. Ability to manage LocaleTerms
 2. Ability to inline Localization property editor to any UnityEditor UI 
 3. Language Duplicate
 4. TODO extend this list (utilities etc)
 
-## Design of `LocaleTerm` type ##
+## Design of `LocaleTerm` type
 1. Description `only-in-editor` property for improving game-dev process
 
-## Programming stuff ##
+## Programming stuff
 1. Add to every unity component element `AddComponentMenu` attribute, 
    to list it in the user's menu
 
-## Linkers ##
+## Linkers
 Linkers are `MonoBehaviour` based components or mechanism that
 allow to connect some component to Localization System  
 
 All Linkers must be derived from `Linker` base abstract class.  
 `Linker` class can be derived from `ILinker` interface if its needed
 
-## Native Linkers ##
+## Native Linkers
 Native Linkers are components that
 allow to quickly connect one of the default
 UnityEngine components with Localization System.  
@@ -65,7 +65,7 @@ be included to base version:
 
 Other native components can have Native Linkers as well
 
-## Plugin Linkers ##
+## Plugin Linkers
 Plugin Linkers are components that allow to quickly connect
 not UnityEngine components with Localization System.  
 
@@ -79,14 +79,14 @@ This approach will allow to
 include special Plugin Linkers to builds, if
 current project has this system in-use
 
-## Custom Linkers ##
+## Custom Linkers
 Custom linkers are components that allow to quickly connect
 game-end logic code to Localization System
 
 All Custom Linkers are must be derived from `CustomLinker` base class,
 that derived from `Linker` class
 
-## External Plugins Connection ##
+## External Plugins Connection
 Plugin Connection is way to connect different plugins to 
 Localization Package.
 This feature can be done in 2 different way: _easy_ and _smart_.  
@@ -102,23 +102,23 @@ Easy approach can be used only for known plugins and provide additional features
 Smart approach can be used to integrate both known plugins and user plugins, 
 but no additional system-close features will be presented.
 
-## Localization Update event ##
+## Localization Update event
 `LocalizationUpdate` - event, that happens after current
 localization was somehow updated in runtime.  
 Can be used to tell Linkers and other systems that content needs
 to be updated to propper content
 
-## Enhanced User Experience ##
+## Enhanced User Experience
 This part describes features that will
 help enhance user experience.
 
-### Term Selector ###
+### Term Selector
 UI dropdown term selector with search included
 or window with list of terms and search.  
 UI tool that will help select and type terms to linkers
 and custom solutions.
 
-### Odin Integration ###
+### Odin Integration
 Odin integration for all included engine side components.
 Integration must not be persistent and enabled only if
 special compiler define is presented - `ODIN_INSPECTOR_3`.  
@@ -126,7 +126,7 @@ Not persistent approach will allow to use system across
 multiple projects and teams, some of them will not use Odin,
 some of them will use it
 
-## Dynamic API ##
+## Dynamic API
 By default `Locale` and `LocaleTerm` are static instances,
 they are stored and loaded once into LocalizationPackage.
 They can not be rebuild or updated during runtime.
@@ -139,7 +139,7 @@ API can be extended by `DynamicLocaleProvider` base type, that provide
 unified way to provide `DynamicLocale` from some source.
 This feature still in experimental state
 
-## Serialization ##
+## Serialization
 Editor only feature that allow Serialize `Locale` instance
 to different target formats.
 
@@ -155,6 +155,10 @@ List of supported serialize formats:
 3. XML - _import, export, read, modify_
 4. YAML - _import, export, read, modify_
 
-## Translation ##
+## Translation
 TODO
 
+## Custom languages
+Feature that allow to add custom languages in addition to basic languages based on `SystemLanguage` enumeration.
+
+This feature is helpfull when you need to add new specific language and this language doen't exist in `SystemLanguage` enumeration
