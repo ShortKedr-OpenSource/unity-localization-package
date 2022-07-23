@@ -1,11 +1,10 @@
-﻿using System;
-using Krugames.LocalizationSystem;
-using Krugames.LocalizationSystem.Models;
+﻿using Krugames.LocalizationSystem;
+using Krugames.LocalizationSystem.Linkers;
 using TMPro;
 using UnityEngine;
 
 namespace Example.SimpleExample {
-    public class ComplexText : MonoBehaviour {
+    public class ComplexText : CustomLinker {
         
         [SerializeField] private string descriptionTerm = "none";
         [SerializeField] private string silenceWordTerm;
@@ -14,17 +13,8 @@ namespace Example.SimpleExample {
         [SerializeField] private float damage = 90f;
         [SerializeField] private float tickInterval = 1f;
         [SerializeField] private float skillTime = 1f;
-        
-        private void Awake() {
-            Callback_LanguageUpdate();
-            Localization.AddLanguageUpdateCallback(Callback_LanguageUpdate);
-        }
 
-        private void OnDestroy() {
-            Localization.RemoveLanguageUpdateCallback(Callback_LanguageUpdate);
-        }
-
-        private void Callback_LanguageUpdate() {
+        public override void UpdateContent() {
             string desc = Localization.GetTermValue<string>(descriptionTerm);
             string silenceWord = Localization.GetTermValue<string>(silenceWordTerm);
             text.text = desc

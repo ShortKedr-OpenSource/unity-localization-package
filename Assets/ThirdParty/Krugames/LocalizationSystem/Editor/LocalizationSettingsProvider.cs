@@ -10,11 +10,14 @@ namespace Krugames.LocalizationSystem.Editor {
             var provider = new SettingsProvider("Project/Localization", SettingsScope.Project) {
                 label = "Localization",
                 guiHandler = delegate(string searchContext) {
-                    var settings = new SerializedObject(LocalizationSettings.Instance);
-                    EditorGUILayout.PropertyField(settings.FindProperty("autoInitialize"), GUILayout.ExpandWidth(true));
-                    EditorGUILayout.PropertyField(settings.FindProperty("useSystemLanguageAsDefault"));
-                    EditorGUILayout.PropertyField(settings.FindProperty("loadLastUsedLanguageAsCurrent"));
-                    settings.ApplyModifiedProperties();
+                    var settings = LocalizationSettings.Instance;
+                    var serializedSettings = new SerializedObject(settings);
+                    EditorGUILayout.BeginVertical(EditorStyles.inspectorDefaultMargins);
+                    EditorGUILayout.PropertyField(serializedSettings.FindProperty("autoInitialize"), GUILayout.ExpandWidth(true));
+                    EditorGUILayout.PropertyField(serializedSettings.FindProperty("useSystemLanguageAsDefault"));
+                    EditorGUILayout.PropertyField(serializedSettings.FindProperty("loadLastUsedLanguageAsCurrent"));
+                    EditorGUILayout.EndVertical();
+                    serializedSettings.ApplyModifiedProperties();
                 },
                 keywords = new HashSet<string>() {
                     "Auto Initialize",
