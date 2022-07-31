@@ -32,8 +32,6 @@ MonoBehaviour:
   - {fileID: 2806498148811940843}
   - {fileID: -4106468457175716171}
   - {fileID: 1249228634748886393}
-  - {fileID: 4060315930519084025}
-  - {fileID: 8505020839477145020}
 --- !u!114 &1249228634748886393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,31 +74,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   term: example_string
   smartValue: Velkommen!
---- !u!114 &4060315930519084025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: bullshit_term
-  m_EditorClassIdentifier: 
-  term: bullshit_term
-  smartValue: Ja din mor!
---- !u!114 &8505020839477145020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: none_string
-  m_EditorClassIdentifier: 
-  term: none_string
-  smartValue: 
