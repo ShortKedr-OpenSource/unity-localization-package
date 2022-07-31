@@ -1,34 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3353234714394038505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: tmp_string
-  m_EditorClassIdentifier: 
-  term: tmp_string
-  smartValue: 
---- !u!114 &-2273691582698178952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: skill_description
-  m_EditorClassIdentifier: 
-  term: skill_description
-  smartValue: 
---- !u!114 &-1944822933625138331
+--- !u!114 &-4106468457175716171
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -38,23 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7a57dab89ae4a238bd7b28baf969c50, type: 3}
-  m_Name: image_sprite
+  m_Name: example_sprite
   m_EditorClassIdentifier: 
-  term: image_sprite
-  smartValue: {fileID: 0}
---- !u!114 &-58058151593605589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ff5d992f36a4406ac063dc10daea0d7, type: 3}
-  m_Name: raw_image_texture
-  m_EditorClassIdentifier: 
-  term: raw_image_texture
+  term: example_sprite
   smartValue: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -66,18 +24,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15734691dc64420a9985820c49ceb7ba, type: 3}
-  m_Name: bg-locale
+  m_Name: da-locale
   m_EditorClassIdentifier: 
-  language: 4
+  language: 8
   terms:
-  - {fileID: -3353234714394038505}
-  - {fileID: 4548820244718288944}
-  - {fileID: -1944822933625138331}
-  - {fileID: -58058151593605589}
-  - {fileID: 4898982916176080410}
-  - {fileID: -2273691582698178952}
-  - {fileID: 5218753906205688837}
---- !u!114 &4548820244718288944
+  - {fileID: 3180343709548686852}
+  - {fileID: 2806498148811940843}
+  - {fileID: -4106468457175716171}
+  - {fileID: 1249228634748886393}
+  - {fileID: 4060315930519084025}
+  - {fileID: 8505020839477145020}
+--- !u!114 &1249228634748886393
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,12 +43,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: text_string
+  m_Script: {fileID: 11500000, guid: 2ff5d992f36a4406ac063dc10daea0d7, type: 3}
+  m_Name: example_texture
   m_EditorClassIdentifier: 
-  term: text_string
-  smartValue: 
---- !u!114 &4898982916176080410
+  term: example_texture
+  smartValue: {fileID: 0}
+--- !u!114 &2806498148811940843
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,11 +58,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f4c89475bb14a4a9d4f35b35827321f, type: 3}
-  m_Name: audio_source_audio_clip
+  m_Name: example_audioclip
   m_EditorClassIdentifier: 
-  term: audio_source_audio_clip
+  term: example_audioclip
   smartValue: {fileID: 0}
---- !u!114 &5218753906205688837
+--- !u!114 &3180343709548686852
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,7 +72,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: silence_word
+  m_Name: example_string
   m_EditorClassIdentifier: 
-  term: silence_word
+  term: example_string
+  smartValue: Velkommen!
+--- !u!114 &4060315930519084025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
+  m_Name: bullshit_term
+  m_EditorClassIdentifier: 
+  term: bullshit_term
+  smartValue: Ja din mor!
+--- !u!114 &8505020839477145020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
+  m_Name: none_string
+  m_EditorClassIdentifier: 
+  term: none_string
   smartValue: 

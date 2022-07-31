@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8763673808953652075
+--- !u!114 &-8648717847350754849
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,26 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: tmp_string
+  m_Script: {fileID: 11500000, guid: 6f4c89475bb14a4a9d4f35b35827321f, type: 3}
+  m_Name: example_audioclip
   m_EditorClassIdentifier: 
-  term: tmp_string
-  smartValue: TMP text value
---- !u!114 &-8241181465934846449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: text_string
-  m_EditorClassIdentifier: 
-  term: text_string
-  smartValue: Simple text value
---- !u!114 &-5104481675865048725
+  term: example_audioclip
+  smartValue: {fileID: 8300000, guid: 2a47be9e610ff3443b043ba9c5c68d1f, type: 3}
+--- !u!114 &-7372097567605895773
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -38,11 +24,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7a57dab89ae4a238bd7b28baf969c50, type: 3}
-  m_Name: image_sprite
+  m_Name: example_sprite
   m_EditorClassIdentifier: 
-  term: image_sprite
+  term: example_sprite
   smartValue: {fileID: 21300000, guid: e81cfef042cd9814986f2b4cd8f9143a, type: 3}
---- !u!114 &-3374019568666429668
+--- !u!114 &-859507090903818932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ff5d992f36a4406ac063dc10daea0d7, type: 3}
+  m_Name: example_texture
+  m_EditorClassIdentifier: 
+  term: example_texture
+  smartValue: {fileID: 2800000, guid: e81cfef042cd9814986f2b4cd8f9143a, type: 3}
+--- !u!114 &-81409794856843711
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52,25 +52,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: none_string
+  m_Name: bullshit_term
   m_EditorClassIdentifier: 
-  term: skill_description
-  smartValue: Imposes <color=#ff00f7>@silence_word@</color> effect to target and
-    tick @damage@ damage every @tick_interval@ second for @skill_time@ seconds
---- !u!114 &-3132784568291698930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
-  m_Name: none_string
-  m_EditorClassIdentifier: 
-  term: silence_word
-  smartValue: Silence
+  term: bullshit_term
+  smartValue: Yep your mother!
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,14 +70,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   language: 10
   terms:
-  - {fileID: -8763673808953652075}
-  - {fileID: -8241181465934846449}
-  - {fileID: -5104481675865048725}
-  - {fileID: 6158537393468295677}
-  - {fileID: 6157239548450373160}
-  - {fileID: -3374019568666429668}
-  - {fileID: -3132784568291698930}
---- !u!114 &6157239548450373160
+  - {fileID: 5524040291352541406}
+  - {fileID: -8648717847350754849}
+  - {fileID: -7372097567605895773}
+  - {fileID: -859507090903818932}
+  - {fileID: -81409794856843711}
+  - {fileID: 1166009873195623964}
+--- !u!114 &1166009873195623964
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,12 +85,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f4c89475bb14a4a9d4f35b35827321f, type: 3}
-  m_Name: none_audioclip
+  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
+  m_Name: none_string
   m_EditorClassIdentifier: 
-  term: audio_source_audio_clip
-  smartValue: {fileID: 8300000, guid: 2a47be9e610ff3443b043ba9c5c68d1f, type: 3}
---- !u!114 &6158537393468295677
+  term: none_string
+  smartValue: 
+--- !u!114 &5524040291352541406
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,8 +99,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ff5d992f36a4406ac063dc10daea0d7, type: 3}
-  m_Name: none_texture
+  m_Script: {fileID: 11500000, guid: 8867d147351f43d9b17efd490bbf501a, type: 3}
+  m_Name: example_string
   m_EditorClassIdentifier: 
-  term: raw_image_texture
-  smartValue: {fileID: 2800000, guid: e81cfef042cd9814986f2b4cd8f9143a, type: 3}
+  term: example_string
+  smartValue: Welcome!
