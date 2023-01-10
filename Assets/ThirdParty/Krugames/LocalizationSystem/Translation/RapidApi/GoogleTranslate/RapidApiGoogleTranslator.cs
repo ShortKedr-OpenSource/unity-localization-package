@@ -10,6 +10,8 @@ using UnityEngine;
 
 [assembly: RegisterTranslator(typeof(RapidApiGoogleTranslator), typeof(StringTranslator))]
 
+//TODO move api-key to Environment Variables
+
 namespace Krugames.LocalizationSystem.Translation.RapidApi {
     /// <summary>
     /// TextTranslator based on RapidAPI Google Translate https://rapidapi.com/googlecloud/api/google-translate1/
@@ -32,7 +34,7 @@ namespace Krugames.LocalizationSystem.Translation.RapidApi {
                 Headers =
                 {
                     { "x-rapidapi-host", "google-translate1.p.rapidapi.com" },
-                    { "x-rapidapi-key", "26ed99c731msh61deb61d64acd75p187ff1jsn71701035c4b3" },
+                    { "x-rapidapi-key", "****" },
                 },
                 Content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
