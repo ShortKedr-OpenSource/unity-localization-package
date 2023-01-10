@@ -1,31 +1,10 @@
-# //TODO Write README #
+# Unity Localization Package #
+by ShortKedr  
+First working version of project is ready.  
+Most of project features still under development  
 
-# README #
+This page still under development  
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+### Licensing ###  
+You can't use this solution for commercial purposes.  
+For more information, please, contact me on email `shortkedr@gmail.com`  
