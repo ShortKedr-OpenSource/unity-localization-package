@@ -17,16 +17,16 @@ For more information, please, contact me on email `shortkedr@gmail.com`
 To open editor select menu `Window -> Krugames -> Localization`.  
 Editor looks as showed on following images:  
 
-First look:
+First look:  
 ![Localization Editor First Look](/Docs/LocalizationEditor_1.png)  
 
-Managing locale:
+Managing locale:  
 ![Localization Editor Managing Locale](/Docs/LocalizationEditor_2.png) 
 
-Functions right panel:
+Functions right panel:  
 ![Localization Editor Functions Panel](/Docs/LocalizationEditor_3.png)  
 
-Validation report:
+Validation report:  
 ![Localization Editor Validation Report](/Docs/LocalizationEditor_4.png)  
 
 
@@ -34,28 +34,28 @@ Validation report:
 Linkers allow to make logic-less localization bind.    
 There are following linkers currently available:  
 
-TMP_Text Linker (text):
+TMP_Text Linker (text):  
 ![TMP_Text Linker](/Docs/Linker_1.png) 
 
-Image Linker (sprite):
+Image Linker (sprite):  
 ![Image Linker](/Docs/Linker_2.png)  
 
-Raw Image Linker (texture):
+Raw Image Linker (texture):  
 ![Raw Image Linker](/Docs/Linker_3.png)  
 
-Audio Source Linker (audio clip):
+Audio Source Linker (audio clip):  
 ![Audio Source Linker](/Docs/Linker_4.png)
 
 
 ## Project-wide settings ##
 Package has it's own project-wide settings. 
-There will be more setting points in future.
+There will be more setting points in future.  
 
 ![LocalizationProjectSettings](/Docs/LocalizationProjectSetting_1.png)
 
 ## Localizatio Example Scene ##
 Project has example scene, that uses default linkers.
-Launch `Assets/Examples/SimpleExample/SimpleExample.unity`
+Launch `Assets/Examples/SimpleExample/SimpleExample.unity`  
 
 ![LocalizationProjectSettings](/Docs/LocalizationExmapleScene.png)
 
