@@ -168,6 +168,12 @@ public enum Gender {
     Female = 1,
 }
 ```
+Result will appear in Localization Editor.  
+Package uses default unity inspector, 
+so you can redifine it with custom UnityEditor.Editor inheritor class  
+
+![Custom Term Result](/Docs/LocalizationEditor_CustomTerm.png)
+
 
 ### Custom Translator ###
 ```csharp
